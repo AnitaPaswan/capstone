@@ -308,9 +308,14 @@ def edit_movie_submission(movie_id):
   form=movieForm()
   return redirect(url_for('edit_movie', movie_id=movie_id))
 
+# @app.route('/actors/create', methods=['GET'])
+# def create_actor_form():
+#   form = ActorForm()
+#   return render_template('forms/new_actor.html', form=form)
+
+
 @app.route('/actors/create', methods=['GET'])
 def create_actor_form():
-  form = ActorForm()
   return render_template('forms/new_actor.html', form=form)
 
 @app.route('/actors/create', methods=['POST'])
