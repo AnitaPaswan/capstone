@@ -106,7 +106,7 @@ def show_movie(movie_id):
 
 @app.route('/movies/create', methods=['GET'])
 def create_movie_form():
-  form = movieForm()
+  form = MovieForm()
   return render_template('forms/new_movie.html', form=form)
 
 @app.route('/movies/create', methods=['POST'])
@@ -269,7 +269,7 @@ def edit_movie(movie_id):
 @app.route('/movies/<int:movie_id>/edit', methods=['POST'])
 def edit_movie_submission(movie_id):
   pre_movie = movie.query.filter_by(id=movie_id).first()
-  formmovie = movieForm(request.form, meta={'csrf':False})
+  formmovie = MovieForm(request.form, meta={'csrf':False})
   if formmovie.validate(): 
     try:
       ven = movie(id=movie_id, name=formmovie.name.data, city=formmovie.city.data, state=formmovie.state.data, address=formmovie.address.data, phone=formmovie.phone.data, genres=formmovie.genres.data, facebook_link=formmovie.facebook_link.data,image_link=formmovie.image_link.data, website_link=formmovie.website_link.data, seeking_talent=formmovie.seeking_talent.data, seeking_description=formmovie.seeking_description.data)
@@ -296,6 +296,7 @@ def edit_movie_submission(movie_id):
 @app.route('/actors/create', methods=['GET'])
 def create_actor_form():
   form = ActorForm()
+  print(form.name.data)
   return render_template('forms/new_actor.html', form=form)
 
 @app.route('/actors/create', methods=['POST'])

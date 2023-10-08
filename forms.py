@@ -31,7 +31,6 @@ class ActorForm(Form):
     age = StringField(
         'age', validators=[DataRequired()]
     )
-
     gender = SelectMultipleField(
         'gender', validators=[DataRequired()],
         choices=Gender.choices()
