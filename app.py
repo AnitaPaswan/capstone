@@ -28,7 +28,7 @@ moment = Moment(app)
 db.init_app(app)
 migrate = Migrate(app, db)
 setup_db(app)
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+cors = CORS(app)
 
 
 
@@ -49,11 +49,11 @@ app.jinja_env.filters['datetime'] = format_datetime
 #----------------------------------------------------------------------------#
 # Controllers.
 #----------------------------------------------------------------------------#
-@app.after_request
-def after_request(response):
-  response.headers.add("Access-Control-Allow-Headers","ContentType, Authorization")
-  response.headers.add("Access-Control-Allow-Methods", "GET, DELETE,POST, PATCH")
-  return response
+# @app.after_request
+# def after_request(response):
+#   response.headers.add("Access-Control-Allow-Headers","ContentType, Authorization")
+#   response.headers.add("Access-Control-Allow-Methods", "GET, DELETE,POST, PATCH")
+#   return response
 
 
 @app.route('/')
