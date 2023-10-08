@@ -1,9 +1,9 @@
-Fyyur
+Casting Agency
 -----
 
 ## Introduction
 
-Fyyur is a musical movie and actor booking site that facilitates the discovery and bookings of shows between local performing actors and movies. This site lets you list new actors and movies, discover them, and list shows with actors as a movie owner.
+The Casting Agency models a company that is responsible for creating movies and managing and assigning actors to those movies. As an Executive Producer we are creating a system to simplify and streamline the process.
 
 Your job is to build out the data models to power the API endpoints for the Fyyur site by connecting to a PostgreSQL database for storing, querying, and creating information about actors and movies on Fyyur.
 

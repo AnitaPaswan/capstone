@@ -76,4 +76,3 @@ class Show(db.Model):
     start_time = db.Column(db.DateTime)
     def __repr__(self):
         return f'<Show ID: {self.id}, movie_id: {self.movie_id}, actor_id: {self.actor_id}, start_time: {self.start_time}>'
-

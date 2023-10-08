@@ -55,7 +55,7 @@ def index():
 #  ----------------------------------------------------------------
 @app.route('/movies')
 def movies():
-  dataDb=movie.query.all()
+  dataDb=Movie.query.all()
   return render_template('pages/movies.html', areas=dataDb)
 
 # Anita-GET movie code for create movie end
@@ -158,7 +158,7 @@ def delete_movie(movie_id):
 
 @app.route('/actors')
 def actors():
-  data = actor.query.all()
+  data = Actor.query.all()
   return render_template('pages/actors.html', actors=data)
 
 @app.route('/actors/search', methods=['POST'])
