@@ -34,3 +34,4 @@ typing_extensions==4.7.0
 Werkzeug==2.0.1
 WTForms==3.0.1
 zipp==3.15.0
+requests
