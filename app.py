@@ -196,15 +196,8 @@ def edit_actor(actor_id):
   actor = Actor.query.filter_by(id=actor_id).all()
   for s in actor:
      form.name.data = s.name
-     form.city.data = s.city
-     form.genres.data = s.genres
-     form.state.data = s.state
-     form.phone.data = s.phone
-     form.website_link.data = s.website_link
-     form.facebook_link.data = s.facebook_link
-     form.seeking_movie.data = s.seeking_movie
-     form.seeking_description.data = s.seeking_description
-     form.image_link.data = s.image_link
+     form.citagey.data = s.age
+     form.gender.data = s.gender
   return render_template('forms/edit_actor.html', form=form, actor=edit_actor)
 
 @app.route('/actors/<int:actor_id>/edit', methods=['POST'])
@@ -240,17 +233,8 @@ def edit_movie(movie_id):
   edit_movie = Movie.query.get_or_404(movie_id)
   movie = Movie.query.filter_by(id=movie_id).all()
   for ven in movie:
-    form.name.data = ven.name
-    form.city.data = ven.city
-    form.genres.data = ven.genres
-    form.address.data = ven.address
-    form.state.data = ven.state
-    form.phone.data = ven.phone
-    form.website_link.data = ven.website_link
-    form.facebook_link.data = ven.facebook_link
-    form.seeking_talent.data = ven.seeking_talent
-    form.seeking_description.data = ven.seeking_description
-    form.image_link.data = ven.image_link
+    form.title.data = ven.name
+    form.release_date.data = ven.release_date
   return render_template('forms/edit_movie.html', form=form, movie=edit_movie)
 
 @app.route('/movies/<int:movie_id>/edit', methods=['POST'])
