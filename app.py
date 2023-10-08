@@ -308,19 +308,14 @@ def edit_movie_submission(movie_id):
   form=movieForm()
   return redirect(url_for('edit_movie', movie_id=movie_id))
 
-# @app.route('/actors/create', methods=['GET'])
-# def create_actor_form():
-#   form = ActorForm()
-#   return render_template('forms/new_actor.html', form=form)
-
-
 @app.route('/actors/create', methods=['GET'])
 def create_actor_form():
-  return render_template('forms/new_actor.html')
+  # form = ActorForm()
+  return render_template('forms/new_actor.html', form=request.form)
 
 # @app.route('/actors/create', methods=['POST'])
 # def create_actor_submission():
-#   form= ActorForm(request.form, meta={'csrf':False})
+#   form= actorForm(request.form, meta={'csrf':False})
 #   if form.validate():
 #     try:
 #         actor = actor(name=form.name.data, age=form.age.data, gender=form.gender.data)
@@ -339,7 +334,7 @@ def create_actor_form():
 #         for error in errors:
 #            validationMessage.append(f"{field}:{error}")
 #      flash('Please fix the errors: '+','.join(validationMessage))
-#      form=actorForm()
+#      form=ActorForm()
 #      return render_template('forms/new_actor.html', form=form)
           
 
