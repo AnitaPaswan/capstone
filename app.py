@@ -316,7 +316,7 @@ def edit_movie_submission(movie_id):
 
 @app.route('/actors/create', methods=['GET'])
 def create_actor_form():
-  return render_template('forms/new_actor.html', form=form)
+  return render_template('forms/new_actor.html')
 
 # @app.route('/actors/create', methods=['POST'])
 # def create_actor_submission():
