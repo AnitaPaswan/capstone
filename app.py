@@ -66,7 +66,7 @@ def search_movies():
   data = {}
   data1 = []
   search = request.form.get("search_term")
-  movie = db.session.query(movie).filter(movie.name.ilike(f'%{search}%')).all()
+  movie = db.session.query(Movie).filter(Movie.name.ilike(f'%{search}%')).all()
   for i in movie:
     data['name']=i.name
     if i.name not in data1:
@@ -164,7 +164,7 @@ def actors():
 @app.route('/actors/search', methods=['POST'])
 def search_actors():
   search = request.form.get("search_term")
-  actors = db.session.query(actor).filter(actor.name.ilike(f'%{search}%')).all()
+  actors = db.session.query(Actor).filter(Actor.name.ilike(f'%{search}%')).all()
   for i in actors:
     show = Show.query.filter_by(actor_id=i.id).all()
     response={
