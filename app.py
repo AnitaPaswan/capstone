@@ -60,7 +60,7 @@ def search_movies():
   movie = db.session.query(Movie).filter(Movie.title.ilike(f'%{search}%')).all()
   for i in movie:
     data['title']=i.title
-    if i.name not in data1:
+    if i.title not in data1:
      data1.append(data)
   response['count']=len(movie)
   response['data']= data1
