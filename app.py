@@ -238,7 +238,7 @@ def edit_actor(actor_id):
 @app.route('/actors/<int:actor_id>/edit', methods=['POST'])
 def edit_actor_submission(actor_id):
   pre_actor = actor.query.filter_by(id=actor_id).first()
-  form = actorForm(request.form, meta={'csrf':False})
+  form = actorForm(request.form)
   if form.validate(): 
     try:
       actor = actor(id= actor_id, name=form.name.data, city=form.city.data, state=form.state.data, phone=form.phone.data, genres=form.genres.data, facebook_link=form.facebook_link.data, image_link=form.image_link.data, website_link=form.website_link.data, seeking_movie=form.seeking_movie.data, seeking_description=form.seeking_description.data)
