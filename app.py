@@ -30,6 +30,7 @@ def create_app(test_config=None):
 
 
   @app.after_request
+
   def after_request(response):
      response.headers.add("Access-Control-Allow-Headers","ContentType, Authorization")
      response.headers.add("Access-Control-Allow-Methods", "GET, DELETE,POST, PATCH")
@@ -47,9 +48,6 @@ def create_app(test_config=None):
     return app
 
 app = create_app()
-
-if __name__ == '__main__':
-    app.run()
 
 if __name__ == '__main__':
     app.run()
