@@ -18,6 +18,7 @@ from models import movie, Show, actor, db
 from datetime import datetime,timedelta
 from auth import AuthError, requires_auth
 from flask_cors import CORS
+from models import setup_db
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
@@ -26,6 +27,7 @@ app = Flask(__name__)
 moment = Moment(app)
 db.init_app(app)
 migrate = Migrate(app, db)
+setup_db(app)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
