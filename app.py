@@ -82,7 +82,7 @@ def show_movie(movie_id):
   # shows the movie page with the given movie_id
   # TODO: replace with real movie data from the movies table, using movie_id
   #Implement Past and incoming shows
-  movie = movie.query.get_or_404(movie_id)
+  movie = Movie.query.get_or_404(movie_id)
   past_shows=[]
   upcoming_shows=[]
   for show in movie.shows:
@@ -141,7 +141,7 @@ def create_movie_submission():
 def delete_movie(movie_id):
   error = False
   try:
-      movie = movie.query.filter_by(id = movie_id)
+      movie = Movie.query.filter_by(id = movie_id)
       for x in movie:
           db.session.delete(x)
       db.session.delete(movie)
@@ -180,7 +180,7 @@ def search_actors():
 
 @app.route('/actors/<int:actor_id>')
 def show_actor(actor_id):
-  actor = actor.query.get_or_404(actor_id)
+  actor = Actor.query.get_or_404(actor_id)
   upcoming_show = []
   past_show= []
   data = vars(actor)
@@ -205,8 +205,8 @@ def show_actor(actor_id):
 @app.route('/actors/<int:actor_id>/edit', methods=['GET'])
 def edit_actor(actor_id):
   form = ActorForm()
-  edit_actor = actor.query.get_or_404(actor_id)
-  actor = actor.query.filter_by(id=actor_id).all()
+  edit_actor = Actor.query.get_or_404(actor_id)
+  actor = Actor.query.filter_by(id=actor_id).all()
   for s in actor:
      form.name.data = s.name
      form.city.data = s.city
@@ -222,7 +222,7 @@ def edit_actor(actor_id):
 
 @app.route('/actors/<int:actor_id>/edit', methods=['POST'])
 def edit_actor_submission(actor_id):
-  pre_actor = actor.query.filter_by(id=actor_id).first()
+  pre_actor = Actor.query.filter_by(id=actor_id).first()
   form = ActorForm(request.form, meta={'csrf':False})
   if form.validate(): 
     try:
@@ -250,8 +250,8 @@ def edit_actor_submission(actor_id):
 @app.route('/movies/<int:movie_id>/edit', methods=['GET'])
 def edit_movie(movie_id):
   form = MovieForm()
-  edit_movie = movie.query.get_or_404(movie_id)
-  movie = movie.query.filter_by(id=movie_id).all()
+  edit_movie = Movie.query.get_or_404(movie_id)
+  movie = Movie.query.filter_by(id=movie_id).all()
   for ven in movie:
     form.name.data = ven.name
     form.city.data = ven.city
@@ -268,7 +268,7 @@ def edit_movie(movie_id):
 
 @app.route('/movies/<int:movie_id>/edit', methods=['POST'])
 def edit_movie_submission(movie_id):
-  pre_movie = movie.query.filter_by(id=movie_id).first()
+  pre_movie = Movie.query.filter_by(id=movie_id).first()
   formmovie = MovieForm(request.form, meta={'csrf':False})
   if formmovie.validate(): 
     try:
