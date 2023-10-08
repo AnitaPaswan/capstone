@@ -46,16 +46,6 @@ def format_datetime(value, format='medium'):
 
 app.jinja_env.filters['datetime'] = format_datetime
 
-#----------------------------------------------------------------------------#
-# Controllers.
-#----------------------------------------------------------------------------#
-# @app.after_request
-# def after_request(response):
-#   response.headers.add("Access-Control-Allow-Headers","ContentType, Authorization")
-#   response.headers.add("Access-Control-Allow-Methods", "GET, DELETE,POST, PATCH")
-#   return response
-
-
 @app.route('/')
 def index():
   return render_template('pages/home.html')
@@ -65,11 +55,7 @@ def index():
 #  ----------------------------------------------------------------
 @app.route('/movies')
 def movies():
-  # TODO: replace with real movies data.
-  #       num_upcoming_shows should be aggregated based on number of upcoming shows per movie.
-
   dataDb=movie.query.all()
- 
   return render_template('pages/movies.html', areas=dataDb)
 
 # Anita-GET movie code for create movie end
@@ -126,7 +112,7 @@ def create_movie_form():
 @app.route('/movies/create', methods=['POST'])
 def create_movie_submission():
   error = False
-  formmovie = movieForm(request.form, meta={'csrf':False})
+  formmovie = MovieForm(request.form, meta={'csrf':False})
   if formmovie.validate():
      try:
         movies = movie(title=formmovie.title.data,  release_date=formmovie.release_date.data)
@@ -148,7 +134,7 @@ def create_movie_submission():
         for error in errors:
            validationMessage.append(f"{field}:{error}")
      flash('Please fix the errors: '+','.join(validationMessage))
-     form=movieForm()
+     form=MovieForm()
      return render_template('forms/new_movie.html', form=form)
 
 @app.route('/movies/<movie_id>', methods=['DELETE'])
@@ -173,7 +159,6 @@ def delete_movie(movie_id):
 @app.route('/actors')
 def actors():
   data = actor.query.all()
-
   return render_template('pages/actors.html', actors=data)
 
 @app.route('/actors/search', methods=['POST'])
@@ -238,7 +223,7 @@ def edit_actor(actor_id):
 @app.route('/actors/<int:actor_id>/edit', methods=['POST'])
 def edit_actor_submission(actor_id):
   pre_actor = actor.query.filter_by(id=actor_id).first()
-  form = actorForm(request.form, meta={'csrf':False})
+  form = ActorForm(request.form, meta={'csrf':False})
   if form.validate(): 
     try:
       actor = actor(id= actor_id, name=form.name.data, city=form.city.data, state=form.state.data, phone=form.phone.data, genres=form.genres.data, facebook_link=form.facebook_link.data, image_link=form.image_link.data, website_link=form.website_link.data, seeking_movie=form.seeking_movie.data, seeking_description=form.seeking_description.data)
@@ -259,12 +244,12 @@ def edit_actor_submission(actor_id):
       for error in errors:
         validationMessage.append(f"{field}:{error}")
   flash('Please fix the errors: '+','.join(validationMessage))
-  form=actorForm()
+  form=ActorForm()
   return redirect(url_for('edit_actor', actor_id=actor_id))
 
 @app.route('/movies/<int:movie_id>/edit', methods=['GET'])
 def edit_movie(movie_id):
-  form = movieForm()
+  form = MovieForm()
   edit_movie = movie.query.get_or_404(movie_id)
   movie = movie.query.filter_by(id=movie_id).all()
   for ven in movie:
@@ -305,37 +290,37 @@ def edit_movie_submission(movie_id):
       for error in errors:
         validationMessage.append(f"{field}:{error}")
   flash('Please fix the errors: '+','.join(validationMessage))
-  form=movieForm()
+  form=MovieForm()
   return redirect(url_for('edit_movie', movie_id=movie_id))
 
 @app.route('/actors/create', methods=['GET'])
 def create_actor_form():
-  # form = ActorForm()
-  return render_template('forms/new_actor.html', form=request.form)
+  form = ActorForm()
+  return render_template('forms/new_actor.html', form=form)
 
-# @app.route('/actors/create', methods=['POST'])
-# def create_actor_submission():
-#   form= actorForm(request.form, meta={'csrf':False})
-#   if form.validate():
-#     try:
-#         actor = actor(name=form.name.data, age=form.age.data, gender=form.gender.data)
-#         db.session.add(actor)
-#         db.session.commit()
-#     except ValueError as e:
-#       print(e)
-#       db.session.rollback()
-#     finally:
-#       db.session.close()
-#     flash('actor ' + request.form['name'] + ' was successfully listed!')
-#     return render_template('pages/home.html')
-#   else:
-#      validationMessage= []
-#      for field, errors in form.errors.items():
-#         for error in errors:
-#            validationMessage.append(f"{field}:{error}")
-#      flash('Please fix the errors: '+','.join(validationMessage))
-#      form=ActorForm()
-#      return render_template('forms/new_actor.html', form=form)
+@app.route('/actors/create', methods=['POST'])
+def create_actor_submission():
+  form = ActorForm(request.form, meta={'csrf':False})
+  if form.validate():
+    try:
+        actor = actor(name=form.name.data, age=form.age.data, gender=form.gender.data)
+        db.session.add(actor)
+        db.session.commit()
+    except ValueError as e:
+      print(e)
+      db.session.rollback()
+    finally:
+      db.session.close()
+    flash('actor ' + request.form['name'] + ' was successfully listed!')
+    return render_template('pages/home.html')
+  else:
+     validationMessage= []
+     for field, errors in form.errors.items():
+        for error in errors:
+           validationMessage.append(f"{field}:{error}")
+     flash('Please fix the errors: '+','.join(validationMessage))
+     form=ActorForm()
+     return render_template('forms/new_actor.html', form=form)
           
 
 @app.errorhandler(404)
