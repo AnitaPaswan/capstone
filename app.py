@@ -318,29 +318,29 @@ def edit_movie_submission(movie_id):
 def create_actor_form():
   return render_template('forms/new_actor.html', form=form)
 
-@app.route('/actors/create', methods=['POST'])
-def create_actor_submission():
-  form= ActorForm(request.form, meta={'csrf':False})
-  if form.validate():
-    try:
-        actor = actor(name=form.name.data, age=form.age.data, gender=form.gender.data)
-        db.session.add(actor)
-        db.session.commit()
-    except ValueError as e:
-      print(e)
-      db.session.rollback()
-    finally:
-      db.session.close()
-    flash('actor ' + request.form['name'] + ' was successfully listed!')
-    return render_template('pages/home.html')
-  else:
-     validationMessage= []
-     for field, errors in form.errors.items():
-        for error in errors:
-           validationMessage.append(f"{field}:{error}")
-     flash('Please fix the errors: '+','.join(validationMessage))
-     form=actorForm()
-     return render_template('forms/new_actor.html', form=form)
+# @app.route('/actors/create', methods=['POST'])
+# def create_actor_submission():
+#   form= ActorForm(request.form, meta={'csrf':False})
+#   if form.validate():
+#     try:
+#         actor = actor(name=form.name.data, age=form.age.data, gender=form.gender.data)
+#         db.session.add(actor)
+#         db.session.commit()
+#     except ValueError as e:
+#       print(e)
+#       db.session.rollback()
+#     finally:
+#       db.session.close()
+#     flash('actor ' + request.form['name'] + ' was successfully listed!')
+#     return render_template('pages/home.html')
+#   else:
+#      validationMessage= []
+#      for field, errors in form.errors.items():
+#         for error in errors:
+#            validationMessage.append(f"{field}:{error}")
+#      flash('Please fix the errors: '+','.join(validationMessage))
+#      form=actorForm()
+#      return render_template('forms/new_actor.html', form=form)
           
 
 @app.errorhandler(404)
