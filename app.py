@@ -19,9 +19,6 @@ from datetime import datetime,timedelta
 from auth import AuthError, requires_auth
 from flask_cors import CORS
 from models import setup_db
-#----------------------------------------------------------------------------#
-# App Config.
-#----------------------------------------------------------------------------#
 
 app = Flask(__name__)
 moment = Moment(app)
@@ -30,11 +27,6 @@ migrate = Migrate(app, db)
 setup_db(app)
 cors = CORS(app)
 
-
-
-#----------------------------------------------------------------------------#
-# Filters.
-#----------------------------------------------------------------------------#
 
 def format_datetime(value, format='medium'):
   date = dateutil.parser.parse(value)
@@ -51,8 +43,7 @@ def index():
   return render_template('pages/home.html')
 
 
-#  movies
-#  ----------------------------------------------------------------
+
 @app.route('/movies')
 def movies():
   dataDb=Movie.query.all()
@@ -66,9 +57,9 @@ def search_movies():
   data = {}
   data1 = []
   search = request.form.get("search_term")
-  movie = db.session.query(Movie).filter(Movie.name.ilike(f'%{search}%')).all()
+  movie = db.session.query(Movie).filter(Movie.title.ilike(f'%{search}%')).all()
   for i in movie:
-    data['name']=i.name
+    data['title']=i.title
     if i.name not in data1:
      data1.append(data)
   response['count']=len(movie)
@@ -79,9 +70,6 @@ def search_movies():
 #Anita movie byid start
 @app.route('/movies/<int:movie_id>')
 def show_movie(movie_id):
-  # shows the movie page with the given movie_id
-  # TODO: replace with real movie data from the movies table, using movie_id
-  #Implement Past and incoming shows
   movie = Movie.query.get_or_404(movie_id)
   past_shows=[]
   upcoming_shows=[]
@@ -90,7 +78,6 @@ def show_movie(movie_id):
     temp_show={
        'actor_id':show.actor_id,
        'actor_name':show.actor.name,
-       'actor_image_link': show.actor.image_link,
        'start_time':show.start_time.strftime("%m/%d/%Y, %H:%M")
        }
     if show.start_time<=datetime.now():
