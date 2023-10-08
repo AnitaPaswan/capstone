@@ -14,7 +14,7 @@ from flask_wtf import Form
 from forms import *
 from flask_migrate import Migrate
 import sys
-from models import movie, Show, actor, db
+from models import Movie, Show, Actor, db
 from datetime import datetime,timedelta
 from auth import AuthError, requires_auth
 from flask_cors import CORS
@@ -115,7 +115,7 @@ def create_movie_submission():
   formmovie = MovieForm(request.form, meta={'csrf':False})
   if formmovie.validate():
      try:
-        movies = movie(title=formmovie.title.data,  release_date=formmovie.release_date.data)
+        movies = Movie(title=formmovie.title.data,  release_date=formmovie.release_date.data)
         db.session.add(movies)
         db.session.commit()
      except ValueError as e:
@@ -226,7 +226,7 @@ def edit_actor_submission(actor_id):
   form = ActorForm(request.form, meta={'csrf':False})
   if form.validate(): 
     try:
-      actor = actor(id= actor_id, name=form.name.data, city=form.city.data, state=form.state.data, phone=form.phone.data, genres=form.genres.data, facebook_link=form.facebook_link.data, image_link=form.image_link.data, website_link=form.website_link.data, seeking_movie=form.seeking_movie.data, seeking_description=form.seeking_description.data)
+      actor = Actor(id= actor_id, name=form.name.data, city=form.city.data, state=form.state.data, phone=form.phone.data, genres=form.genres.data, facebook_link=form.facebook_link.data, image_link=form.image_link.data, website_link=form.website_link.data, seeking_movie=form.seeking_movie.data, seeking_description=form.seeking_description.data)
       db.session.delete(pre_actor)
       db.session.commit()
       db.session.add(actor)
@@ -272,7 +272,7 @@ def edit_movie_submission(movie_id):
   formmovie = MovieForm(request.form, meta={'csrf':False})
   if formmovie.validate(): 
     try:
-      ven = movie(id=movie_id, name=formmovie.name.data, city=formmovie.city.data, state=formmovie.state.data, address=formmovie.address.data, phone=formmovie.phone.data, genres=formmovie.genres.data, facebook_link=formmovie.facebook_link.data,image_link=formmovie.image_link.data, website_link=formmovie.website_link.data, seeking_talent=formmovie.seeking_talent.data, seeking_description=formmovie.seeking_description.data)
+      ven = Movie(id=movie_id, name=formmovie.name.data, city=formmovie.city.data, state=formmovie.state.data, address=formmovie.address.data, phone=formmovie.phone.data, genres=formmovie.genres.data, facebook_link=formmovie.facebook_link.data,image_link=formmovie.image_link.data, website_link=formmovie.website_link.data, seeking_talent=formmovie.seeking_talent.data, seeking_description=formmovie.seeking_description.data)
       db.session.delete(pre_movie)
       db.session.commit()
       db.session.add(ven)
@@ -304,7 +304,7 @@ def create_actor_submission():
   form = ActorForm(request.form, meta={'csrf':False})
   if form.validate():
     try:
-        actor = actor(name=form.name.data, age=form.age.data, gender=form.gender.data)
+        actor = Actor(name=form.name.data, age=form.age.data, gender=form.gender.data)
         db.session.add(actor)
         db.session.commit()
     except ValueError as e:

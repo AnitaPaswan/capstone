@@ -28,7 +28,7 @@ def setup_db(app, database_path=database_path):
 # Models.
 #----------------------------------------------------------------------------#
 
-class movie(db.Model):
+class Movie(db.Model):
     __tablename__ = 'movie'
 
     id = db.Column(db.Integer().with_variant(db.Integer, "sqlite"), primary_key=True)
@@ -54,7 +54,7 @@ class movie(db.Model):
        return self.__str__()
         # return f'<movie ID: {self.id}, name: {self.name}, city: {self.city}, state: {self.state}, address: {self.address}, phone: {self.phone}, image_link: {self.image_link},facebook_link: {self.facebook_link}, website_link: {self.website_link}, seeking_description: {self.seeking_description}, seeking_talent: {self.seeking_talent},  genres: {self.genres}>'
 
-class actor(db.Model):
+class Actor(db.Model):
     __tablename__ = 'actor'
 
     id = db.Column(db.Integer().with_variant(db.Integer, "sqlite"), primary_key=True)
