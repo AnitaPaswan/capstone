@@ -4,7 +4,6 @@ from sqlalchemy import Column, String, create_engine
 from flask_sqlalchemy import SQLAlchemy
 import json
 
-SECRET_KEY = os.urandom(32)
 
 database_path = os.environ['DATABASE_URL']
 if database_path.startswith("postgres://"):
@@ -19,6 +18,7 @@ setup_db(app)
 def setup_db(app, database_path=database_path):
     app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
     db.app = app
     db.init_app(app)
     db.create_all()
