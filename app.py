@@ -227,43 +227,6 @@ def edit_actor_submission(actor_id):
   form=ActorForm()
   return redirect(url_for('edit_actor', actor_id=actor_id))
 
-@app.route('/movies/<int:movie_id>/edit', methods=['GET'])
-def edit_movie(movie_id):
-  form = MovieForm()
-  edit_movie = Movie.query.get_or_404(movie_id)
-  movie = Movie.query.filter_by(id=movie_id).all()
-  for ven in movie:
-    form.title.data = ven.name
-    form.release_date.data = ven.release_date
-  return render_template('forms/edit_movie.html', form=form, movie=edit_movie)
-
-@app.route('/movies/<int:movie_id>/edit', methods=['POST'])
-def edit_movie_submission(movie_id):
-  pre_movie = Movie.query.filter_by(id=movie_id).first()
-  formmovie = MovieForm(request.form, meta={'csrf':False})
-  if formmovie.validate(): 
-    try:
-      ven = Movie(id=movie_id, name=formmovie.name.data, city=formmovie.city.data, state=formmovie.state.data, address=formmovie.address.data, phone=formmovie.phone.data, genres=formmovie.genres.data, facebook_link=formmovie.facebook_link.data,image_link=formmovie.image_link.data, website_link=formmovie.website_link.data, seeking_talent=formmovie.seeking_talent.data, seeking_description=formmovie.seeking_description.data)
-      db.session.delete(pre_movie)
-      db.session.commit()
-      db.session.add(ven)
-      db.session.commit()
-    except ValueError as e:
-      flash('An error occurred while updating movie ' + request.form['name'])
-      db.session.rollback()
-    finally:
-      flash('movie ' + request.form['name'] + '  updated successfully.')
-      db.session.close()
-      return redirect(url_for('show_movie', movie_id=movie_id))
-  else:
-    validationMessage= []
-    for field, errors in formmovie.errors.items():
-      for error in errors:
-        validationMessage.append(f"{field}:{error}")
-  flash('Please fix the errors: '+','.join(validationMessage))
-  form=MovieForm()
-  return redirect(url_for('edit_movie', movie_id=movie_id))
-
 @app.route('/actors/create', methods=['GET'])
 def create_actor_form():
   form = ActorForm()
