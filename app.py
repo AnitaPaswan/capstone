@@ -219,7 +219,7 @@ def show_actor(actor_id):
 
 @app.route('/actors/<int:actor_id>/edit', methods=['GET'])
 def edit_actor(actor_id):
-  form = actorForm()
+  form = ActorForm()
   edit_actor = actor.query.get_or_404(actor_id)
   actor = actor.query.filter_by(id=actor_id).all()
   for s in actor:
@@ -238,7 +238,7 @@ def edit_actor(actor_id):
 @app.route('/actors/<int:actor_id>/edit', methods=['POST'])
 def edit_actor_submission(actor_id):
   pre_actor = actor.query.filter_by(id=actor_id).first()
-  form = actorForm(request.form)
+  form = actorForm(request.form, meta={'csrf':False})
   if form.validate(): 
     try:
       actor = actor(id= actor_id, name=form.name.data, city=form.city.data, state=form.state.data, phone=form.phone.data, genres=form.genres.data, facebook_link=form.facebook_link.data, image_link=form.image_link.data, website_link=form.website_link.data, seeking_movie=form.seeking_movie.data, seeking_description=form.seeking_description.data)
@@ -310,12 +310,12 @@ def edit_movie_submission(movie_id):
 
 @app.route('/actors/create', methods=['GET'])
 def create_actor_form():
-  form = actorForm()
+  form = ActorForm()
   return render_template('forms/new_actor.html', form=form)
 
 @app.route('/actors/create', methods=['POST'])
 def create_actor_submission():
-  form= actorForm(request.form, meta={'csrf':False})
+  form= ActorForm(request.form, meta={'csrf':False})
   if form.validate():
     try:
         actor = actor(name=form.name.data, age=form.age.data, gender=form.gender.data)
