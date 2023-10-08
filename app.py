@@ -45,7 +45,7 @@ def create_app(test_config=None):
     dataDb=movie.query.all()
     return render_template('pages/movies.html', areas=dataDb)
   
-    return app
+  return app
 
 app = create_app()
 
