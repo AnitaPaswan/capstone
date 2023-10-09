@@ -46,9 +46,8 @@ def login():
 def index():
   return render_template('pages/home.html')
 
-
-
 @app.route('/movies')
+@requires_auth(permission='get:movies')
 def movies():
   dataDb=Movie.query.all()
   return render_template('pages/movies.html', areas=dataDb)
@@ -74,6 +73,7 @@ def search_movies():
 
 #Anita movie byid start
 @app.route('/movies/<int:movie_id>')
+@requires_auth(permission='get:movies')
 def show_movie(movie_id):
   movie = Movie.query.get_or_404(movie_id)
   past_shows=[]
@@ -102,6 +102,7 @@ def create_movie_form():
   return render_template('forms/new_movie.html', form=form)
 
 @app.route('/movies/create', methods=['POST'])
+@requires_auth(permission='post:movie')
 def create_movie_submission():
   error = False
   formmovie = MovieForm(request.form, meta={'csrf':False})
@@ -149,6 +150,7 @@ def delete_movie(movie_id):
      return None
 
 @app.route('/actors/<actor_id>/delete', methods=['DELETE'])
+@requires_auth(permission='delete:actor')
 def delete_actor(actor_id):
   error = False
   try:
@@ -172,6 +174,7 @@ def delete_actor(actor_id):
      return render_template('pages/actors.html.html', actor=actor)
 
 @app.route('/actors')
+@requires_auth(permission='get:actors')
 def actors():
   data = Actor.query.all()
   return render_template('pages/actors.html', actors=data)
@@ -194,6 +197,7 @@ def search_actors():
   return render_template('pages/search_actors.html', results=response, search_term=request.form.get('search_term', ''))
 
 @app.route('/actors/<int:actor_id>')
+@requires_auth(permission='get:actors')
 def show_actor(actor_id):
   actor = Actor.query.get_or_404(actor_id)
   upcoming_show = []
@@ -212,7 +216,8 @@ def edit_actor(actor_id):
      form.gender.data = s.gender
   return render_template('forms/edit_actor.html', form=form, actor=edit_actor)
 
-@app.route('/actors/<int:actor_id>/edit', methods=['POST'])
+@app.route('/actors/<int:actor_id>/edit', methods=['PATCH'])
+@requires_auth(permission='patch:actor')
 def edit_actor_submission(actor_id):
   pre_actor = Actor.query.filter_by(id=actor_id).first()
   form = ActorForm(request.form, meta={'csrf':False})
@@ -246,6 +251,7 @@ def create_actor_form():
   return render_template('forms/new_actor.html', form=form)
 
 @app.route('/actors/create', methods=['POST'])
+@requires_auth(permission='post:actor')
 def create_actor_submission():
   form = ActorForm(request.form, meta={'csrf':False})
   if form.validate():
