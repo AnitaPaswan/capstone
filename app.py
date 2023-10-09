@@ -165,7 +165,7 @@ def delete_actor(actor_id):
       abort(500)
   else:
      actor = Actor.query.all()
-     return render_template('pages/show_actor.html', actor=actor)
+     return render_template('pages/actors.html.html', actor=actor)
 
 @app.route('/actors')
 def actors():
