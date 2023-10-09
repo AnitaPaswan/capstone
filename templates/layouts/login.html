@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Include Lock initialization script -->
+    <script src="https://cdn.auth0.com/js/lock/11.32/lock.min.js"></script>
+</head>
+<body>
+    <div id="auth0-login-container"></div>
+    <script>
+        // Initialize Auth0 Lock
+        var lock = new Auth0Lock('YOUR_CLIENT_ID', 'YOUR_DOMAIN', {
+            container: 'auth0-login-container',
+            theme: {
+                logo: '/path/to/your/logo.png', // Customize the logo
+                primaryColor: '#337ab7', // Customize the primary color
+            },
+            languageDictionary: {
+                title: 'Log In', // Customize the title
+            },
+            // Add more customization options as needed
+        });
+        // Show the login form
+        lock.show();
+    </script>
+</body>
+</html>

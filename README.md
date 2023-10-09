@@ -110,7 +110,7 @@ Add or delete an actor from the database
 Modify actors
 
 
-Executive Producer(get:actors, get:movies, post:actor, delete:actor, edit:actor, post:movie, delete:movie)
+Executive Producer(get:actors, get:movies, post:actor, delete:actor, patch:actor, post:movie, delete:movie)
 All permissions a Casting Director has and…
 Add or delete a movie from the database
 
