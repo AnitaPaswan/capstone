@@ -2,7 +2,7 @@
 {% block title %}Casting Agency | movies{% endblock %}
 {% block content %}
 <ul class="items">
-	{% for actor in results.data %}
+	{% for movie in results.data %}
 	<li>
 		<a href="/movies/{{ movies.id }}">
 			<i class="fas fa-users"></i>
