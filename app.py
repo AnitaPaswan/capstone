@@ -144,7 +144,7 @@ def delete_movie(movie_id):
   else:
      return None
 
-@app.route('/actors/<actor_id>/delete', methods=['DELETE'])
+@app.route('/actors/<actor_id>', methods=['DELETE'])
 def delete_actor(actor_id):
   error = False
   try:
