@@ -172,22 +172,6 @@ def show_actor(actor_id):
   upcoming_show = []
   past_show= []
   data = vars(actor)
-  for show in actor.shows:
-     temp_show={
-     'movie_id':show.movie_id,
-     'movie_name':show.movie.name,
-     'movie_image_link': show.movie.image_link,
-     'start_time':show.start_time.strftime("%m/%d/%Y, %H:%M")
-     }
-     if show.start_time<=datetime.now():
-        past_show.append(temp_show)
-     else:
-        upcoming_show.append(temp_show)
-  data = vars(actor)
-  data['past_shows']=past_show
-  data['upcoming_shows']=upcoming_show
-  data['past_shows_count']=len(past_show),
-  data['upcoming_shows_count']=len(upcoming_show)
   return render_template('pages/show_actor.html', actor=data)
 
 @app.route('/actors/<int:actor_id>/edit', methods=['GET'])
@@ -197,7 +181,7 @@ def edit_actor(actor_id):
   actor = Actor.query.filter_by(id=actor_id).all()
   for s in actor:
      form.name.data = s.name
-     form.citagey.data = s.age
+     form.age.data = s.age
      form.gender.data = s.gender
   return render_template('forms/edit_actor.html', form=form, actor=edit_actor)
 
@@ -207,7 +191,7 @@ def edit_actor_submission(actor_id):
   form = ActorForm(request.form, meta={'csrf':False})
   if form.validate(): 
     try:
-      actor = Actor(id= actor_id, name=form.name.data, city=form.city.data, state=form.state.data, phone=form.phone.data, genres=form.genres.data, facebook_link=form.facebook_link.data, image_link=form.image_link.data, website_link=form.website_link.data, seeking_movie=form.seeking_movie.data, seeking_description=form.seeking_description.data)
+      actor = Actor(id= actor_id, name=form.name.data, age=form.age.data, gender=form.gender.data)
       db.session.delete(pre_actor)
       db.session.commit()
       db.session.add(actor)
