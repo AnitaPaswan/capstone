@@ -93,7 +93,30 @@ git push -u origin master
 4. **Here the dependencies file:**
 ```
 requirements.txt
+
 ```
 
+5. Role Based Access
+   
+```
+Roles:
+
+Casting Assistant(get:actors and get:movies)
+Can view actors and movies
+
+Casting Director(get:actors, get:movies, post:actor, delete:actor, edit:actor)
+All permissions a Casting Assistant has and…
+Add or delete an actor from the database
+Modify actors
+
+
+Executive Producer(get:actors, get:movies, post:actor, delete:actor, edit:actor, post:movie, delete:movie)
+All permissions a Casting Director has and…
+Add or delete a movie from the database
+
+```
+   
 6. **Verify on the Browser**<br>
-Navigate to project homepage https://render-capstone-example-5cq7.onrender.com
+Navigate to project homepage https://render-capstone-example-5cq7.onrender.com which is homepage once you have login successfull.
+
+

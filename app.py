@@ -64,6 +64,7 @@ def search_movies():
      data1.append(data)
   response['count']=len(movie)
   response['data']= data1
+  # {'count': 4, 'data': [{'title': 'test4'}, {'title': 'test4'}, {'title': 'test4'}, {'title': 'test4'}]}
   print(response)
   return render_template('pages/search_movies.html', results=response, search_term=request.form.get('search_term', ''))
 
@@ -153,13 +154,13 @@ def search_actors():
   search = request.form.get("search_term")
   actors = db.session.query(Actor).filter(Actor.name.ilike(f'%{search}%')).all()
   for i in actors:
-    show = Show.query.filter_by(actor_id=i.id).all()
     response={
       "count": len(actors),
       "data": [{
         "id": i.id,
         "name": i.name,
-        "num_upcoming_shows": len(show),
+        "age": i.age,
+         "gender": i.gender
       }]
     }
     print(response)
