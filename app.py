@@ -40,7 +40,7 @@ app.jinja_env.filters['datetime'] = format_datetime
 
 @app.route('/login')
 def login():
-    return render_template('login.html')
+    return render_template('pages/login.html')
 
 @app.route('/')
 def index():
