@@ -144,14 +144,17 @@ def delete_movie(movie_id):
   else:
      return None
 
-@app.route('/actors/<actor_id>', methods=['DELETE'])
+@app.route('/actors/<actor_id>/delete', methods=['DELETE'])
 def delete_actor(actor_id):
   error = False
   try:
-      actor = Actor.query.filter_by(id = actor_id)
-      for x in actor:
-          db.session.delete(x)
-      db.session.delete(ac)
+    record_to_change = Actor.query.get(actor_id)
+    if record_to_change:
+      db.session.delete(record_to_change)
+      db.session.commit()
+      remaining_item = Actor.query.filter(Actor.id > actor_id).all()
+      for item in remaining_item:
+        item.id -= 1
       db.session.commit()
   except:
      db.session.rollback()
@@ -161,7 +164,7 @@ def delete_actor(actor_id):
   if error:
       abort(500)
   else:
-     actor = Actor.query.get_or_404(actor_id)
+     actor = Actor.query.all()
      return render_template('pages/show_actor.html', actor=actor)
 
 @app.route('/actors')
