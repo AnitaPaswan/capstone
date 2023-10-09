@@ -144,6 +144,26 @@ def delete_movie(movie_id):
   else:
      return None
 
+@app.route('/actors/<actor_id>/delete', methods=['DELETE'])
+def delete_actor(actor_id):
+  error = False
+  try:
+      actor = Actor.query.filter_by(id = actor_id)
+      for x in actor:
+          db.session.delete(x)
+      db.session.delete(ac)
+      db.session.commit()
+  except:
+     db.session.rollback()
+     error = True
+  finally:
+      db.session.close()
+  if error:
+      abort(500)
+  else:
+     actor = Actor.query.get_or_404(actor_id)
+     return render_template('pages/show_actor.html', actor=actor)
+
 @app.route('/actors')
 def actors():
   data = Actor.query.all()
