@@ -43,12 +43,12 @@ headers = {
 }
 
 @app.route('/')
-def login(decoded_payload):
+def login():
   return render_template('pages/login.html')
 
 @app.route('/home')
 @requires_auth(permission='get:home')
-def index():
+def index(decoded_payload):
   return render_template('pages/home.html')
 
 @app.route('/callback')
