@@ -18,6 +18,10 @@
                 title: 'Log In', // Customize the title
             },
             // Add more customization options as needed
+            auth: {
+                redirectUrl: 'https://render-capstone-example-5cq7.onrender.com', // Specify your callback URL here
+                responseType: 'token id_token',
+            },
         });
         // Show the login form
         lock.show();
