@@ -43,11 +43,11 @@ def login():
   return render_template('pages/login.html')
 
 @app.route('/')
+@requires_auth(permission='get:view')
 def index():
   return render_template('pages/home.html')
 
 @app.route('/callback')
-@requires_auth(permission='get:view')
 def callback():
     return redirect(url_for('index'))
 
