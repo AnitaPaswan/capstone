@@ -13,6 +13,7 @@ API_AUDIENCE = 'cap2'
 JWKS_URL = f"https://{AUTH0_DOMAIN}/.well-known/jwks.json"
 
 
+
 ## AuthError Exception
 '''
 AuthError Exception
@@ -37,6 +38,7 @@ class AuthError(Exception):
 def get_token_auth_header():
    
    if 'Authorization' not in request.headers:
+       print('************Authorization not in request headers******************')
        abort(401)
    auth_header = request.headers['Authorization']
    print(auth_header, '******************************')
