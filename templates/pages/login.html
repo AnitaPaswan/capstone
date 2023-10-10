@@ -8,7 +8,13 @@
     <div id="auth0-login-container"></div>
     <script>
         // Initialize Auth0 Lock
-        var lock = new Auth0Lock('sehV1wapZ6kalQjq9HQyjBxpmmm2d5iJ', 'fsdn123.au.auth0.com', {
+        var clientId = 'w9WcZmVLx8vnA6CnW9ptQ6laPi95m51U';
+        var domain = 'cap3';
+        var callbackUri = 'https://render-capstone-example-5cq7.onrender.com/callback';
+        var audience = 'fsdn123.au.auth0.com';
+        var authUrl = `https://${domain}/authorize?audience=${audience}&response_type=token&client_id=${clientId}&redirect_uri=${encodeURIComponent(callbackUri)}`;
+
+        var lock = new Auth0Lock('w9WcZmVLx8vnA6CnW9ptQ6laPi95m51U', 'fsdn123.au.auth0.com', {
             container: 'auth0-login-container',
             theme: {
                 logo: '/path/to/your/logo.png', // Customize the logo
@@ -20,7 +26,11 @@
             // Add more customization options as needed
             auth: {
                 redirectUrl: 'https://render-capstone-example-5cq7.onrender.com/callback', // Specify your callback URL here
-                responseType: 'token id_token',
+                responseType: 'bearer id_token',
+                audience: 'cap3',
+            },
+            authParams: {
+                auth0Server: authUrl,
             },
         });
         // Show the login form
