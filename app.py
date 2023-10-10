@@ -38,11 +38,11 @@ def format_datetime(value, format='medium'):
 
 app.jinja_env.filters['datetime'] = format_datetime
 
-@app.route('/login')
+@app.route('/')
 def login():
   return render_template('pages/login.html')
 
-@app.route('/')
+@app.route('/home')
 @requires_auth(permission='get:home')
 def index():
   return render_template('pages/home.html')
