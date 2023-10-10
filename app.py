@@ -37,12 +37,17 @@ def format_datetime(value, format='medium'):
   return babel.dates.format_datetime(date, format, locale='en')
 
 app.jinja_env.filters['datetime'] = format_datetime
+access_token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1BWW5fdF80X0NXOXkzM09sWFlpOSJ9.eyJpc3MiOiJodHRwczovL2ZzZG4xMjMuYXUuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDY1MjQzZDk4NTI1ZDM0MWM0N2RiMTkxMSIsImF1ZCI6ImNhcDIiLCJpYXQiOjE2OTY4NzcyMzEsImV4cCI6MTY5Njk2MzYyOSwiYXpwIjoic2VoVjF3YXBaNmthbFFqcTlIUXlqQnhwbW1tMmQ1aUoiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTphY3RvciIsImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIiwicGF0Y2g6YWN0b3IiLCJwYXRjaDptb3ZpZSIsInBvc3Q6YWN0b3IiLCJwb3N0Om1vdmllIl19.bkSiSN2dBQ8yuul0SS4IMUjUSAJPdLWMIpyEh46OLJ7NKVJ5rzWB3SAqjYSPgszfVoBW0h4HhO125JuXVRDPYEuM0RB-QHLYVa9xGGMNJpp8fFC9jOgA5e7st-Yxf5SJYLkz0U9Byj3JUhMKuZ0PCw1UWLMPGihW_FWz7H5I-MFyBPtuDGTTuFrdcQrARMsFCQm_84gWRh0XUDC7ZvALDriWPHitWs97lPZ44mwy7s9E9aFvW1SweTUow3YXE-W8Lz-kVhEhh2b8am1czOJDl-xxqgn-dS-jEESc-PvOBV3iNMtF4ytym-JRiXMmSeNUWyQ74smEBuG7HXl314BAHQ'
+headers = {
+    'Authorization': f'Bearer {access_token}'
+}
 
 @app.route('/')
 def login():
   return render_template('pages/login.html')
 
 @app.route('/home')
+@requires_auth(permission='get:home')
 def index():
   return render_template('pages/home.html')
 
