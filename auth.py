@@ -8,7 +8,7 @@ from urllib.request import urlopen
 AUTH0_DOMAIN = 'fsdn123.au.auth0.com'
 
 ALGORITHMS = ['RS256']
-API_AUDIENCE = 'cap3'
+API_AUDIENCE = 'cap2'
 
 JWKS_URL = f"https://{AUTH0_DOMAIN}/.well-known/jwks.json"
 
