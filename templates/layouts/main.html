@@ -53,17 +53,6 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li>
-              {% if (request.endpoint == 'movies') or
-                (request.endpoint == 'search_movies') or
-                (request.endpoint == 'show_movie') %}
-              <form class="search" method="post" action="/movies/search">
-                <input class="form-control"
-                  type="search"
-                  name="search_term"
-                  placeholder="Find a movie"
-                  aria-label="Search">
-              </form>
-              {% endif %}
               {% if (request.endpoint == 'actors') or
                 (request.endpoint == 'search_actors') or
                 (request.endpoint == 'show_actor') %}
@@ -78,7 +67,6 @@
             </li>
           </ul>
           <ul class="nav navbar-nav">
-            <li {% if request.endpoint == 'movies' %} class="active" {% endif %}><a href="{{ url_for('movies') }}">movies</a></li>
             <li {% if request.endpoint == 'actors' %} class="active" {% endif %}><a href="{{ url_for('actors') }}">actors</a></li>
           </ul>
         </div><!--/.nav-collapse -->

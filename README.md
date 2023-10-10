@@ -3,15 +3,18 @@ Casting Agency
 
 ## Introduction
 
-The Casting Agency models a company that is responsible for creating movies and managing and assigning actors to those movies. As an Executive Producer we are creating a system to simplify and streamline the process.
+The Casting Agency models a company that is responsible for model boot caping and managing actor.
+As an Executive Producer  we are creating a system to simplify and streamline the process.
 
-Here we build out the data models to power the API endpoints for the Casting Agency site by connecting to a PostgreSQL database for storing, querying, and creating information about actors and movies on Casting Agency.
+Here we build out the data models to power the API endpoints for the Casting Agency site by connecting to a PostgreSQL database for storing, querying, and creating information about actors on Casting Agency.
 
 ## Overview
 
-* creating new movies, actors.
-* searching for movies and actors.
-* learning more about a specific actor or movie.
+* create actors.
+* searching for actors with their id.
+* get all actor
+* Edit actor
+
 
 ## Tech Stack (Dependencies)
 
@@ -68,55 +71,27 @@ Highlight folders:
 * Models in `app.py` --  Defines the data models that set up the database tables.
 
 
-## Development Setup
-1. **Download the project starter code locally**
-```
-git clone https://github.com/udacity/FSND.git
-cd FSND/projects/01_fyyur/starter_code 
-```
 
-2. **Create an empty repository in your Github account online. To change the remote repository path in your local repository, use the commands below:**
-```
-git remote -v 
-git remote remove origin 
-git remote add origin <https://github.com/<USERNAME>/<REPO_NAME>.git>
-git branch -M master
-```
-Once you have finished editing your code, you can push the local repository to your Github account using the following commands.
-```
-git add . --all   
-git commit -m "your comment"
-git push -u origin master
-```
-
-
-4. **Here the dependencies file:**
-```
-requirements.txt
-
-```
-
-5. Role Based Access
+## Role Based Access
    
 ```
 Roles:
 
-Casting Assistant(get:actors and get:movies)
-Can view actors and movies
+Casting Assistant(get:actors)
+Can view actors
 
-Casting Director(get:actors, get:movies, post:actor, delete:actor, edit:actor)
+Casting Director(get:actors, post:actor, delete:actor, edit:actor)
 All permissions a Casting Assistant has and…
 Add or delete an actor from the database
 Modify actors
 
 
 Executive Producer(get:actors, get:movies, post:actor, delete:actor, patch:actor, post:movie, delete:movie)
-All permissions a Casting Director has and…
-Add or delete a movie from the database
+All permissions
 
 ```
    
 6. **Verify on the Browser**<br>
-Navigate to project homepage https://render-capstone-example-5cq7.onrender.com which is homepage once you have login successfull.
+Navigate to project homepage https://render-capstone-example-5cq7.onrender.com which is homepage once you have login successfull will navigate to view the Casting Agency page.
 
 

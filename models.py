@@ -27,14 +27,6 @@ def setup_db(app, database_path=database_path):
 #----------------------------------------------------------------------------#
 # Models.
 #----------------------------------------------------------------------------#
-class Movie(db.Model):
-    __tablename__ = 'movie'
-
-    id = db.Column(db.Integer().with_variant(db.Integer, "sqlite"), primary_key=True)
-    title = db.Column(db.String)
-    release_date = db.Column(db.DateTime)
-    def __repr__(self):
-        return f'<movie ID: {self.id}, title: {self.title}, release_date: {self.release_date}>'
 
 class Actor(db.Model):
     __tablename__ = 'actor'
@@ -45,15 +37,3 @@ class Actor(db.Model):
     gender = db.Column(db.String(120))
     def __repr__(self):
         return f'<actor ID: {self.id}, name: {self.name}, age: {self.age}, gender: {self.gender}>'
-
-    # TODO: implement any missing fields, as a database migration using Flask-Migrate
-
-# TODO Implement Show and actor models, and complete all model relationships and properties, as a database migration.
-class Show(db.Model):
-    __tablename__ = 'Show'
-    id = db.Column(db.Integer, primary_key=True)
-    movie_id =  db.Column(db.Integer, db.ForeignKey('movie.id'), nullable=False)
-    actor_id = db.Column(db.Integer, db.ForeignKey('actor.id'), nullable=False)
-    start_time = db.Column(db.DateTime)
-    def __repr__(self):
-        return f'<Show ID: {self.id}, movie_id: {self.movie_id}, actor_id: {self.actor_id}, start_time: {self.start_time}>'

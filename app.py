@@ -27,18 +27,6 @@ migrate = Migrate(app, db)
 setup_db(app)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-
-
-def format_datetime(value, format='medium'):
-  date = dateutil.parser.parse(value)
-  if format == 'full':
-      format="EEEE MMMM, d, y 'at' h:mma"
-  elif format == 'medium':
-      format="EE MM, dd, y h:mma"
-  return babel.dates.format_datetime(date, format, locale='en')
-
-app.jinja_env.filters['datetime'] = format_datetime
-
 @app.after_request
 def after_request(response):
     response.headers.add("Access-Control-Allow-Headers","ContentType")
@@ -58,108 +46,6 @@ def index():
 def callback():
     return redirect(url_for('index'))
 
-@app.route('/movies')
-@requires_auth(permission='get:movies')
-def movies(decoded_payload):
-  dataDb=Movie.query.all()
-  return render_template('pages/movies.html', areas=dataDb)
-
-# Anita-GET movie code for create movie end
-
-@app.route('/movies/search', methods=['POST'])
-def search_movies():
-  response = {}
-  data = {}
-  data1 = []
-  search = request.form.get("search_term")
-  movie = db.session.query(Movie).filter(Movie.title.ilike(f'%{search}%')).all()
-  for i in movie:
-    data['title']=i.title
-    if i.title not in data1:
-     data1.append(data)
-  response['count']=len(movie)
-  response['data']= data1
-  # {'count': 4, 'data': [{'title': 'test4'}, {'title': 'test4'}, {'title': 'test4'}, {'title': 'test4'}]}
-  print(response)
-  return render_template('pages/search_movies.html', results=response, search_term=request.form.get('search_term', ''))
-
-#Anita movie byid start
-@app.route('/movies/<int:movie_id>')
-@requires_auth(permission='get:movies')
-def show_movie(decoded_payload, movie_id):
-  movie = Movie.query.get_or_404(movie_id)
-  past_shows=[]
-  upcoming_shows=[]
-  for show in movie.shows:
-    print(movie.shows)
-    temp_show={
-       'actor_id':show.actor_id,
-       'actor_name':show.actor.name,
-       'start_time':show.start_time.strftime("%m/%d/%Y, %H:%M")
-       }
-    if show.start_time<=datetime.now():
-       past_shows.append(temp_show)
-    else:
-      upcoming_shows.append(temp_show)
-  data = vars(movie)
-  data['past_shows']=past_shows
-  data['upcoming_shows']=upcoming_shows
-  data['past_shows_count']=len(past_shows),
-  data['upcoming_shows_count']=len(upcoming_shows)
-  return render_template('pages/show_movie.html', movie=data)
-
-@app.route('/movies/create', methods=['GET'])
-def create_movie_form():
-  form = MovieForm()
-  return render_template('forms/new_movie.html', form=form)
-
-@app.route('/movies/create', methods=['POST'])
-@requires_auth(permission='post:movie')
-def create_movie_submission(decoded_payload):
-  error = False
-  formmovie = MovieForm(request.form, meta={'csrf':False})
-  if formmovie.validate():
-     try:
-        movies = Movie(title=formmovie.title.data,  release_date=formmovie.release_date.data)
-        db.session.add(movies)
-        db.session.commit()
-     except ValueError as e:
-        print(e)
-        flash('An error occurred. movie ' + request.form['title'] + ' could not be listed.')
-        db.session.rollback()
-        error = True
-        print(sys.exc_info())
-     finally:
-        db.session.close()
-     flash('movie ' + request.form['title'] + ' was successfully listed.')
-     return render_template('pages/home.html')
-  else:
-     validationMessage= []
-     for field, errors in formmovie.errors.items():
-        for error in errors:
-           validationMessage.append(f"{field}:{error}")
-     flash('Please fix the errors: '+','.join(validationMessage))
-     form=MovieForm()
-     return render_template('forms/new_movie.html', form=form)
-
-@app.route('/movies/<movie_id>', methods=['DELETE'])
-def delete_movie(decoded_payload, movie_id):
-  error = False
-  try:
-      movie = Movie.query.filter_by(id = movie_id)
-      for x in movie:
-          db.session.delete(x)
-      db.session.delete(movie)
-      db.session.commit()
-  except:
-     db.session.rollback()
-     error = True
-  finally:
-      db.session.close()
-  if error:
-      abort(500)
-  else:
-     return None
 
 @app.route('/actors/<actor_id>/delete', methods=['DELETE'])
 @requires_auth(permission='delete:actor')
