@@ -15,15 +15,6 @@ def isValidAge(number):
     regex = re.compile('([0-9]){2}')
     return regex.match(number)
 
-class MovieForm(Form):
-    title = StringField(
-        'title', validators=[DataRequired()]
-    )
-    release_date = StringField(
-        'release_date', validators=[DataRequired()],
-        default= datetime.now().strftime("%m/%d/%Y")
-    )
-
 class ActorForm(Form):
     name = StringField(
         'name', validators=[DataRequired()]
