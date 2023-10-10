@@ -25,7 +25,7 @@ moment = Moment(app)
 db.init_app(app)
 migrate = Migrate(app, db)
 setup_db(app)
-cors = CORS(app, resources={r"/api/*": {"origins": "https://render-capstone-example-5cq7.onrender.com"}}, expose_headers=["Authorization"])
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
 
