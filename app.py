@@ -25,7 +25,7 @@ moment = Moment(app)
 db.init_app(app)
 migrate = Migrate(app, db)
 setup_db(app)
-cors = CORS(app, resources={r"/api/*": {"origins": "*"},"supports_credentials": True})
+cors = CORS(app)
 
 # @app.after_request
 # def after_request(response):
