@@ -19,6 +19,8 @@ from datetime import datetime,timedelta
 from auth import AuthError, requires_auth
 from flask_cors import CORS
 from models import setup_db
+from auth import AUTH0_DOMAIN,get_token_auth_header
+
 
 app = Flask(__name__)
 moment = Moment(app)
@@ -38,16 +40,19 @@ def format_datetime(value, format='medium'):
 
 app.jinja_env.filters['datetime'] = format_datetime
 
-@app.route('/')
-def index():
-  return render_template('pages/login.html')
+@app.route('/login')
+def login():
+    # Redirect to the Auth0 login page
+    return redirect(url_for('callback'))
 
-@app.route('/home')
+
+@app.route('/')
+@requires_auth(permission='get:home')
 def index():
   return render_template('pages/home.html')
 
 @app.route('/callback')
-def login():
+def callback():
     return redirect(url_for('index'))
 
 @app.route('/movies')
