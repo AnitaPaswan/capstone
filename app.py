@@ -48,7 +48,7 @@ def index():
 
 @app.route('/callback')
 @requires_auth(permission='get:view')
-def login():
+def callback():
     return redirect(url_for('index'))
 
 @app.route('/movies')
