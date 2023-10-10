@@ -43,7 +43,7 @@ def login():
   return render_template('pages/login.html')
 
 @app.route('/')
-@requires_auth(permission='get:view')
+@requires_auth(permission='get:home')
 def index():
   return render_template('pages/home.html')
 
