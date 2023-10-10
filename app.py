@@ -43,7 +43,7 @@ headers = {
 }
 
 @app.route('/')
-def login():
+def login(decoded_payload):
   return render_template('pages/login.html')
 
 @app.route('/home')
@@ -57,7 +57,7 @@ def callback():
 
 @app.route('/movies')
 @requires_auth(permission='get:movies')
-def movies():
+def movies(decoded_payload):
   dataDb=Movie.query.all()
   return render_template('pages/movies.html', areas=dataDb)
 
@@ -83,7 +83,7 @@ def search_movies():
 #Anita movie byid start
 @app.route('/movies/<int:movie_id>')
 @requires_auth(permission='get:movies')
-def show_movie(movie_id):
+def show_movie(decoded_payload, movie_id):
   movie = Movie.query.get_or_404(movie_id)
   past_shows=[]
   upcoming_shows=[]
@@ -112,7 +112,7 @@ def create_movie_form():
 
 @app.route('/movies/create', methods=['POST'])
 @requires_auth(permission='post:movie')
-def create_movie_submission():
+def create_movie_submission(decoded_payload):
   error = False
   formmovie = MovieForm(request.form, meta={'csrf':False})
   if formmovie.validate():
@@ -140,7 +140,7 @@ def create_movie_submission():
      return render_template('forms/new_movie.html', form=form)
 
 @app.route('/movies/<movie_id>', methods=['DELETE'])
-def delete_movie(movie_id):
+def delete_movie(decoded_payload, movie_id):
   error = False
   try:
       movie = Movie.query.filter_by(id = movie_id)
@@ -160,7 +160,7 @@ def delete_movie(movie_id):
 
 @app.route('/actors/<actor_id>/delete', methods=['DELETE'])
 @requires_auth(permission='delete:actor')
-def delete_actor(actor_id):
+def delete_actor(decoded_payload, actor_id):
   error = False
   try:
     record_to_change = Actor.query.get(actor_id)
@@ -184,7 +184,7 @@ def delete_actor(actor_id):
 
 @app.route('/actors')
 @requires_auth(permission='get:actors')
-def actors():
+def actors(decoded_payload):
   data = Actor.query.all()
   return render_template('pages/actors.html', actors=data)
 
@@ -207,7 +207,7 @@ def search_actors():
 
 @app.route('/actors/<int:actor_id>')
 @requires_auth(permission='get:actors')
-def show_actor(actor_id):
+def show_actor(decoded_payload, actor_id):
   actor = Actor.query.get_or_404(actor_id)
   upcoming_show = []
   past_show= []
@@ -227,7 +227,7 @@ def edit_actor(actor_id):
 
 @app.route('/actors/<int:actor_id>/edit', methods=['PATCH'])
 @requires_auth(permission='patch:actor')
-def edit_actor_submission(actor_id):
+def edit_actor_submission(decoded_payload, actor_id):
   pre_actor = Actor.query.filter_by(id=actor_id).first()
   form = ActorForm(request.form, meta={'csrf':False})
   if form.validate(): 
@@ -261,7 +261,7 @@ def create_actor_form():
 
 @app.route('/actors/create', methods=['POST'])
 @requires_auth(permission='post:actor')
-def create_actor_submission():
+def create_actor_submission(decoded_payload):
   form = ActorForm(request.form, meta={'csrf':False})
   if form.validate():
     try:
