@@ -123,8 +123,6 @@ def get_rsa_key(key_id):
 
 
 def verify_decode_jwt(token):
-    # jsonurl = urlopen(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json')
-    # jwks = json.loads(jsonurl.read())
     jwks_data = get_jwks_data(JWKS_URL)
     print(jwks_data)
     unverified_header = jwt.get_unverified_header(token)
@@ -149,52 +147,7 @@ def verify_decode_jwt(token):
             break
         print(rsa_key)
         return rsa_key
-    # if rsa_key: 
-    #     try:
-    #         payload = jwt.decode(
-    #             token,
-    #             rsa_key,
-    #             algorithms=ALGORITHMS,
-    #             audience=API_AUDIENCE,
-    #             issuer='https://'+ AUTH0_DOMAIN +'/'
-    #         )
-    #         print('payload', payload)
-    #         return payload
-    #     except jwt.ExpiredSignatureError:
-    #         raise AuthError({
-    #         'code': 'token_expired',
-    #         'description': 'Token Expired'
-    #         }, 401)
-        
-    #     except jwt.JWTClaimsError:
-    #         raise AuthError({
-    #         'code': 'invalid_claims',
-    #         'description': 'Claims is not valid.'
-    #         }, 401)
-        
-    #     except Exception:
-    #         raise AuthError({
-    #         'code': 'invalid_headers',
-    #         'description': 'Unable to parse Authentication.'
-    #         }, 400)
-    # raise AuthError({
-    #         'code': 'invalid_headers',
-    #         'description': 'Unable to find appropriate header.'
-
-    #     }, 400)
-
-
-
-'''
-@TODO implement @requires_auth(permission) decorator method
-    @INPUTS
-        permission: string permission (i.e. 'post:drink')
-
-    it should use the get_token_auth_header method to get the token
-    it should use the verify_decode_jwt method to decode the jwt
-    it should use the check_permissions method validate claims and check the requested permission
-    return the decorator which passes the decoded payload to the decorated method
-'''
+    
 def requires_auth(permission):
     def decorator(f):
         @wraps(f)
