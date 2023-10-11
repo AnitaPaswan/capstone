@@ -78,9 +78,9 @@ def actors():
   actor = Actor.query.all()
   for i in actor:
     time_element ={}
-    time_element['name']=i.name
-    time_element["age"] = i.age
-    time_element["gender"] = i.gender
+    time_element['name']=i['name']
+    time_element["age"] = i['age']
+    time_element["gender"] = i['gender']
     for k in db.session.query(Movie).filter( i.movie_id== Movie.id):
        time_element["release_date"] = str(k.release_date)
        time_element["title"] = k.title
