@@ -206,7 +206,7 @@ def create_movie_form():
   return render_template('forms/movie.html', form=data)
   
 @app.route('/movies/create', methods=['GET'])
-def create_movie_form():
+def create_movie_submission():
   form = MovieForm()
   return render_template('forms/new_movie.html', form=form)
 
