@@ -188,6 +188,40 @@ def create_actor_submission(decoded_payload):
      flash('Please fix the errors: '+','.join(validationMessage))
      form=ActorForm()
      return render_template('forms/new_actor.html', form=form)
+  
+@app.route('/movies/create', methods=['GET'])
+def create_movie_form():
+  form = MovieForm()
+  return render_template('forms/new_movie.html', form=form)
+
+@app.route('/movies/create', methods=['POST'])
+@requires_auth(permission='post:movie')
+def create_movie_submission(decoded_payload):
+  error = False
+  formmovie = MovieForm(request.form, meta={'csrf':False})
+  if formmovie.validate():
+     try:
+        movies = Movie(title=formmovie.title.data,  release_date=formmovie.release_date.data)
+        db.session.add(movies)
+        db.session.commit()
+     except ValueError as e:
+        print(e)
+        flash('An error occurred. movie ' + request.form['title'] + ' could not be listed.')
+        db.session.rollback()
+        error = True
+        print(sys.exc_info())
+     finally:
+        db.session.close()
+     flash('movie ' + request.form['title'] + ' was successfully listed.')
+     return render_template('pages/home.html')
+  else:
+     validationMessage= []
+     for field, errors in formmovie.errors.items():
+        for error in errors:
+           validationMessage.append(f"{field}:{error}")
+     flash('Please fix the errors: '+','.join(validationMessage))
+     form=MovieForm()
+     return render_template('forms/new_movie.html', form=form)
           
 
 @app.errorhandler(404)
