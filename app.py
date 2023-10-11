@@ -201,12 +201,12 @@ def create_actor_submission():
      return render_template('forms/new_actor.html', form=form)
   
 @app.route('/movies', methods=['GET'])
-def create_movie_form():
+def get_movie_form():
   data = Movie.query.all()
   return render_template('forms/movie.html', form=data)
   
 @app.route('/movies/create', methods=['GET'])
-def create_movie_submission():
+def create_movie_form():
   form = MovieForm()
   return render_template('forms/new_movie.html', form=form)
 
