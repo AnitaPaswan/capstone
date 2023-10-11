@@ -14,7 +14,7 @@ from flask_wtf import Form
 from forms import *
 from flask_migrate import Migrate
 import sys
-from models import Actor, db
+from models import Actor, db, Movie
 from datetime import datetime,timedelta
 from auth import AuthError, requires_auth
 from flask_cors import CORS
