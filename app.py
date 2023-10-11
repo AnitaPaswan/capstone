@@ -229,7 +229,7 @@ def create_movie_submission():
      finally:
         db.session.close()
      flash('movie ' + request.form['title'] + ' was successfully listed.')
-     return render_template('pages/home.html')
+     return render_template('pages/movie.html')
   else:
      validationMessage= []
      for field, errors in formmovie.errors.items():
