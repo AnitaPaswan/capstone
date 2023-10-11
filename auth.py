@@ -107,7 +107,7 @@ def get_jwks_data(JWKS_URL):
 
 def get_rsa_key(key_id):
     # Fetch JWKS data from JWKS endpoint
-    jwks_response = requests.get(JWKS_URL)
+    jwks_response = requests.get(JWKS_URL, headers=headers)
     jwks_data = jwks_response.json()
 
     # Find the RSA key in JWKS based on 'kid'
