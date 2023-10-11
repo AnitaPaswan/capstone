@@ -114,8 +114,9 @@ def edit_actor(actor_id):
      form.gender.data = s.gender
   return render_template('forms/edit_actor.html', form=form, actor=edit_actor)
 
-@app.route('/actors/<int:actor_id>/edit', methods=['PATCH'])
-def edit_actor_submission(actor_id):
+@app.route('/actors/<int:actor_id>/edit', methods=['POST'])
+@requires_auth(permission='patch:actor')
+def edit_actor_submission(decoded_payload, actor_id):
   pre_actor = Actor.query.filter_by(id=actor_id).first()
   form = ActorForm(request.form, meta={'csrf':False})
   if form.validate(): 
