@@ -38,7 +38,7 @@ def login():
   return render_template('pages/login.html')
 
 @app.route('/home')
-@requires_auth(permission='delete:actor')
+@requires_auth(permission='get:home')
 def index(decoded_payload):
   return render_template('pages/home.html')
 
