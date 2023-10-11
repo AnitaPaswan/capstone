@@ -13,9 +13,9 @@ API_AUDIENCE = 'cap2'
 JWKS_URL = f"https://{AUTH0_DOMAIN}/.well-known/jwks.json"
 SECRET_TOKEN = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1BWW5fdF80X0NXOXkzM09sWFlpOSJ9.eyJpc3MiOiJodHRwczovL2ZzZG4xMjMuYXUuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDY1MjQzY2ZhZTUwMTY0NDM1NGMyN2UyMyIsImF1ZCI6ImNhcDIiLCJpYXQiOjE2OTY5NTc4OTUsImV4cCI6MTY5NzA0NDI5NCwiYXpwIjoidzlXY1ptVkx4OHZuQTZDblc5cHRRNmxhUGk5NW01MVUiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTphY3RvciIsImdldDphY3RvcnMiLCJnZXQ6aG9tZSIsImdldDptb3ZpZXMiLCJwYXRjaDphY3RvciIsInBvc3Q6YWN0b3IiXX0.UDgeKuFudkbjO1xTIotMoleNhwEUWu7txvK5n1vbpBzwyfhE1YMPjZHio1I9i2AZNpxtgYY6dUZjQcL99B16GmcHKy2NeLAontpU_c9wrb4OpcvK075WjyB-7LxoK1V95zcrMy6FD_gU4Ibx1goieP48vnTlWhKaMJI97_cGkBnthvw14zunmFEolYT3r4FsUSZOJYm2_SmPQNGDcsjBn21DqEDEzkEDfkBDr6Hq2nf5lsGnjswYtFpy9uhaialO_ac2sQ70LHyJrZ5iUc7f21j4fUO1pDTykAy3uY1f67Wls6vWA1AHb_AOC3dgpRBya7I8tYANZ65tkyBc2OZJVA"
 
-# headers = {
-#         'Authorization': f'Bearer {SECRET_TOKEN}'
-#     }
+headers = {
+        'Authorization': f'Bearer {SECRET_TOKEN}'
+    }
 
 ## AuthError Exception
 '''
@@ -96,7 +96,7 @@ def check_permissions(permission, payload):
     # return jwks_data
 def get_jwks_data(JWKS_URL):
     try:
-        response = requests.get(JWKS_URL)
+        response = requests.get(JWKS_URL, headers=headers)
         response.raise_for_status()  # Raise an exception for HTTP errors
         jwks_data = response.json()
         print('jwks_data',jwks_data)
