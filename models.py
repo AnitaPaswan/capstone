@@ -35,7 +35,6 @@ class Actor(db.Model):
     name = db.Column(db.String)
     age = db.Column(db.String(120))
     gender = db.Column(db.String(120))
-    movie_id =  db.Column(db.Integer, db.ForeignKey('Movie.id'), nullable=False)
     movie = db.relationship('Movie', backref='actor')
     def __repr__(self):
         return f'<actor ID: {self.id}, name: {self.name}, age: {self.age}, gender: {self.gender}>'
