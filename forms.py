@@ -35,6 +35,9 @@ class ActorForm(Form):
         'gender', validators=[DataRequired()],
         choices=Gender.choices()
      )
+    movie_id = StringField(
+        'movie_id', validators=[DataRequired()]
+    )
     def validate(self, **kwargs):
         validated = Form.validate(self)
         if not validated:
