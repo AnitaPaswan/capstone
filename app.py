@@ -47,29 +47,29 @@ def callback():
     return redirect(url_for('index'))
 
 
-@app.route('/actors/<actor_id>/delete', methods=['POST'])
-@requires_auth(permission='delete:actor')
-def delete_actor(decoded_payload, actor_id):
-  error = False
-  try:
-    record_to_change = Actor.query.get(actor_id)
-    if record_to_change:
-      db.session.delete(record_to_change)
-      db.session.commit()
-      remaining_item = Actor.query.filter(Actor.id > actor_id).all()
-      for item in remaining_item:
-        item.id -= 1
-      db.session.commit()
-  except:
-     db.session.rollback()
-     error = True
-  finally:
-      db.session.close()
-  if error:
-      abort(500)
-  else:
-     actor = Actor.query.all()
-     return render_template('pages/actors.html.html', actor=actor)
+# @app.route('/actors/<actor_id>/delete', methods=['POST'])
+# @requires_auth(permission='delete:actor')
+# def delete_actor(decoded_payload, actor_id):
+#   error = False
+#   try:
+#     record_to_change = Actor.query.get(actor_id)
+#     if record_to_change:
+#       db.session.delete(record_to_change)
+#       db.session.commit()
+#       remaining_item = Actor.query.filter(Actor.id > actor_id).all()
+#       for item in remaining_item:
+#         item.id -= 1
+#       db.session.commit()
+#   except:
+#      db.session.rollback()
+#      error = True
+#   finally:
+#       db.session.close()
+#   if error:
+#       abort(500)
+#   else:
+#      actor = Actor.query.all()
+#      return render_template('pages/actors.html.html', actor=actor)
 
 @app.route('/actors')
 @requires_auth(permission='get:actors')
@@ -130,7 +130,7 @@ def edit_actor_submission(decoded_payload, actor_id):
       flash('An error occurred while updating actor ' + request.form['name'])
       db.session.rollback()
     finally:
-      flash('actor ' + request.form['name'] + '  updated successfully.')
+      flash('Actor ' + request.form['name'] + '  updated successfully.')
       db.session.close()
       return redirect(url_for('show_actor', actor_id=actor_id))
   else:
@@ -141,6 +141,22 @@ def edit_actor_submission(decoded_payload, actor_id):
   flash('Please fix the errors: '+','.join(validationMessage))
   form=ActorForm()
   return redirect(url_for('edit_actor', actor_id=actor_id))
+
+@app.route('/actors/<int:actor_id>/delete', methods=['POST'])
+@requires_auth(permission='delete:actor')
+def edit_actor_submission(decoded_payload, actor_id):
+  pre_actor = Actor.query.filter_by(id=actor_id).first()
+  form = ActorForm(request.form, meta={'csrf':False})
+  try:
+    db.session.delete(pre_actor)
+    db.session.commit()
+  except ValueError as e:
+    flash('An error occurred while deleting actor ' + request.form['name'])
+    db.session.rollback()
+  finally:
+    flash('Actor ' + request.form['name'] + '  deleted successfully.')
+    db.session.close()
+    return redirect(url_for('show_actor', actor_id=actor_id))
 
 @app.route('/actors/create', methods=['GET'])
 def create_actor_form():
