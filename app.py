@@ -180,11 +180,11 @@ def create_actor_form():
 def create_actor_submission():
   form = ActorForm(request.form, meta={'csrf':False})
   movie_id = form.movie_id.data
+  isMovieValid = Movie.query.filter_by(id=movie_id).count()
+  if(isMovieValid <=0):
+    flash('An error occurred.Please check movie id') 
+    abort(400)
   if form.validate():
-    isMovieValid = Movie.query.filter_by(id=movie_id).count()
-    if(isMovieValid <=0):
-      flash('An error occurred.Please check movie id') 
-      abort(401)
     try:
         actor = Actor(name=form.name.data, age=form.age.data, gender=form.gender.data, movie_id = form.movie_id.data)
         db.session.add(actor)
