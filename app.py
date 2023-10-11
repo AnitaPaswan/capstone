@@ -144,7 +144,7 @@ def edit_actor_submission(decoded_payload, actor_id):
 
 @app.route('/actors/<int:actor_id>/delete', methods=['POST'])
 @requires_auth(permission='delete:actor')
-def edit_actor_submission(decoded_payload, actor_id):
+def delete_actor_submission(decoded_payload, actor_id):
   pre_actor = Actor.query.filter_by(id=actor_id).first()
   form = ActorForm(request.form, meta={'csrf':False})
   try:
