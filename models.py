@@ -47,7 +47,5 @@ class Movie(db.Model):
     id = db.Column(db.Integer().with_variant(db.Integer, "sqlite"), primary_key=True)
     title = db.Column(db.String)
     release_date = db.Column(db.DateTime)
-    actor = db.relationship('Actor', backref='movie')
-
     def __repr__(self):
         return f'<movie ID: {self.id}, title: {self.title}, release_date: {self.release_date}>'
