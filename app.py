@@ -47,7 +47,7 @@ def callback():
     return redirect(url_for('index'))
 
 
-@app.route('/actors/<actor_id>/delete', methods=['DELETE'])
+@app.route('/actors/<actor_id>/delete', methods=['POST'])
 @requires_auth(permission='delete:actor')
 def delete_actor(decoded_payload, actor_id):
   error = False
