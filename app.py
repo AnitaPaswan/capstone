@@ -38,8 +38,8 @@ def login():
   return render_template('pages/login.html')
 
 @app.route('/home')
-@requires_auth(permission='get:home')
-def index(decoded_payload):
+# @requires_auth(permission='get:home')
+def index():
   return render_template('pages/home.html')
 
 @app.route('/callback')
@@ -72,9 +72,20 @@ def callback():
 #      return render_template('pages/actors.html.html', actor=actor)
 
 @app.route('/actors')
-@requires_auth(permission='get:actors')
-def actors(decoded_payload):
-  data = Actor.query.all()
+# @requires_auth(permission='get:actors')
+def actors():
+  data = []
+  actor = Actor.query.all()
+  for i in actor:
+    time_element ={}
+    time_element['name']=i.name
+    time_element["age"] = i.age
+    time_element["gender"] = i.gender
+    for k in db.session.query(Movie).filter( i.movie_id== Movie.id):
+       time_element["release_date"] = str(k.release_date)
+       time_element["title"] = k.title
+    data.append(time_element)
+  print("data",data)
   return render_template('pages/actors.html', actors=data)
 
 @app.route('/actors/search', methods=['POST'])
@@ -95,8 +106,8 @@ def search_actors():
   return render_template('pages/search_actors.html', results=response, search_term=request.form.get('search_term', ''))
 
 @app.route('/actors/<int:actor_id>')
-@requires_auth(permission='get:actors')
-def show_actor(decoded_payload, actor_id):
+# @requires_auth(permission='get:actors')
+def show_actor(actor_id):
   actor = Actor.query.get_or_404(actor_id)
   upcoming_show = []
   past_show= []
@@ -115,8 +126,8 @@ def edit_actor(actor_id):
   return render_template('forms/edit_actor.html', form=form, actor=edit_actor)
 
 @app.route('/actors/<int:actor_id>/edit', methods=['POST'])
-@requires_auth(permission='patch:actor')
-def edit_actor_submission(decoded_payload, actor_id):
+# @requires_auth(permission='patch:actor')
+def edit_actor_submission(actor_id):
   pre_actor = Actor.query.filter_by(id=actor_id).first()
   form = ActorForm(request.form, meta={'csrf':False})
   if form.validate(): 
@@ -143,8 +154,8 @@ def edit_actor_submission(decoded_payload, actor_id):
   return redirect(url_for('edit_actor', actor_id=actor_id))
 
 @app.route('/actors/<int:actor_id>/delete', methods=['POST'])
-@requires_auth(permission='delete:actor')
-def delete_actor_submission(decoded_payload, actor_id):
+# @requires_auth(permission='delete:actor')
+def delete_actor_submission(actor_id):
   pre_actor = Actor.query.filter_by(id=actor_id).first()
   form = ActorForm(request.form, meta={'csrf':False})
   try:
@@ -165,12 +176,12 @@ def create_actor_form():
   return render_template('forms/new_actor.html', form=form)
 
 @app.route('/actors/create', methods=['POST'])
-@requires_auth(permission='post:actor')
-def create_actor_submission(decoded_payload):
+# @requires_auth(permission='post:actor')
+def create_actor_submission():
   form = ActorForm(request.form, meta={'csrf':False})
   if form.validate():
     try:
-        actor = Actor(name=form.name.data, age=form.age.data, gender=form.gender.data)
+        actor = Actor(name=form.name.data, age=form.age.data, gender=form.gender.data, movie_id = form.movie_id.data)
         db.session.add(actor)
         db.session.commit()
     except ValueError as e:
@@ -195,8 +206,8 @@ def create_movie_form():
   return render_template('forms/new_movie.html', form=form)
 
 @app.route('/movies/create', methods=['POST'])
-@requires_auth(permission='post:movie')
-def create_movie_submission(decoded_payload):
+# @requires_auth(permission='post:movie')
+def create_movie_submission():
   error = False
   formmovie = MovieForm(request.form, meta={'csrf':False})
   if formmovie.validate():
