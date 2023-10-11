@@ -4,7 +4,7 @@
 <h1>Movies List </h1>
 <ul>
     {% for movie in results %}
-        <li>{{ movie.title }}</li>
+        <li>{{ movie.title }} ID: {{ movie.id }} </li>
     {% endfor %}
 </ul>
-{% endblock %}
+{% endblock %} 
