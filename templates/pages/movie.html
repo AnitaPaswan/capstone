@@ -1,6 +1,7 @@
 {% extends 'layouts/main.html' %}
-{% block title %}Casting Agency | Movie{% endblock %}
+{% block title %}Casting Agency | Movie {% endblock %}
 {% block content %}
+<h1>Movies List </h1>
 <ul>
     {% for movie in results %}
         <li>{{ movie.title }}</li>
