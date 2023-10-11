@@ -1,10 +1,12 @@
 {% extends 'layouts/main.html' %}
 {% block title %}Casting Agency | Movie {% endblock %}
 {% block content %}
-<h1>Movies List </h1>
+<div class="page-header">
+    <h1>Movies List</h1>
+</div>
 <ul>
     {% for movie in results %}
-        <li>{{ movie.title }} ID: {{ movie.id }} </li>
+        <li>Movie ID: {{ movie.id }} ------ Movie Name: {{ movie.title }}</li>
     {% endfor %}
 </ul>
 {% endblock %} 
