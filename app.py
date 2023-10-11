@@ -203,7 +203,7 @@ def create_actor_submission():
 @app.route('/movies', methods=['GET'])
 def get_movie_form():
   data = Movie.query.all()
-  return render_template('forms/movie.html', form=data)
+  return render_template('forms/movie.html', results=data)
   
 @app.route('/movies/create', methods=['GET'])
 def create_movie_form():
