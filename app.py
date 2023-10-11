@@ -33,7 +33,6 @@ TOKEN  = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1BWW5fdF80X0NXOXkzM09sWF
 @app.before_request
 def before_request(): 
   request.headers['Authorization'] = f'Bearer {TOKEN}'
-  return request
 
 @app.route('/')
 def login():
