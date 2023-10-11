@@ -84,9 +84,9 @@ def actors():
     for k in db.session.query(Movie).filter( i.movie_id== Movie.id):
        time_element["release_date"] = str(k.release_date)
        time_element["title"] = k.title
-    data.append(time_element)
+    actor.append(time_element)
   print("data",data)
-  return render_template('pages/actors.html', actors=data)
+  return render_template('pages/actors.html', actors=actor)
 
 @app.route('/actors/search', methods=['POST'])
 def search_actors():
@@ -199,6 +199,11 @@ def create_actor_submission():
      flash('Please fix the errors: '+','.join(validationMessage))
      form=ActorForm()
      return render_template('forms/new_actor.html', form=form)
+  
+@app.route('/movies', methods=['GET'])
+def create_movie_form():
+  data = Movie.query.all()
+  return render_template('forms/movie.html', form=data)
   
 @app.route('/movies/create', methods=['GET'])
 def create_movie_form():
