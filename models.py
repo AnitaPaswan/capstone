@@ -36,7 +36,7 @@ class Actor(db.Model):
     age = db.Column(db.String(120))
     gender = db.Column(db.String(120))
     movie_id =  db.Column(db.Integer, db.ForeignKey('Movie.id'), nullable=False)
-    movie = db.relationship('Movie')
+    movie = db.relationship('Movie', backref='actor')
     def __repr__(self):
         return f'<actor ID: {self.id}, name: {self.name}, age: {self.age}, gender: {self.gender}>'
     
@@ -45,6 +45,9 @@ class Movie(db.Model):
     id = db.Column(db.Integer().with_variant(db.Integer, "sqlite"), primary_key=True)
     title = db.Column(db.String)
     release_date = db.Column(db.DateTime)
-    actor = db.relationship('Actor', backref='movie', lazy='joined', cascade='all, delete')
+    actor_id = Column(db.Integer, db.ForeignKey('actors.id'))
+
+    # Define the relationship
+    actor = db.relationship('Actor')
     def __repr__(self):
         return f'<movie ID: {self.id}, title: {self.title}, release_date: {self.release_date}>'
