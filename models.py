@@ -36,12 +36,12 @@ class Actor(db.Model):
     age = db.Column(db.String(120))
     gender = db.Column(db.String(120))
     movie_id =  db.Column(db.Integer, db.ForeignKey('Movie.id'), nullable=False)
+    movie = db.relationship('Movie')
     def __repr__(self):
         return f'<actor ID: {self.id}, name: {self.name}, age: {self.age}, gender: {self.gender}>'
     
 class Movie(db.Model):
     __tablename__ = 'movie'
-
     id = db.Column(db.Integer().with_variant(db.Integer, "sqlite"), primary_key=True)
     title = db.Column(db.String)
     release_date = db.Column(db.DateTime)
