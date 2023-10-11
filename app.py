@@ -183,27 +183,28 @@ def create_actor_submission():
   isMovieValid = Movie.query.filter_by(id=movie_id).count()
   if(isMovieValid <=0):
     flash('An error occurred.Please check movie id') 
-    abort(400)
-  if form.validate():
-    try:
-        actor = Actor(name=form.name.data, age=form.age.data, gender=form.gender.data, movie_id = form.movie_id.data)
-        db.session.add(actor)
-        db.session.commit()
-    except ValueError as e:
-      print(e)
-      db.session.rollback()
-    finally:
-      db.session.close()
-    flash('actor ' + request.form['name'] + ' was successfully listed!')
-    return render_template('pages/home.html')
-  else:
-     validationMessage= []
-     for field, errors in form.errors.items():
-        for error in errors:
-           validationMessage.append(f"{field}:{error}")
-     flash('Please fix the errors: '+','.join(validationMessage))
-     form=ActorForm()
-     return render_template('forms/new_actor.html', form=form)
+    abort(401)
+  else: 
+    if form.validate():
+      try:
+          actor = Actor(name=form.name.data, age=form.age.data, gender=form.gender.data, movie_id = form.movie_id.data)
+          db.session.add(actor)
+          db.session.commit()
+      except ValueError as e:
+        print(e)
+        db.session.rollback()
+      finally:
+        db.session.close()
+      flash('actor ' + request.form['name'] + ' was successfully listed!')
+      return render_template('pages/home.html')
+    else:
+      validationMessage= []
+      for field, errors in form.errors.items():
+          for error in errors:
+            validationMessage.append(f"{field}:{error}")
+      flash('Please fix the errors: '+','.join(validationMessage))
+      form=ActorForm()
+      return render_template('forms/new_actor.html', form=form)
   
 @app.route('/movies', methods=['GET'])
 def get_movie_form():
