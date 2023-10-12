@@ -7,9 +7,9 @@
 <body>
     <div id="auth0-login-container"></div>
     <script>
-        // Initialize Auth0Lock
-        var lock = new Auth0Lock('w9WcZmVLx8vnA6CnW9ptQ6laPi95m51U', 'fsdn123.au.auth0.com', {
-            container: 'auth0-login-container',
+     // Initialize Auth0Lock
+var lock = new Auth0Lock('YOUR_CLIENT_ID', 'YOUR_AUTH0_DOMAIN', {
+    container: 'auth0-login-container',
             theme: {
                 logo: '/path/to/your/logo.png', // Customize the logo
                 primaryColor: '#337ab7', // Customize the primary color
@@ -24,7 +24,8 @@
                 audience: 'cap2',
                 scope : '',
             }
-        });
+});
+
 // Add a click event listener to trigger Auth0Lock
 document.getElementById('login-button').addEventListener('click', function() {
   lock.show();
