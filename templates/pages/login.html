@@ -25,7 +25,6 @@
                 scope : '',
             }
         });
-
 // Add a click event listener to trigger Auth0Lock
 document.getElementById('login-button').addEventListener('click', function() {
   lock.show();
@@ -36,6 +35,33 @@ var apiEndpointInput = document.getElementById('api-endpoint-input');
 var httpMethodInput = document.getElementById('http-method-input');
 var apiRequestButton = document.getElementById('api-request-button');
 
+// Define a function to handle the API request
+function handleApiRequest(accessToken) {
+  var apiEndpoint = apiEndpointInput.value;
+  var httpMethod = httpMethodInput.value.toUpperCase(); // Get the HTTP method from the input field
+
+  fetch(apiEndpoint, {
+    method: httpMethod,
+    headers: {
+      'Authorization': 'Bearer ' + accessToken,
+      'Content-Type': 'application/json' // Add other headers as needed
+    }
+  })
+  .then(response => {
+    if (response.ok) {
+      // Handle the API response
+      return response.json();
+    } else {
+      // Handle API request error
+      console.error('API Request Error:', response.status);
+    }
+  })
+  .then(data => {
+    // Process the API response data
+    console.log('API Response:', data);
+  });
+}
+
 // Listen for the authenticated event when the user logs in
 lock.on('authenticated', function(authResult) {
   // Get the access token from the authentication result
@@ -43,32 +69,10 @@ lock.on('authenticated', function(authResult) {
 
   // Add a click event listener to the API request button
   apiRequestButton.addEventListener('click', function() {
-    var apiEndpoint = apiEndpointInput.value;
-    var httpMethod = httpMethodInput.value.toUpperCase(); // Get the HTTP method from the input field
-
-    fetch(apiEndpoint, {
-      method: httpMethod,
-      headers: {
-        'Authorization': 'Bearer ' + accessToken,
-        'Content-Type': 'application/json' // Add other headers as needed
-      }
-    })
-    .then(response => {
-      if (response.ok) {
-        // Handle the API response
-        return response.json();
-      } else {
-        // Handle API request error
-        console.error('API Request Error:', response.status);
-      }
-    })
-    .then(data => {
-      // Process the API response data
-      console.log('API Response:', data);
-    });
+    handleApiRequest(accessToken);
   });
 });
-lock.show();
+
     </script>
 </body>
 </html>
