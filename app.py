@@ -31,7 +31,9 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*", "headers": "Authorizatio
 def after_request(response):
     response.headers.add("Access-Control-Allow-Headers","ContentType")
     response.headers.add("Access-Control-Allow-Methods", "GET, DELETE,POST, PATCH")
+    response.headers.add("Access-Control-Allow-Headers", "Authorization")
     return response
+
 
 @app.route('/')
 def login():
