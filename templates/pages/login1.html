@@ -1,28 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <!-- Include Lock initialization script -->
-    <script src="https://cdn.auth0.com/js/lock/12.0.0/lock.min.js"></script>
-</head>
-<body>
-    <div id="auth0-login-container"></div>
-    <script>
-        // Initialize Auth0Lock
-        var lock = new Auth0Lock('w9WcZmVLx8vnA6CnW9ptQ6laPi95m51U', 'fsdn123.au.auth0.com', {
-            container: 'auth0-login-container',
-            theme: {
-                logo: '/path/to/your/logo.png', // Customize the logo
-                primaryColor: '#337ab7', // Customize the primary color
-            },
-            languageDictionary: {
-                title: 'Log In', // Customize the title
-            },
-            // Add more customization options as needed
-            auth: {
-                redirectUrl: 'https://render-capstone-example-5cq7.onrender.com/callback', // Specify your callback URL here
-                responseType: 'token',
-                audience: 'cap2',
-                scope : '',
+// Initialize Auth0Lock
+var lock = new Auth0Lock('YOUR_CLIENT_ID', 'YOUR_AUTH0_DOMAIN', {
+  auth: {
+    responseType: 'token',
+    redirectUrl: 'https://your-redirect-url.com/callback',
+    audience: 'your-audience'
   }
 });
 
@@ -62,8 +43,3 @@ lock.on('authenticated', function(authResult) {
     });
   });
 });
-
-
-    </script>
-</body>
-</html>
