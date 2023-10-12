@@ -6,74 +6,63 @@
 </head>
 <body>
     <div id="auth0-login-container"></div>
+    <button id="login-button">Log In</button>
+    
+    <div>
+        <input type="text" id="api-endpoint-input" placeholder="API Endpoint">
+        <input type="text" id="http-method-input" placeholder="HTTP Method">
+        <button id="api-request-button">Make API Request</button>
+    </div>
+
     <script>
-     // Initialize Auth0Lock
-var lock = new Auth0Lock('YOUR_CLIENT_ID', 'YOUR_AUTH0_DOMAIN', {
-    container: 'auth0-login-container',
-            theme: {
-                logo: '/path/to/your/logo.png', // Customize the logo
-                primaryColor: '#337ab7', // Customize the primary color
-            },
-            languageDictionary: {
-                title: 'Log In', // Customize the title
-            },
-            // Add more customization options as needed
+        // Initialize Auth0Lock
+        var lock = new Auth0Lock('w9WcZmVLx8vnA6CnW9ptQ6laPi95m51U', 'fsdn123.au.auth0.com', {
+            container: 'auth0-login-container',
             auth: {
-                redirectUrl: 'https://render-capstone-example-5cq7.onrender.com/callback', // Specify your callback URL here
+                redirectUrl: 'https://render-capstone-example-5cq7.onrender.com/callback',
                 responseType: 'token',
                 audience: 'cap2',
-                scope : '',
+                scope: '',
             }
-});
+        });
 
-// Add a click event listener to trigger Auth0Lock
-document.getElementById('login-button').addEventListener('click', function() {
-  lock.show();
-});
+        // Add a click event listener to trigger Auth0Lock
+        document.getElementById('login-button').addEventListener('click', function() {
+            lock.show();
+        });
 
-// Initialize input fields for specifying the API endpoint and the HTTP method
-var apiEndpointInput = document.getElementById('api-endpoint-input');
-var httpMethodInput = document.getElementById('http-method-input');
-var apiRequestButton = document.getElementById('api-request-button');
+        // Listen for the authenticated event when the user logs in
+        lock.on('authenticated', function(authResult) {
+            var accessToken = authResult.accessToken;
 
-// Define a function to handle the API request
-function handleApiRequest(accessToken) {
-  var apiEndpoint = apiEndpointInput.value;
-  var httpMethod = httpMethodInput.value.toUpperCase(); // Get the HTTP method from the input field
+            // Add a click event listener to the API request button
+            document.getElementById('api-request-button').addEventListener('click', function() {
+                var apiEndpoint = document.getElementById('api-endpoint-input').value;
+                var httpMethod = document.getElementById('http-method-input').value.toUpperCase();
 
-  fetch(apiEndpoint, {
-    method: httpMethod,
-    headers: {
-      'Authorization': 'Bearer ' + accessToken,
-      'Content-Type': 'application/json' // Add other headers as needed
-    }
-  })
-  .then(response => {
-    if (response.ok) {
-      // Handle the API response
-      return response.json();
-    } else {
-      // Handle API request error
-      console.error('API Request Error:', response.status);
-    }
-  })
-  .then(data => {
-    // Process the API response data
-    console.log('API Response:', data);
-  });
-}
-
-// Listen for the authenticated event when the user logs in
-lock.on('authenticated', function(authResult) {
-  // Get the access token from the authentication result
-  var accessToken = authResult.accessToken;
-
-  // Add a click event listener to the API request button
-  apiRequestButton.addEventListener('click', function() {
-    handleApiRequest(accessToken);
-  });
-});
-
+                fetch(apiEndpoint, {
+                    method: httpMethod,
+                    headers: {
+                        'Authorization': 'Bearer ' + accessToken,
+                        'Content-Type': 'application/json'
+                        // Add other headers as needed
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Handle the API response
+                        return response.json();
+                    } else {
+                        // Handle API request error
+                        console.error('API Request Error:', response.status);
+                    }
+                })
+                .then(data => {
+                    // Process the API response data
+                    console.log('API Response:', data);
+                });
+            });
+        });
     </script>
 </body>
 </html>
