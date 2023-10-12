@@ -29,11 +29,10 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*", "headers": "Authorizatio
 
 @app.after_request
 def after_request(response):
-    response.headers.add("Access-Control-Allow-Headers","ContentType")
-    response.headers.add("Access-Control-Allow-Methods", "GET, DELETE,POST, PATCH")
-    response.headers.add("Access-Control-Allow-Headers", "Authorization")
+    response.headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization")
+    response.headers.add("Access-Control-Allow-Methods", "GET, DELETE, POST, PATCH")
+    response.headers.add("Access-Control-Allow-Credentials", "true")  # Allow credentials
     return response
-
 
 @app.route('/')
 def login():
