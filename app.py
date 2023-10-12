@@ -17,7 +17,7 @@ import sys
 from models import Actor, db, Movie
 from datetime import datetime,timedelta
 from auth import AuthError, requires_auth
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from models import setup_db
 
 app = Flask(__name__)
