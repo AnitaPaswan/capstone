@@ -32,7 +32,8 @@ def after_request(response):
     response.headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization")
     response.headers.add("Access-Control-Allow-Methods", "GET, DELETE, POST, PATCH")
     response.headers.add("Access-Control-Allow-Credentials", "true")  # Allow credentials
-    response.headers.add("Access-Control-Allow-Credentials", "true")
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
     return response
 
 @app.route('/')
@@ -40,7 +41,7 @@ def login():
   return render_template('pages/login.html')
 
 @app.route('/home')
-@cross_origin(allow_headers=['Authorization'], origins='https://render-capstone-example-5cq7.onrender.com')
+@cross_origin(allow_headers=['Authorization'], origins='*',headers=['Authorization'])
 @requires_auth(permission='get:home')
 def index(decoded_payload):
   return render_template('pages/home.html')
