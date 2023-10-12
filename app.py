@@ -25,14 +25,14 @@ moment = Moment(app)
 db.init_app(app)
 migrate = Migrate(app, db)
 setup_db(app)
-cors = CORS(app, resources={r"/api/*": {"origins": "*", "headers": "Authorization", "methods": ["GET", "POST"]}})
+# cors = CORS(app, resources={r"/api/*": {"origins": "*", "headers": "Authorization", "methods": ["GET", "POST"]}})
 
-@app.after_request
-def after_request(response):
-    response.headers.add("Access-Control-Allow-Headers","ContentType")
-    response.headers.add("Access-Control-Allow-Methods", "GET, DELETE,POST, PATCH")
-    response.headers.add("Access-Control-Allow-Headers", "Authorization")
-    return response
+# @app.after_request
+# def after_request(response):
+#     response.headers.add("Access-Control-Allow-Headers","ContentType")
+#     response.headers.add("Access-Control-Allow-Methods", "GET, DELETE,POST, PATCH")
+#     response.headers.add("Access-Control-Allow-Headers", "Authorization")
+#     return response
 
 
 @app.route('/')
