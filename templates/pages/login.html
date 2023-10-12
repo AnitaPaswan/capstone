@@ -26,13 +26,9 @@
             // Add more customization options as needed
             auth: {
                 redirectUrl: 'https://render-capstone-example-5cq7.onrender.com/callback', // Specify your callback URL here
-                responseType: ['token'],
+                responseType: 'token',
                 audience: 'cap2',
             }
-        });
-        // Show the login form
-        lock.on('authenticated', function(authResult) {
-            access_token = 'authResult.accessToken';
         });
         lock.show();
     </script>
