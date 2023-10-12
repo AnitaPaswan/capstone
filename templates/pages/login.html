@@ -25,13 +25,24 @@
             },
             // Add more customization options as needed
             auth: {
+                redirectUrl: 'https://render-capstone-example-5cq7.onrender.com/callback', // Specify your callback URL here
                 responseType: 'token',
-                redirectUrl: 'https://render-capstone-example-5cq7.onrender.com/callback', // Set your desired redirect URL here
                 audience: 'cap2',
-                scope: '',
+                scope : '',
             }
         });
-        // lock.show();
+        // Show the login form
+        lock.on('authenticated', function(authResult) {
+            var accessToken = authResult.accessToken;
+            // Use the access token to make an authenticated API request
+            var apiEndpoint = 'https://render-capstone-example-5cq7.onrender.com';
+            fetch(apiEndpoint, {
+                 headers: {
+                    'Authorization': 'Bearer ' + accessToken,
+                 }
+                })
+        });
+        lock.show();
     </script>
 </body>
 </html>
