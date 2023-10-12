@@ -37,15 +37,18 @@ CORS(app, origins='*', headers= 'Authorization', expose_headers= 'Authorization'
 #     return response
 
 @app.route('/')
+@cross_origin(headers = ["Content-Type", "Authorization"])
 def login():
   return render_template('pages/login.html')
 
 @app.route('/home')
+@cross_origin(headers = ["Content-Type", "Authorization"])
 @requires_auth(permission='get:home')
 def index(decoded_payload):
   return render_template('pages/home.html')
 
 @app.route('/callback')
+@cross_origin(headers = ["Content-Type", "Authorization"])
 def callback():
     return redirect(url_for('index'))
 
