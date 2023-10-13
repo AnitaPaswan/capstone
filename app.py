@@ -27,16 +27,16 @@ migrate = Migrate(app, db)
 setup_db(app)
 CORS(app, origins='*', headers= 'Authorization', expose_headers= 'Authorization')
 
-# @app.after_request
-# def after_request(response):
-#     response.headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization")
-#     response.headers.add("Access-Control-Allow-Methods", "GET, DELETE, POST, PATCH")
-#     response.headers.add("Access-Control-Allow-Credentials", "true")  # Allow credentials
-#     response.headers.add("Access-Control-Allow-Origin", "*")
-#     response.headers.add("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
-#     return response
+@app.after_request
+def after_request(response):
+    response.headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization")
+    response.headers.add("Access-Control-Allow-Credentials", "true")  # Allow credentials
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
+    return response
 
 @app.route('/')
+@cross_origin(headers = ["Content-Type", "Authorization"])
 def login():
   return render_template('pages/login.html')
 
@@ -77,8 +77,8 @@ def callback():
 #      return render_template('pages/actors.html.html', actor=actor)
 
 @app.route('/actors')
-# @requires_auth(permission='get:actors')
-def actors():
+@requires_auth(permission='get:actors')
+def actors(decoded_payload):
   data = []
   actor = Actor.query.all()
   for i in actor:
@@ -111,8 +111,8 @@ def search_actors():
   return render_template('pages/search_actors.html', results=response, search_term=request.form.get('search_term', ''))
 
 @app.route('/actors/<int:actor_id>')
-# @requires_auth(permission='get:actors')
-def show_actor(actor_id):
+@requires_auth(permission='get:actors')
+def show_actor(decoded_payload, actor_id):
   actor = Actor.query.get_or_404(actor_id)
   upcoming_show = []
   past_show= []
@@ -131,8 +131,8 @@ def edit_actor(actor_id):
   return render_template('forms/edit_actor.html', form=form, actor=edit_actor)
 
 @app.route('/actors/<int:actor_id>/edit', methods=['POST'])
-# @requires_auth(permission='patch:actor')
-def edit_actor_submission(actor_id):
+@requires_auth(permission='patch:actor')
+def edit_actor_submission(decoded_payload, actor_id):
   pre_actor = Actor.query.filter_by(id=actor_id).first()
   form = ActorForm(request.form, meta={'csrf':False})
   if form.validate(): 
@@ -159,8 +159,8 @@ def edit_actor_submission(actor_id):
   return redirect(url_for('edit_actor', actor_id=actor_id))
 
 @app.route('/actors/<int:actor_id>/delete', methods=['POST'])
-# @requires_auth(permission='delete:actor')
-def delete_actor_submission(actor_id):
+@requires_auth(permission='delete:actor')
+def delete_actor_submission(decoded_payload, actor_id):
   pre_actor = Actor.query.filter_by(id=actor_id).first()
   form = ActorForm(request.form, meta={'csrf':False})
   try:
@@ -181,8 +181,8 @@ def create_actor_form():
   return render_template('forms/new_actor.html', form=form)
 
 @app.route('/actors/create', methods=['POST'])
-# @requires_auth(permission='post:actor')
-def create_actor_submission():
+@requires_auth(permission='post:actor')
+def create_actor_submission(decoded_payload):
   form = ActorForm(request.form, meta={'csrf':False})
   movie_id = form.movie_id.data
   isMovieValid = Movie.query.filter_by(id=movie_id).count()
@@ -222,8 +222,8 @@ def create_movie_form():
   return render_template('forms/new_movie.html', form=form)
 
 @app.route('/movies/create', methods=['POST'])
-# @requires_auth(permission='post:movie')
-def create_movie_submission():
+@requires_auth(permission='post:movie')
+def create_movie_submission(decoded_payload):
   error = False
   formmovie = MovieForm(request.form, meta={'csrf':False})
   if formmovie.validate():
