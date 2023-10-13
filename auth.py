@@ -108,6 +108,7 @@ def requires_auth(permission):
         @wraps(f)
         def wrapper(*args, **kwargs):
             token = get_token_auth_header()
+            print(token,' ************************************')
             if not token:
                 return jsonify({'message': 'Authorization token is missing'}), 401
             try:
