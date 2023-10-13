@@ -38,11 +38,15 @@ def after_request(response):
 @app.route('/')
 @cross_origin(headers = ["Content-Type", "Authorization"])
 def login():
+  access_token = request.args.get('access_token')
+  print(access_token)
   return render_template('pages/login.html')
 
 @app.route('/home')
 @cross_origin(headers = ["Content-Type", "Authorization"])
 def index():
+  access_token = request.args.get('access_token')
+  print(access_token)
   full_url = request.url
   print(full_url, "**********full_url*************")
   return render_template('pages/home.html')
@@ -50,6 +54,8 @@ def index():
 @app.route('/callback')
 @cross_origin(headers = ["Content-Type", "Authorization"])
 def callback():
+    access_token = request.args.get('access_token')
+    print(access_token)
     return render_template('pages/home.html')
     #return redirect(url_for('index'))
 
