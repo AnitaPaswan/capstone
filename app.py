@@ -42,8 +42,7 @@ def login():
 
 @app.route('/home')
 @cross_origin(headers = ["Content-Type", "Authorization"])
-@requires_auth(permission='get:home')
-def index(decoded_payload):
+def index():
   return render_template('pages/home.html')
 
 @app.route('/callback')
