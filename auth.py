@@ -118,16 +118,7 @@ def requires_auth(permission):
     def decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
-            access_token = None
-            response = requests.post(token_url, data=data)
-            if response.status_code == 200:
-                access_token = response.json()['access_token']
-                print("***************server side code*********************")
-            else:
-                print('Error:', response.status_code)
-            # token = get_token_auth_header()
-            token =access_token
-            print(token,' ****************token********************')
+            token = get_token_auth_header()
             if not token:
                 return jsonify({'message': 'Authorization token is missing'}), 401
             try:

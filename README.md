@@ -94,4 +94,19 @@ All permissions
 6. **Verify on the Browser**<br>
 Navigate to project homepage https://render-capstone-example-5cq7.onrender.com which is homepage once you have login successfull will navigate to view the Casting Agency page.
 
+7. User Details
+
+   ##  Casting Director
+------------------------------------------------------------
+Email : castingDirector@gmail.com 
+password : Test1234
+JWT : 
+
+
+   ##  Casting Assistant
+------------------------------------------------------------
+Email : castingassistant@gmail.com 
+password : Test1234
+JWT : 
+
 

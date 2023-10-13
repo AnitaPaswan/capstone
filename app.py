@@ -34,7 +34,7 @@ moment = Moment(app)
 db.init_app(app)
 migrate = Migrate(app, db)
 setup_db(app)
-CORS(app, origins='*', headers= 'Authorization', expose_headers= 'Authorization')
+CORS(app)
 
 oauth = OAuth(app)
 
@@ -48,13 +48,6 @@ oauth.register(
     server_metadata_url=f'https://{AUTH0_DOMAIN}/.well-known/openid-configuration'
 )
 
-@app.after_request
-def after_request(response):
-    response.headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization")
-    response.headers.add("Access-Control-Allow-Credentials", "true")  # Allow credentials
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    response.headers.add("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
-    return response
 
 @app.route("/logout")
 def logout():
