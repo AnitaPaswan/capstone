@@ -112,10 +112,11 @@ def requires_auth(permission):
             token = None
             full_url = request.url
             fragment = full_url.split('#')[-1]
+            print(fragment, "**********fragment_params**************")
             fragment_params = fragment.split('&')
             print(fragment_params, "**********fragment_params**************")
             for param in fragment_params:
-                print(fragment_params, "**********param**************")
+                print(param, "**********param**************")
                 if '=' in param:
                     key, value = param.split('=')
                     if key == 'access_token':
@@ -126,10 +127,9 @@ def requires_auth(permission):
            # token = get_token_auth_header()
             print(token, "***********outside*************")
             if not token:
-                return jsonify({'message': 'Authorization token is missing'}), 401
+                return jsonify({'message': 'Access token is missing'}), 401
             try:
                 unverified_header = jwt.get_unverified_header(token)
-                print(unverified_header, 'klsjkjsdgi')
                 rsa_key = get_rsa_key(unverified_header['kid'])
                 #rsa_key = verify_decode_jwt(token)
 
