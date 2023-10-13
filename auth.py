@@ -4,11 +4,14 @@ from flask import request, _request_ctx_stack, abort, jsonify
 from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
+import os
 
-AUTH0_DOMAIN = 'fsdn123.au.auth0.com'
+AUTH0_DOMAIN = os.environ['AUTH0_DOMAIN']
+API_AUDIENCE = os.environ['API_AUDIENCE']
 
 ALGORITHMS = ['RS256']
-API_AUDIENCE = 'cap2'
+#API_AUDIENCE = 'cap2'
+#AUTH0_DOMAIN = 'fsdn123.au.auth0.com'
 
 JWKS_URL = f"https://{AUTH0_DOMAIN}/.well-known/jwks.json"
 
