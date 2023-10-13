@@ -55,8 +55,9 @@ oauth.register(
 @app.route("/login")
 def index():
     return oauth.auth0.authorize_redirect(
-        redirect_uri=url_for("callback", _external=True)
+        redirect_uri=url_for("auth_login", _external=True)
     )
+
 @app.route("/callback", methods=["GET", "POST"])
 def callback():
     token = oauth.auth0.authorize_access_token()
@@ -88,7 +89,6 @@ def home():
 @app.route('/auth_login')
 def auth_login():
   return render_template('pages/login.html')
-
 
 
 # @app.route('/login')
