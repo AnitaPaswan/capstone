@@ -119,7 +119,6 @@ def requires_auth(permission):
                     if key == 'access_token':
                         token = value
                         print(token, "************************")
-                        break
            # token = get_token_auth_header()
             if not token:
                 return jsonify({'message': 'Authorization token is missing'}), 401
