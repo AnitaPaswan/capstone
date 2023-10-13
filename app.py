@@ -42,13 +42,14 @@ oauth.register(
     client_id=CLIENT_ID,
     client_secret=CLIENT_SECRET,
     client_kwargs={"scope": "openid profile email"},
-    authorize_url="https://your-auth0-domain/authorize",
+    authorize_url=f'https://{AUTH0_DOMAIN}/authorize',
     authorize_params=None,
     authorize_params_callback=None,
     authorize_prompt_callback=None,
     authorize_response=None,
-    fetch_token="https://your-auth0-domain/oauth/token",
+    fetch_token=f'https://{AUTH0_DOMAIN}/oauth/token',
     client_cls=None,
+    server_metadata_url=f'https://{AUTH0_DOMAIN}/.well-known/openid-configuration',
 )
 ###############################
 @app.route("/login")
@@ -79,7 +80,7 @@ def logout():
 
 @app.route("/")
 def home():
-    return render_template("pages/login.html", session=session.get('user'), pretty=json.dumps(session.get('user'), indent=4))
+    return render_template("pages/welcome.html", session=session.get('user'), pretty=json.dumps(session.get('user'), indent=4))
 
 ###################################
 
