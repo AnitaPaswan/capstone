@@ -114,11 +114,12 @@ def requires_auth(permission):
             fragment_params = fragment.split('&')
             token = None
             for param in fragment_params:
-                key, value = param.split('=')
-                if key == 'access_token':
-                    token = value
-                    print(token, "************************")
-            token = request.args.get('access_token')
+                if '=' in param:
+                    key, value = param.split('=')
+                    if key == 'access_token':
+                        token = value
+                        print(token, "************************")
+                        break
            # token = get_token_auth_header()
             if not token:
                 return jsonify({'message': 'Authorization token is missing'}), 401
