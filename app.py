@@ -94,7 +94,7 @@ def index():
 def callback():
   token = oauth.auth0.authorize_access_token()
   session["user"] = token
-  return redirect("/home")
+  return redirect(url_for('index'))
 
 
 # @app.route('/actors/<actor_id>/delete', methods=['POST'])
