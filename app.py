@@ -51,7 +51,7 @@ oauth.register(
     client_cls=None,
 )
 
-@app.route('/')
+@app.route('/login')
 def login():
     # Redirect the user to the Auth0 authorization page
     authorization_url, state = oauth.auth0.authorize_redirect(
@@ -59,9 +59,9 @@ def login():
     )
     return redirect(authorization_url)
 
-# @app.route('/')
-# def login():
-#   return render_template('pages/login.html')
+@app.route('/')
+def login():
+  return render_template('pages/login.html')
 
 @app.route("/logout")
 def logout():
