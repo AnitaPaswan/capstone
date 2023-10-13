@@ -52,7 +52,7 @@ oauth.register(
 )
 ###############################
 @app.route("/login")
-def login():
+def index():
     return oauth.auth0.authorize_redirect(
         redirect_uri=url_for("callback", _external=True)
     )
