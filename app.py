@@ -81,14 +81,19 @@ def logout():
     )
 
 @app.route("/")
-def home():
-    return render_template("pages/login.html", session=session.get('user'), pretty=json.dumps(session.get('user'), indent=4))
+def welcome():
+    return render_template("pages/welcome.html", session=session.get('user'), pretty=json.dumps(session.get('user'), indent=4))
 
+@app.route("/login")
+def login():
+    return oauth.auth0.authorize_redirect(
+        redirect_uri=url_for("homelogin", _external=True)
+    )
 ###################################
 
-# @app.route('/homelogin')
-# def homelogin():
-#   return render_template('pages/login.html')
+@app.route('/homelogin')
+def homelogin():
+  return render_template('pages/login.html')
 
 
 # @app.route('/login')
@@ -96,14 +101,10 @@ def home():
 # def login():
 #   return oauth.auth0.authorize_redirect(redirect_uri=url_for("start_login", _external=True))
 
-# @app.route('/home')
-# @cross_origin(headers = ["Content-Type", "Authorization"])
-# def index():
-#   access_token = urllib.parse.unquote(request.args.get('access_token'))
-#   print(access_token)
-#   full_url = request.url
-#   print(full_url, "**********full_url*************")
-#   return render_template('pages/home.html')
+@app.route('/home')
+@cross_origin(headers = ["Content-Type", "Authorization"])
+def home():
+  return render_template('pages/home.html')
 
 # @app.route('/callback')
 # @cross_origin(headers = ["Content-Type", "Authorization"])
