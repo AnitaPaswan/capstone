@@ -58,7 +58,7 @@ def index():
         redirect_uri=url_for("callback1")
     )
 
-@app.route("/callback1", methods=["GET", "POST"])
+@app.route("/callback", methods=["GET", "POST"])
 def callback1():
     token = oauth.auth0.authorize_access_token()
     print("*******token*********     ", token)
