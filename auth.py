@@ -118,7 +118,7 @@ def requires_auth(permission):
                     key, value = param.split('=')
                     if key == 'access_token':
                         token = value
-                        break         
+                        break 
             token = request.args.get('access_token')
            # token = get_token_auth_header()
             if not token:
