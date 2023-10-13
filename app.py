@@ -37,16 +37,31 @@ setup_db(app)
 CORS(app)
 
 oauth = OAuth(app)
-
 oauth.register(
-    "auth0",
+    name="auth0",
     client_id=CLIENT_ID,
     client_secret=CLIENT_SECRET,
-    client_kwargs={
-        "scope": "openid profile email",
-    }
+    client_kwargs={"scope": "openid profile email"}
+    authorize_url="https://your-auth0-domain/authorize",
+    authorize_params=None,
+    authorize_params_callback=None,
+    authorize_prompt_callback=None,
+    authorize_response=None,
+    fetch_token="https://your-auth0-domain/oauth/token",
+    client_cls=None,
 )
 
+@app.route('/')
+def login():
+    # Redirect the user to the Auth0 authorization page
+    authorization_url, state = oauth.auth0.authorize_redirect(
+    redirect_uri='https://render-capstone-example-5cq7.onrender.com/callback'  # Your callback URL
+    )
+    return redirect(authorization_url)
+
+# @app.route('/')
+# def login():
+#   return render_template('pages/login.html')
 
 @app.route("/logout")
 def logout():
@@ -63,9 +78,7 @@ def logout():
         )
     )
 
-@app.route('/')
-def login():
-  return render_template('pages/login.html')
+
 
 # @app.route('/login')
 # @cross_origin(headers = ["Content-Type", "Authorization"])
