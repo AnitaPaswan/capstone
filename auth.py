@@ -109,10 +109,10 @@ def requires_auth(permission):
     def decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
+            token = None
             full_url = request.url
             fragment = full_url.split('#')[-1]
             fragment_params = fragment.split('&')
-            token = None
             for param in fragment_params:
                 if '=' in param:
                     key, value = param.split('=')
