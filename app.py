@@ -147,16 +147,6 @@ def home():
 def actors(decoded_payload):
   data = []
   actor = Actor.query.all()
-  for i in actor:
-    time_element ={}
-    time_element['name']=i['name']
-    time_element["age"] = i['age']
-    time_element["gender"] = i['gender']
-    for k in db.session.query(Movie).filter( i.movie_id== Movie.id):
-       time_element["release_date"] = str(k.release_date)
-       time_element["title"] = k.title
-    actor.append(time_element)
-  print("data",data)
   return render_template('pages/actors.html', actors=actor)
 
 @app.route('/actors/search', methods=['POST'])
