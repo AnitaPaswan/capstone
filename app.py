@@ -81,13 +81,13 @@ def logout():
 
 @app.route("/")
 def home():
-    return render_template("pages/welcome.html", session=session.get('user'), pretty=json.dumps(session.get('user'), indent=4))
+    return render_template("pages/login.html", session=session.get('user'), pretty=json.dumps(session.get('user'), indent=4))
 
 ###################################
 
-@app.route('/homelogin')
-def homelogin():
-  return render_template('pages/login.html')
+# @app.route('/homelogin')
+# def homelogin():
+#   return render_template('pages/login.html')
 
 
 # @app.route('/login')
