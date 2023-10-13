@@ -71,14 +71,14 @@ def logout():
         )
     )
 
-@app.route('/')
+@app.route('/login')
 def start_login():
   return render_template('pages/login.html')
 
-@app.route('/login')
-@cross_origin(headers = ["Content-Type", "Authorization"])
-def login():
-  return oauth.auth0.authorize_redirect(redirect_uri=url_for("start_login", _external=True))
+# @app.route('/login')
+# @cross_origin(headers = ["Content-Type", "Authorization"])
+# def login():
+#   return oauth.auth0.authorize_redirect(redirect_uri=url_for("start_login", _external=True))
 
 @app.route('/home')
 @cross_origin(headers = ["Content-Type", "Authorization"])
@@ -94,7 +94,7 @@ def index():
 def callback():
   token = oauth.auth0.authorize_access_token()
   session["user"] = token
-  return redirect(url_for('index'))
+  return redirect("/home")
 
 
 # @app.route('/actors/<actor_id>/delete', methods=['POST'])
