@@ -55,10 +55,10 @@ oauth.register(
 @app.route("/callback")
 def index():
     return oauth.auth0.authorize_redirect(
-        redirect_uri=url_for("callback1", _external=True)
+        redirect_uri=url_for("callback", _external=True)
     )
 
-@app.route("/callback1", methods=["GET", "POST"])
+@app.route("/callback", methods=["GET", "POST"])
 def callback():
     oauth.auth0.authorize_redirect
     token = oauth.auth0.authorize_access_token()
