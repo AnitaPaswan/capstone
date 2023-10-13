@@ -83,7 +83,7 @@ def index():
   print(access_token)
   full_url = request.url
   print(full_url, "**********full_url*************")
-  return render_template('pages/home.html')
+  return render_template('pages/home.html', session=session.get('user'), pretty=json.dumps(session.get('user'), indent=4))
 
 @app.route('/callback')
 @cross_origin(headers = ["Content-Type", "Authorization"])
