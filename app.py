@@ -71,10 +71,14 @@ def logout():
         )
     )
 
+@app.route('/')
+def start_login():
+  return render_template('pages/login.html')
+
 @app.route('/login')
 @cross_origin(headers = ["Content-Type", "Authorization"])
 def login():
-  return oauth.auth0.authorize_redirect(redirect_uri=url_for("callback", _external=True))
+  return oauth.auth0.authorize_redirect(redirect_uri=url_for("start_login", _external=True))
 
 @app.route('/home')
 @cross_origin(headers = ["Content-Type", "Authorization"])
