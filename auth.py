@@ -6,6 +6,7 @@ from jose import jwt
 from urllib.request import urlopen
 import os
 
+
 AUTH0_DOMAIN = os.environ['AUTH0_DOMAIN']
 API_AUDIENCE = os.environ['API_AUDIENCE']
 CLIENT_ID = os.environ['CLIENT_ID']

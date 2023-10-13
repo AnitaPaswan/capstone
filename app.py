@@ -5,7 +5,7 @@
 import json
 import dateutil.parser
 import babel
-from flask import Flask, render_template, request, Response, flash, redirect, url_for, abort, jsonify
+from flask import Flask, render_template, request, session, flash, redirect, url_for, abort, jsonify
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 import logging
@@ -19,6 +19,15 @@ from datetime import datetime,timedelta
 from auth import AuthError, requires_auth
 from flask_cors import CORS, cross_origin
 from models import setup_db
+from urllib.parse import quote_plus, urlencode
+import os
+
+from authlib.integrations.flask_client import OAuth
+
+AUTH0_DOMAIN = os.environ['AUTH0_DOMAIN']
+API_AUDIENCE = os.environ['API_AUDIENCE']
+CLIENT_ID = os.environ['CLIENT_ID']
+CLIENT_SECRET =  os.environ['CLIENT_SECRET']
 
 app = Flask(__name__)
 moment = Moment(app)
@@ -26,6 +35,18 @@ db.init_app(app)
 migrate = Migrate(app, db)
 setup_db(app)
 CORS(app, origins='*', headers= 'Authorization', expose_headers= 'Authorization')
+
+oauth = OAuth(app)
+
+oauth.register(
+    "auth0",
+    client_id=CLIENT_ID,
+    client_secret=CLIENT_SECRET,
+    client_kwargs={
+        "scope": "openid profile email",
+    },
+    server_metadata_url=f'https://{AUTH0_DOMAIN}/.well-known/openid-configuration'
+)
 
 @app.after_request
 def after_request(response):
@@ -35,17 +56,30 @@ def after_request(response):
     response.headers.add("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
     return response
 
-@app.route('/')
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(
+        "https://" + AUTH0_DOMAIN
+        + "/v2/logout?"
+        + urlencode(
+            {
+                "returnTo": url_for("home", _external=True),
+                "client_id": CLIENT_ID,
+            },
+            quote_via=quote_plus,
+        )
+    )
+
+@app.route('/login')
 @cross_origin(headers = ["Content-Type", "Authorization"])
 def login():
-  access_token = request.args.get('access_token')
-  print(access_token)
-  return render_template('pages/login.html')
+  return oauth.auth0.authorize_redirect(redirect_uri=url_for("callback", _external=True))
 
 @app.route('/home')
 @cross_origin(headers = ["Content-Type", "Authorization"])
 def index():
-  access_token = request.args.get('access_token')
+  access_token = urllib.parse.unquote(request.args.get('access_token'))
   print(access_token)
   full_url = request.url
   print(full_url, "**********full_url*************")
@@ -54,10 +88,9 @@ def index():
 @app.route('/callback')
 @cross_origin(headers = ["Content-Type", "Authorization"])
 def callback():
-    access_token = request.args.get('access_token')
-    print(access_token)
-    return render_template('pages/home.html')
-    #return redirect(url_for('index'))
+  token = oauth.auth0.authorize_access_token()
+  session["user"] = token
+  return redirect(url_for('index'))
 
 
 # @app.route('/actors/<actor_id>/delete', methods=['POST'])
