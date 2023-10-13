@@ -60,7 +60,7 @@ def index():
 def callback():
     token = oauth.auth0.authorize_access_token()
     session["user"] = token
-    return redirect("/auth_login")
+    return redirect("/")
 
 @app.route("/logout")
 def logout():
@@ -79,7 +79,7 @@ def logout():
 
 @app.route("/")
 def home():
-    return render_template("pages/welcome.html", session=session.get('user'), pretty=json.dumps(session.get('user'), indent=4))
+    return render_template("pages/login.html", session=session.get('user'), pretty=json.dumps(session.get('user'), indent=4))
 
 ###################################
 
