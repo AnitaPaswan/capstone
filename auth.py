@@ -50,7 +50,7 @@ def check_permissions(permission, payload):
 
 def get_jwks_data(JWKS_URL):
     try:
-        response = requests.get(JWKS_URL, headers=headers)
+        response = requests.get(JWKS_URL)
         response.raise_for_status()  # Raise an exception for HTTP errors
         jwks_data = response.json()
         print('jwks_data',jwks_data)
@@ -61,7 +61,7 @@ def get_jwks_data(JWKS_URL):
 
 def get_rsa_key(key_id):
     # Fetch JWKS data from JWKS endpoint
-    jwks_response = requests.get(JWKS_URL, headers=headers)
+    jwks_response = requests.get(JWKS_URL)
     jwks_data = jwks_response.json()
 
     # Find the RSA key in JWKS based on 'kid'
@@ -109,7 +109,17 @@ def requires_auth(permission):
     def decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
-            token = get_token_auth_header()
+            full_url = request.url
+            fragment = full_url.split('#')[-1]
+            fragment_params = fragment.split('&')
+            token = None
+            for param in fragment_params:
+                key, value = param.split('=')
+                if key == 'access_token':
+                    token = value
+                    print(token, "************************")
+            token = request.args.get('access_token')
+           # token = get_token_auth_header()
             if not token:
                 return jsonify({'message': 'Authorization token is missing'}), 401
             try:
