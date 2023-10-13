@@ -25,7 +25,7 @@ def get_token_auth_header():
    if 'Authorization' not in request.headers:
        return jsonify({'message': 'Authorization token is missing'}), 401
    auth_header = request.headers['Authorization']
-   print(auth_header, '******************************')
+   print(auth_header, '*************auth_header*****************')
    header_parts = auth_header.split(' ')
    if len(header_parts) !=2:
        abort(401)
@@ -108,7 +108,7 @@ def requires_auth(permission):
         @wraps(f)
         def wrapper(*args, **kwargs):
             token = get_token_auth_header()
-            print(token,' ************************************')
+            print(token,' ****************token********************')
             if not token:
                 return jsonify({'message': 'Authorization token is missing'}), 401
             try:
