@@ -7,13 +7,6 @@
 <body>
     <div id="auth0-login-container"></div>
     <script>
-        // Initialize Auth0 Lock
-        // var clientId = 'w9WcZmVLx8vnA6CnW9ptQ6laPi95m51U';
-        // var domain = 'cap3';
-        // var callbackUri = 'https://render-capstone-example-5cq7.onrender.com/callback';
-        // var audience = 'fsdn123.au.auth0.com';
-        // var authUrl = `https://${domain}/authorize?audience=${audience}&response_type=token&client_id=${clientId}&redirect_uri=${encodeURIComponent(callbackUri)}`;
-
         var lock = new Auth0Lock('w9WcZmVLx8vnA6CnW9ptQ6laPi95m51U', 'fsdn123.au.auth0.com', {
             container: 'auth0-login-container',
             theme: {
@@ -21,7 +14,7 @@
                 primaryColor: '#337ab7', // Customize the primary color
             },
             languageDictionary: {
-                title: 'Log In', // Customize the title
+                title: 'Capstone Casting Agency'// Customize the title
             },
             // Add more customization options as needed
             auth: {
