@@ -77,31 +77,31 @@ def get_rsa_key(key_id):
     return rsa_key
 
 
-def verify_decode_jwt(token):
-    jwks_data = get_jwks_data(JWKS_URL)
-    print(jwks_data)
-    unverified_header = jwt.get_unverified_header(token)
-    print('unverified_header', unverified_header)
-    rsa_key = None
-    if 'kid' not in unverified_header:
+# def verify_decode_jwt(token):
+#     jwks_data = get_jwks_data(JWKS_URL)
+#     print(jwks_data)
+#     unverified_header = jwt.get_unverified_header(token)
+#     print('unverified_header', unverified_header)
+#     rsa_key = None
+#     if 'kid' not in unverified_header:
         
-        raise AuthError({
-            'code' : 'Invalid header',
-            'description' : 'Authorization malformed'
-        }, 401)
+#         raise AuthError({
+#             'code' : 'Invalid header',
+#             'description' : 'Authorization malformed'
+#         }, 401)
     
-    for key in jwks_data['keys']:
-        if key['kid']== unverified_header['kid']:
-            rsa_key = {
-                'kty' : key['kty'],
-                'kid' : key['kid'],
-                'use' : key['use'],
-                'n': key['n'],
-                'e': key['e']
-            }
-            break
-        print(rsa_key)
-        return rsa_key
+#     for key in jwks_data['keys']:
+#         if key['kid']== unverified_header['kid']:
+#             rsa_key = {
+#                 'kty' : key['kty'],
+#                 'kid' : key['kid'],
+#                 'use' : key['use'],
+#                 'n': key['n'],
+#                 'e': key['e']
+#             }
+#             break
+#         print(rsa_key)
+#         return rsa_key
     
 def requires_auth(permission):
     def decorator(f):

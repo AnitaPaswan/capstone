@@ -24,12 +24,14 @@
                 scope : '',
             }
         });
+        lock.show();
         // Show the login form
         lock.on('authenticated', function(authResult) {
             var accessToken = authResult.accessToken;
-            xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
         });
-        lock.show();
+        headers: {
+            Authorization: 'Bearer ' + accessToken
+        }
     </script>
 </body>
 </html>
