@@ -50,18 +50,17 @@ oauth.register(
     fetch_token="https://your-auth0-domain/oauth/token",
     client_cls=None,
 )
-
-@app.route('/login')
+###############################
+@app.route("/login")
 def login():
-    # Redirect the user to the Auth0 authorization page
-    authorization_url, state = oauth.auth0.authorize_redirect(
-    redirect_uri='https://render-capstone-example-5cq7.onrender.com/callback'  # Your callback URL
+    return oauth.auth0.authorize_redirect(
+        redirect_uri=url_for("callback", _external=True)
     )
-    return redirect(authorization_url)
-
-@app.route('/')
-def login():
-  return render_template('pages/login.html')
+@app.route("/callback", methods=["GET", "POST"])
+def callback():
+    token = oauth.auth0.authorize_access_token()
+    session["user"] = token
+    return redirect("/")
 
 @app.route("/logout")
 def logout():
@@ -78,6 +77,17 @@ def logout():
         )
     )
 
+@app.route("/")
+def home():
+    return render_template("logout.html", session=session.get('user'), pretty=json.dumps(session.get('user'), indent=4))
+
+###################################
+
+
+# @app.route('/')
+# def login():
+#   return render_template('pages/login.html')
+
 
 
 # @app.route('/login')
@@ -85,21 +95,27 @@ def logout():
 # def login():
 #   return oauth.auth0.authorize_redirect(redirect_uri=url_for("start_login", _external=True))
 
-@app.route('/home')
-@cross_origin(headers = ["Content-Type", "Authorization"])
-def index():
-  access_token = urllib.parse.unquote(request.args.get('access_token'))
-  print(access_token)
-  full_url = request.url
-  print(full_url, "**********full_url*************")
-  return render_template('pages/home.html')
+# @app.route('/home')
+# @cross_origin(headers = ["Content-Type", "Authorization"])
+# def index():
+#   access_token = urllib.parse.unquote(request.args.get('access_token'))
+#   print(access_token)
+#   full_url = request.url
+#   print(full_url, "**********full_url*************")
+#   return render_template('pages/home.html')
 
-@app.route('/callback')
-@cross_origin(headers = ["Content-Type", "Authorization"])
-def callback():
-  token = oauth.auth0.authorize_access_token()
-  session["user"] = token
-  return redirect(url_for('index'))
+# @app.route('/callback')
+# @cross_origin(headers = ["Content-Type", "Authorization"])
+# def callback():
+#   token = oauth.auth0.authorize_access_token()
+#   session["user"] = token
+#   return redirect(url_for('index'))
+
+# @app.route("/callback", methods=["GET", "POST"])
+# def callback():
+#     token = oauth.auth0.authorize_access_token()
+#     session["user"] = token
+#     return redirect("/")
 
 
 # @app.route('/actors/<actor_id>/delete', methods=['POST'])
