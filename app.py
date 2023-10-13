@@ -41,7 +41,7 @@ oauth.register(
     name="auth0",
     client_id=CLIENT_ID,
     client_secret=CLIENT_SECRET,
-    client_kwargs={"scope": "openid profile email"}
+    client_kwargs={"scope": "openid profile email"},
     authorize_url="https://your-auth0-domain/authorize",
     authorize_params=None,
     authorize_params_callback=None,
