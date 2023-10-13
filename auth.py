@@ -8,6 +8,8 @@ import os
 
 AUTH0_DOMAIN = os.environ['AUTH0_DOMAIN']
 API_AUDIENCE = os.environ['API_AUDIENCE']
+CLIENT_ID = os.environ['CLIENT_ID']
+CLIENT_SECRET =  os.environ['CLIENT_SECRET']
 
 ALGORITHMS = ['RS256']
 #API_AUDIENCE = 'cap2'
@@ -21,6 +23,13 @@ class AuthError(Exception):
         self.status_code = status_code
 
 
+token_url = f'https://{AUTH0_DOMAIN}/oauth/token'
+data = {
+    'client_id': CLIENT_ID,
+    'client_secret': CLIENT_SECRET,
+    'audience': API_AUDIENCE,
+    'grant_type': 'client_credentials'
+}
 def get_token_auth_header(): 
    if 'Authorization' not in request.headers:
        return jsonify({'message': 'Authorization token is missing'}), 401
@@ -107,7 +116,15 @@ def requires_auth(permission):
     def decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
-            token = get_token_auth_header()
+            access_token = None
+            response = requests.post(token_url, data=data)
+            if response.status_code == 200:
+                access_token = response.json()['access_token']
+                print("***************server side code*********************")
+            else:
+                print('Error:', response.status_code)
+            # token = get_token_auth_header()
+            token =access_token
             print(token,' ****************token********************')
             if not token:
                 return jsonify({'message': 'Authorization token is missing'}), 401
