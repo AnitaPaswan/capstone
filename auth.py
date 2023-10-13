@@ -55,20 +55,21 @@ def check_permissions(permission, payload):
             }, 403)
     return True
 
-def get_jwks_data(JWKS_URL):
-    try:
-        response = requests.get(JWKS_URL)
-        response.raise_for_status()  # Raise an exception for HTTP errors
-        jwks_data = response.json()
-        print('jwks_data',jwks_data)
-        return jwks_data
-    except requests.exceptions.RequestException as e:
-        print("Error fetching JWKS data:", e)
-        return None
+# def get_jwks_data(JWKS_URL):
+#     try:
+#         response = requests.get(JWKS_URL)
+#         response.raise_for_status()  # Raise an exception for HTTP errors
+#         jwks_data = response.json()
+#         print('jwks_data',jwks_data)
+#         return jwks_data
+#     except requests.exceptions.RequestException as e:
+#         print("Error fetching JWKS data:", e)
+#         return None
 
 def get_rsa_key(key_id):
     # Fetch JWKS data from JWKS endpoint
     jwks_response = requests.get(JWKS_URL)
+    print(jwks_response,"***********Fetch JWKS data from JWKS endpoint************")
     jwks_data = jwks_response.json()
 
     # Find the RSA key in JWKS based on 'kid'
