@@ -71,8 +71,8 @@ def logout():
         )
     )
 
-@app.route('/login')
-def start_login():
+@app.route('/')
+def login():
   return render_template('pages/login.html')
 
 # @app.route('/login')
