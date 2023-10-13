@@ -111,7 +111,6 @@ def requires_auth(permission):
         def wrapper(*args, **kwargs):
             token = None
             full_url = request.url
-            print(full_url, "**********full_url*************")
             parts = full_url.split('#')
             fragment = [part for part in parts if part][0]
             print(fragment, "**********fragment*************")

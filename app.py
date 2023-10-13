@@ -43,6 +43,8 @@ def login():
 @app.route('/home')
 @cross_origin(headers = ["Content-Type", "Authorization"])
 def index():
+  full_url = request.url
+  print(full_url, "**********full_url*************")
   return render_template('pages/home.html')
 
 @app.route('/callback')
