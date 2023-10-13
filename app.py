@@ -79,7 +79,7 @@ def logout():
 
 @app.route("/")
 def home():
-    return render_template("logout.html", session=session.get('user'), pretty=json.dumps(session.get('user'), indent=4))
+    return render_template("pages/logout.html", session=session.get('user'), pretty=json.dumps(session.get('user'), indent=4))
 
 ###################################
 
