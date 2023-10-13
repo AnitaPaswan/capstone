@@ -50,7 +50,8 @@ def index():
 @app.route('/callback')
 @cross_origin(headers = ["Content-Type", "Authorization"])
 def callback():
-    return redirect(url_for('index'))
+    return render_template('pages/home.html')
+    #return redirect(url_for('index'))
 
 
 # @app.route('/actors/<actor_id>/delete', methods=['POST'])
