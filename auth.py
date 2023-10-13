@@ -21,11 +21,9 @@ class AuthError(Exception):
         self.status_code = status_code
 
 
-def get_token_auth_header():
-   
+def get_token_auth_header(): 
    if 'Authorization' not in request.headers:
-       print('************Authorization not in request headers******************')
-       abort(401)
+       return jsonify({'message': 'Authorization token is missing'}), 401
    auth_header = request.headers['Authorization']
    print(auth_header, '******************************')
    header_parts = auth_header.split(' ')
@@ -109,28 +107,12 @@ def requires_auth(permission):
     def decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
-            token = None
-            full_url = request.url
-            parts = full_url.split('#')
-            fragment = [part for part in parts if part][0]
-            print(fragment, "**********fragment*************")
-            fragment_params = fragment.split('&')
-            print(fragment_params, "**********fragment_params**************")
-            for param in fragment_params:
-                print(param, "**********param**************")
-                if '=' in param:
-                    key, value = param.split('=')
-                    if key == 'access_token':
-                        print(key, "**********key**************")
-                        print(value, "**********value**************")
-                        token = value
-                        print(token, "************************")
-           # token = get_token_auth_header()
-            print(token, "***********outside*************")
+            token = get_token_auth_header()
             if not token:
-                return jsonify({'message': 'Access token is missing'}), 401
+                return jsonify({'message': 'Authorization token is missing'}), 401
             try:
                 unverified_header = jwt.get_unverified_header(token)
+                print(unverified_header, 'klsjkjsdgi')
                 rsa_key = get_rsa_key(unverified_header['kid'])
                 #rsa_key = verify_decode_jwt(token)
 
