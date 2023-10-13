@@ -52,15 +52,16 @@ oauth.register(
     server_metadata_url=f'https://{AUTH0_DOMAIN}/.well-known/openid-configuration',
 )
 ###############################
-@app.route("/callback")
-def index():
-    return oauth.auth0.authorize_redirect(
-        redirect_uri=url_for("callback1")
-    )
+# @app.route("/callback")
+# def index():
+#     return oauth.auth0.authorize_redirect(
+#         redirect_uri=url_for("callback1")
+#     )
 
-@app.route("/callback1", methods=["GET", "POST"])
-def callback1():
+@app.route("/callback", methods=["GET", "POST"])
+def callback():
     token = oauth.auth0.authorize_access_token()
+    print("*******token*********     ", token)
     session["user"] = token
     return redirect("/home")
 
