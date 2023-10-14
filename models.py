@@ -36,7 +36,7 @@ class Actor(db.Model):
     age = db.Column(db.String(120))
     gender = db.Column(db.String(120))
     movie_id = Column(db.Integer, db.ForeignKey('movie.id'))
-    movie_detail = recipe = Column(String(180), nullable=False)
+    movie_detail =  Column(String(180), nullable=False)
 
     # Define the relationship
     movie = db.relationship('Movie')
@@ -60,7 +60,14 @@ class Movie(db.Model):
     id = db.Column(db.Integer().with_variant(db.Integer, "sqlite"), primary_key=True)
     title = db.Column(db.String)
     release_date = db.Column(db.DateTime)
+
+    def short(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'release_date': self.release_date
+        }
     def __repr__(self):
-        return f'<movie ID: {self.id}, title: {self.title}, release_date: {self.release_date}>'
+        return json.dumps(self.short())
     
     
