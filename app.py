@@ -76,21 +76,19 @@ def create_movies(decoded_payload):
     body=request.get_json()
     new_title = body.get('title')
     new_release_date = body.get('release_date')
-    try:
-        movie = Movie(title=new_title, recipe=new_release_date)
-        if new_title is None:
-            return jsonify({"error": "New title not provided"}), 400
-        if new_release_date is None:
-            return jsonify({"error": "New release_date not provided"}), 400
-        movie.insert()
-        movies=Movie.query.order_by(Movie.id).all()
-        formatted_movies = [movie.short() for movie in movies]
-        return jsonify({
-            "success": True,
-            "movies":formatted_movies
-        })
-    except: 
-        abort(422)
+    movie = Movie(title=new_title, recipe=new_release_date)
+    if new_title is None:
+        return jsonify({"error": "New title not provided"}), 400
+    if new_release_date is None:
+        return jsonify({"error": "New release_date not provided"}), 400
+    movie.insert()
+    movies=Movie.query.order_by(Movie.id).all()
+    formatted_movies = [movie.short() for movie in movies]
+    return jsonify({
+        "success": True,
+        "movies":formatted_movies
+    })
+
 
 
 @app.route('/actors')
