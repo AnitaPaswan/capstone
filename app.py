@@ -62,26 +62,76 @@ def callback():
 @requires_auth(permission='get:movies')
 def movies(decoded_payload):
   movies=Movie.query.order_by(Actor.id).all()
-  formatted_actors = [movie.short() for movie in movies]
+  if not movies:
+        abort(404) 
+  formatted_movies = [movie.short() for movie in movies]
   return jsonify(
     {"success": True,
-     "actors" : formatted_actors
+     "movies" : formatted_movies
     })
+
+@app.route('/movie', methods = ['POST'])
+@requires_auth(permission='post:movie')
+def create_movies(decoded_payload):
+    body=request.get_json()
+    new_title = body.get('title')
+    new_release_date = body.get('release_date')
+    try:
+        actor = Actor(title=new_title, recipe=new_release_date)
+        if new_title is None:
+            return jsonify({"error": "New title not provided"}), 400
+        if new_release_date is None:
+            return jsonify({"error": "New release_date not provided"}), 400
+        movie.insert()
+        return jsonify({
+            "success": True,
+            "movies":Movie.query.order_by(Movie.id).all()
+        })
+    except: 
+        abort(422)
 
 
 @app.route('/actors')
 @requires_auth(permission='get:actors')
 def actors(decoded_payload):
   actors = Actor.query.order_by(Actor.id).all()
+  if not actors:
+        abort(404)
   formatted_actors = [actor.short() for actor in actors]
   return jsonify(
     {"success": True,
      "actors" : formatted_actors
     })
 
+
+
+# @app.route('/actors', methods = ['POST'])
+# @requires_auth(permission='post:actor')
+# def create_actors(decoded_payload):
+#     body=request.get_json()
+#     new_title = body.get('title')
+#     new_recipe = body.get('recipe')
+#     try:
+#         actor = Actor(title=new_title, recipe=new_recipe)
+#         if new_title is None:
+#             return jsonify({"error": "New title not provided"}), 400
+#         if new_recipe is None:
+#             return jsonify({"error": "New recipe not provided"}), 400
+#         drink.insert()
+#         return jsonify({
+#             "success": True,
+#             "drinks":Drink.query.order_by(Drink.id).all()
+#         })
+#     except: 
+#         abort(422)
+
 @app.errorhandler(404)
 def not_found_error(error):
     return jsonify({"error": "Not Found", "message": "The requested resource was not found."}), 404
+
+@app.errorhandler(400)
+def bad_request(error):
+    return jsonify({"error": "Bad Request", "message": "Provided request body is not correct"}), 404
 
 @app.errorhandler(401)
 def unauthorized(error):
