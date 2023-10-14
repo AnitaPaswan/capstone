@@ -103,7 +103,7 @@ def actors(decoded_payload):
      "actors" : formatted_actors
     })
 
-@app.route('/actors', methods = ['POST'])
+@app.route('/actor', methods = ['POST'])
 @requires_auth(permission='post:actor')
 def create_actors(decoded_payload):
     body=request.get_json()
