@@ -188,17 +188,20 @@ def delete_actor(decoded_payload, actor_id):
 @app.route('/actors')
 @requires_auth(permission='get:actors')
 def actors(decoded_payload):
-  data = Actor.query.all()
-  return render_template('pages/actors.html', actors=data)
-
-@app.route('/actorsjson')
-@requires_auth(permission='get:actors')
-def actors(decoded_payload):
-  actors = Actor.query.all()
+  actors = Actor.query.order_by(Actor.id).all()
   return jsonify(
     {"success": True,
     "actors": actors
     })
+
+# @app.route('/actorsjson')
+# @requires_auth(permission='get:actors')
+# def actors(decoded_payload):
+#   actors = Actor.query.order_by(Actor.id).all()
+#   return jsonify(
+#     {"success": True,
+#     "actors": actors
+#     })
 
 @app.route('/actors/search', methods=['POST'])
 def search_actors():
