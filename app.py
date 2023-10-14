@@ -61,7 +61,7 @@ def callback():
 @app.route('/movies')
 @requires_auth(permission='get:movies')
 def movies(decoded_payload):
-  movies=Movie.query.order_by(Actor.id).all()
+  movies=Movie.query.order_by(Movie.id).all()
   if not movies:
         abort(404) 
   formatted_movies = [movie.short() for movie in movies]
@@ -77,7 +77,7 @@ def create_movies(decoded_payload):
     new_title = body.get('title')
     new_release_date = body.get('release_date')
     try:
-        actor = Actor(title=new_title, recipe=new_release_date)
+        movie = Movie(title=new_title, recipe=new_release_date)
         if new_title is None:
             return jsonify({"error": "New title not provided"}), 400
         if new_release_date is None:
@@ -103,27 +103,34 @@ def actors(decoded_payload):
      "actors" : formatted_actors
     })
 
-
-
-# @app.route('/actors', methods = ['POST'])
-# @requires_auth(permission='post:actor')
-# def create_actors(decoded_payload):
-#     body=request.get_json()
-#     new_title = body.get('title')
-#     new_recipe = body.get('recipe')
-#     try:
-#         actor = Actor(title=new_title, recipe=new_recipe)
-#         if new_title is None:
-#             return jsonify({"error": "New title not provided"}), 400
-#         if new_recipe is None:
-#             return jsonify({"error": "New recipe not provided"}), 400
-#         drink.insert()
-#         return jsonify({
-#             "success": True,
-#             "drinks":Drink.query.order_by(Drink.id).all()
-#         })
-#     except: 
-#         abort(422)
+@app.route('/actors', methods = ['POST'])
+@requires_auth(permission='post:actor')
+def create_actors(decoded_payload):
+    body=request.get_json()
+    new_name = body.get('name')
+    new_age = body.get('age')
+    new_gender = body.get('gender')
+    new_movie_id = body.get('movie_id')
+    try:
+        actor = Actor(name=new_name, age=new_age, gender=new_gender, movie_id=new_movie_id)
+        movies_id_validation = Movie.query.order_by(Movie.id).all()
+        if not movies_id_validation:
+            abort(400, description="No movies found, Validate the movie id")
+        if new_name is None:
+            return jsonify({"error": "New title not provided"}), 400
+        if new_age is None:
+            return jsonify({"error": "New recipe not provided"}), 400
+        if new_gender is None:
+            return jsonify({"error": "New gender not provided"}), 400
+        if new_age is None:
+            return jsonify({"error": "New recipe not provided"}), 400
+        actor.insert()
+        return jsonify({
+            "success": True,
+            "drinks":Actor.query.order_by(Actor.id).all()
+        })
+    except: 
+        abort(422)
 
 @app.errorhandler(404)
 def not_found_error(error):
