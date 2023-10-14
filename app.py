@@ -22,8 +22,6 @@ from models import setup_db
 from urllib.parse import quote_plus, urlencode
 import os
 
-from authlib.integrations.flask_client import OAuth
-
 AUTH0_DOMAIN = os.environ['AUTH0_DOMAIN']
 API_AUDIENCE = os.environ['API_AUDIENCE']
 CLIENT_ID = os.environ['CLIENT_ID']
