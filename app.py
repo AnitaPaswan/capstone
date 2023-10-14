@@ -57,8 +57,8 @@ def movies(decoded_payload):
   dataDb=Movie.query.all()
   try:
     drinks = Movie.query.order_by(Movie.id).all()
-    if len(drinks)==0:
-        abort(404)
+    if not movies:
+        return jsonify({"message": "No movies found"})
     return jsonify(
         {"success": True
           # "drinks": formated_drink
