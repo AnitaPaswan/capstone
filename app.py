@@ -148,6 +148,10 @@ def unauthorized(error):
 def server_error(error):
     return jsonify({"error": "INTERNAL SERVER ERROR", "message": "Internal server error."}), 500
 
+@app.errorhandler(403)
+def forbidden(error):
+    return jsonify({"error": "Permission denied"}), 403
+
 
 
 if __name__ == '__main__':
