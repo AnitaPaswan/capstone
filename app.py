@@ -135,9 +135,9 @@ def create_actors(decoded_payload):
     except: 
         abort(422)
 
-@app.route('/<int:id>', methods = ['PATCH'])
+@app.route('/actor/<int:id>', methods = ['PATCH'])
 @requires_auth(permission='patch:actor')
-def create_actors(decoded_payload):
+def edit_actor(decoded_payload):
     body=request.get_json()
     new_name = body.get('name')
     new_age = body.get('age')
@@ -166,6 +166,20 @@ def create_actors(decoded_payload):
             "drinks":formatted_actors
         })
     except: 
+        abort(422)
+@app.route('/actor/<int:id>', methods = ['DELETE'])
+@requires_auth(permission='delete:actor')
+def delete_actor_id(decoded_payload, id):
+    try:
+        actor = Actor.query.filter(Actor.id==id).one_or_none()
+        if actor is None:
+            abort(404)
+        actor.delete()
+        return jsonify({
+            "success": True,
+            "deleted_id":id
+        })
+    except:
         abort(422)
 
 @app.errorhandler(404)
