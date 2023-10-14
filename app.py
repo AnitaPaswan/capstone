@@ -132,7 +132,7 @@ def create_actors(decoded_payload):
     except: 
         abort(422)
 
-@app.route('/actor', methods = ['PATCH'])
+@app.route('/<int:id>', methods = ['PATCH'])
 @requires_auth(permission='patch:actor')
 def create_actors(decoded_payload):
     body=request.get_json()
@@ -141,6 +141,9 @@ def create_actors(decoded_payload):
     new_gender = body.get('gender')
     new_movie_id = body.get('movie_id')
     try:
+        actor = Actor.query.filter(Actor.id==id).one_or_none()
+        if actor is None:
+            return jsonify({"error": "error actor id is not found"}), 404
         actor = Actor(name=new_name, age=new_age, gender=new_gender, movie_id=new_movie_id)
         movies_id_validation = Movie.query.order_by(Movie.id).all()
         if not movies_id_validation:
@@ -154,9 +157,10 @@ def create_actors(decoded_payload):
         if new_age is None:
             return jsonify({"error": "New recipe not provided"}), 400
         actor.insert()
+        formatted_actors = [actor.short() for actor in actors]
         return jsonify({
             "success": True,
-            "drinks":Actor.query.order_by(Actor.id).all()
+            "drinks":formatted_actors
         })
     except: 
         abort(422)
