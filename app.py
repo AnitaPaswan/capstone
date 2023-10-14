@@ -83,6 +83,10 @@ def actors(decoded_payload):
 def not_found_error(error):
     return jsonify({"error": "Not Found", "message": "The requested resource was not found."}), 404
 
+@app.errorhandler(401)
+def unauthorized(error):
+    return jsonify({"error": "unauthorized", "message": "The user is not allowed to perform this action."}), 401
+
 @app.errorhandler(500)
 def server_error(error):
     return jsonify({"error": "INTERNAL SERVER ERROR", "message": "Internal server error."}), 500
