@@ -23,16 +23,7 @@ def setup_db(app, database_path=database_path):
     db.init_app(app)
     db.create_all()
 
-def db_drop_and_create_all():
-    db.drop_all()
-    db.create_all()
-    # add one demo row which is helping in POSTMAN test
-    movie = Movie(
-        id='1',
-        title='Capstone',
-        release_date='22/20/2020'
-    )
-    movie.insert()
+
 #----------------------------------------------------------------------------#
 # Models.
 #----------------------------------------------------------------------------#
@@ -49,44 +40,12 @@ class Actor(db.Model):
     # Define the relationship
     movie = db.relationship('Movie')
     def __repr__(self):
-        return json.dumps(self.short())
+        return f'<actor ID: {self.id}, name: {self.name}, age: {self.age}, gender: {self.gender}>'
     
-    def __init__(self, name, age, gender):
-        self.name = name
-        self.age = age
-        self.gender = gender
-        self.movies = []
-
-    def add_movie(self, movie):
-        self.movies.append(movie)
-
-    def short(self):
-        movie_list = [movie.title for movie in self.movies]
-        return {
-            "name": self.name,
-            "age": self.age,
-            "movies": movie_list
-        }
 class Movie(db.Model):
     __tablename__ = 'movie'
     id = db.Column(db.Integer().with_variant(db.Integer, "sqlite"), primary_key=True)
     title = db.Column(db.String)
     release_date = db.Column(db.DateTime)
-
-    def short(self):
-        return {
-            'id': self.id,
-            'title': self.title,
-            'release_date': self.release_date
-        }
     def __repr__(self):
-        return json.dumps(self.short())
-    
-    def __init__(self, id, title, release_date):
-        self.id = id
-        self.title = title
-        self.release_date = release_date
-
-    def insert(self):
-        db.session.add(self)
-        db.session.commit()
+        return f'<movie ID: {self.id}, title: {self.title}, release_date: {self.release_date}>'
