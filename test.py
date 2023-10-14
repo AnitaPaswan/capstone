@@ -8,7 +8,7 @@ class TestActorAPI(unittest.TestCase):
     def test_post_actor(self):
         actor_data = {
             "name": "John Doe",
-            "age": 35,
+            "age": "35",
             "gender": "Male",
             "movie_id": 1
         }
@@ -40,7 +40,7 @@ class TestActorAPI(unittest.TestCase):
         incomplete_data = {
             "name": "John Doe",
             "age": "35"
-            # Missing the "gender" field, which is required
+            # Missing the "gender" and "movie_id" field, which is required
         }
         response = requests.post(self.base_url, json=incomplete_data)
         self.assertEqual(response.status_code, 400)  
