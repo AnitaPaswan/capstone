@@ -113,27 +113,24 @@ def create_actors(decoded_payload):
     new_age = body.get('age')
     new_gender = body.get('gender')
     new_movie_id = body.get('movie_id')
-    try:
-        actor = Actor(name=new_name, age=new_age, gender=new_gender, movie_id=new_movie_id)
-        movies_id_validation = Movie.query.order_by(Movie.id).all()
-        if not movies_id_validation:
-            abort(400, description="No movies found, Validate the movie id")
-        if new_name is None:
-            return jsonify({"error": "New title not provided"}), 400
-        if new_age is None:
-            return jsonify({"error": "New recipe not provided"}), 400
-        if new_gender is None:
-            return jsonify({"error": "New gender not provided"}), 400
-        if new_age is None:
-            return jsonify({"error": "New recipe not provided"}), 400
-        actor.insert()
-        formatted_actors = [actor.short() for actor in actors]
-        return jsonify({
-            "success": True,
-            "drinks":formatted_actors
-        })
-    except: 
-        abort(422)
+    actor = Actor(name=new_name, age=new_age, gender=new_gender, movie_id=new_movie_id)
+    movies_id_validation = Movie.query.order_by(Movie.id).all()
+    if not movies_id_validation:
+        abort(400, description="No movies found, Validate the movie id")
+    if new_name is None:
+        return jsonify({"error": "New title not provided"}), 400
+    if new_age is None:
+        return jsonify({"error": "New recipe not provided"}), 400
+    if new_gender is None:
+        return jsonify({"error": "New gender not provided"}), 400
+    if new_age is None:
+        return jsonify({"error": "New recipe not provided"}), 400
+    actor.insert()
+    formatted_actors = [actor.short() for actor in actors]
+    return jsonify({
+        "success": True,
+        "drinks":formatted_actors
+    })
 
 @app.route('/actor/<int:id>', methods = ['PATCH'])
 @requires_auth(permission='patch:actor')
