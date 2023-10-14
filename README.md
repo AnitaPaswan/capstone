@@ -40,8 +40,6 @@ pip install Flask-Migrate
   ├── README.md
   ├── app.py *** the main driver of the app. Includes your SQLAlchemy models.
                     "python app.py" to run after installing dependencies
-  ├── error.log
-  ├── forms.py *** Your forms
   ├── requirements.txt *** The dependencies we need to install with "pip3 install -r requirements.txt"
   ├── static
   │   ├── css 
@@ -50,10 +48,8 @@ pip install Flask-Migrate
   │   ├── img
   │   └── js
   └── templates
-      ├── errors
-      ├── forms
       ├── layouts
-      └── pages
+      ├── pages
   ```
 
 Overall:

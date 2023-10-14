@@ -69,9 +69,10 @@ def movies(decoded_payload):
 @requires_auth(permission='get:actors')
 def actors(decoded_payload):
   actors = Actor.query.order_by(Actor.id).all()
+  formatted_actors = [actor.short() for actor in actors]
   return jsonify(
     {"success": True,
-     "actors" : actors
+     "actors" : formatted_actors
     })
 
 @app.errorhandler(404)
