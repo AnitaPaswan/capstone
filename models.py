@@ -27,12 +27,12 @@ def db_drop_and_create_all():
     db.drop_all()
     db.create_all()
     # add one demo row which is helping in POSTMAN test
-    movies = Movie(
+    movie = Movie(
         id='1',
         title='Capstone',
         release_date='22/20/2020'
     )
-    movies.insert()
+    movie.insert()
 #----------------------------------------------------------------------------#
 # Models.
 #----------------------------------------------------------------------------#
@@ -86,3 +86,7 @@ class Movie(db.Model):
         self.id = id
         self.title = title
         self.release_date = release_date
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
