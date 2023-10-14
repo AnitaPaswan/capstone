@@ -60,11 +60,12 @@ def actors(decoded_payload):
    try:
     actors = Actor.query.order_by(Actor.id).all()
     formated_actor = {actor.short() for actor in actors}
+    list_of_tuples = [tuple(d.items()) for d in formated_actor]
     if len(formated_actor)==0:
         abort(404)
     return jsonify(
         {"success": True,
-          "drinks": formated_actor
+          "drinks": list_of_tuples
         })
    except:
     print(sys.exc_info())
@@ -105,6 +106,7 @@ def actors(decoded_payload):
 def movies(decoded_payload):
    try:
       movies = Movie.query.order_by(Movie.id).all()
+      #list_of_tuples = [tuple(d.items()) for d in list_of_dicts]
       formated_movie = {movie.short() for movie in movies}
       if len(formated_movie)==0:
          abort(404)

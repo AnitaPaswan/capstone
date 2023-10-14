@@ -21,9 +21,17 @@ def setup_db(app, database_path=database_path):
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
     db.app = app
     db.init_app(app)
+    db.db_drop_and_create_all()
+
+def db_drop_and_create_all():
+    db.drop_all()
     db.create_all()
-
-
+    # add one demo row which is helping in POSTMAN test
+    movie = Movie(
+        title='water',
+        release_date='22/20/2020'
+    )
+    movie.insert()
 #----------------------------------------------------------------------------#
 # Models.
 #----------------------------------------------------------------------------#
