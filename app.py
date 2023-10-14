@@ -70,7 +70,8 @@ def movies(decoded_payload):
 def actors(decoded_payload):
   actors = Actor.query.order_by(Actor.id).all()
   return jsonify(
-    {"success": True
+    {"success": True,
+     "actors" : actors
     })
 
 @app.errorhandler(404)
