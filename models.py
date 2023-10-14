@@ -40,7 +40,7 @@ class Actor(db.Model):
     # Define the relationship
     movie = db.relationship('Movie')
     def __repr__(self):
-        return f'<actor ID: {self.id}, name: {self.name}, age: {self.age}, gender: {self.gender}>'
+        return json.dumps(self.short())
     
     def short(self):
         movie_data = json.loads(self.movie_id)
