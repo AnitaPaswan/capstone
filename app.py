@@ -104,17 +104,20 @@ def actors(decoded_payload):
 @requires_auth(permission='get:movies')
 def movies(decoded_payload):
    try:
-    movies = Movie.query.order_by(Movie.id).all()
-    formated_movie = {movie.short() for movie in movies}
-    if len(formated_movie)==0:
-        abort(404)
-    return jsonify(
+      movies = Movie.query.order_by(Movie.id).all()
+      formated_movie = {movie.short() for movie in movies}
+      if len(formated_movie)==0:
+         abort(404)
+         return jsonify(
         {"success": True,
           "movies": formated_movie
         })
-   except:
-    print(sys.exc_info())
+   except Exception as e:
+    print(e)  # Print the exception for debugging purposes
     abort(422)
+    
+    
+
 
 # @app.route('/actors/search', methods=['POST'])
 # def search_actors():
