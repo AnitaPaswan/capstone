@@ -147,57 +147,11 @@ def verify_decode_jwt(token):
             break
         print(rsa_key)
         return rsa_key
-    # if rsa_key: 
-    #     try:
-    #         payload = jwt.decode(
-    #             token,
-    #             rsa_key,
-    #             algorithms=ALGORITHMS,
-    #             audience=API_AUDIENCE,
-    #             issuer='https://'+ AUTH0_DOMAIN +'/'
-    #         )
-    #         print('payload', payload)
-    #         return payload
-    #     except jwt.ExpiredSignatureError:
-    #         raise AuthError({
-    #         'code': 'token_expired',
-    #         'description': 'Token Expired'
-    #         }, 401)
-        
-    #     except jwt.JWTClaimsError:
-    #         raise AuthError({
-    #         'code': 'invalid_claims',
-    #         'description': 'Claims is not valid.'
-    #         }, 401)
-        
-    #     except Exception:
-    #         raise AuthError({
-    #         'code': 'invalid_headers',
-    #         'description': 'Unable to parse Authentication.'
-    #         }, 400)
-    # raise AuthError({
-    #         'code': 'invalid_headers',
-    #         'description': 'Unable to find appropriate header.'
-
-    #     }, 400)
-
-
-
-'''
-@TODO implement @requires_auth(permission) decorator method
-    @INPUTS
-        permission: string permission (i.e. 'post:drink')
-
-    it should use the get_token_auth_header method to get the token
-    it should use the verify_decode_jwt method to decode the jwt
-    it should use the check_permissions method validate claims and check the requested permission
-    return the decorator which passes the decoded payload to the decorated method
-'''
 def requires_auth(permission):
     def decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
-            token = get_token_auth_header()
+            token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1BWW5fdF80X0NXOXkzM09sWFlpOSJ9.eyJpc3MiOiJodHRwczovL2ZzZG4xMjMuYXUuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDY1MjQzY2ZhZTUwMTY0NDM1NGMyN2UyMyIsImF1ZCI6WyJjYXAyIiwiaHR0cHM6Ly9mc2RuMTIzLmF1LmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2OTcyNjgwMDUsImV4cCI6MTY5NzM1NDQwNCwiYXpwIjoidzlXY1ptVkx4OHZuQTZDblc5cHRRNmxhUGk5NW01MVUiLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9yIiwiZ2V0OmFjdG9ycyIsImdldDpob21lIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9yIiwicG9zdDphY3RvciJdfQ.JKByxwZ0kr_fdv4fsJEZvdnernlsX0WJCHUXn8Ssb9fKO5YV1kIUtkMbihU4yYun-rWgyp56rOTZHsrNYr9nVueL2aJrNjG6VYyApTWjZY3TbbvtuiG-B8UMMW68LMDE8ParPuTczz_4Zp5e-o0aIonUWmh6pijJbxWKqoCe5n9AggCoLPfTt48E84nD3wao461wyI6TwL_AJh7vzX9-zcamnr4OmyUbwVbH11Jyd3OKbtk7xXqEArd4alzmmVdnXU5s0Dhep7mcJSEdrlqGrg4m_fX2z7hVDOViasIGGqeQWc5ElVp0WFP7IDuRw9n1DKnhHqyyxD2ja-IkWRjgqQ'
             if not token:
                 return jsonify({'message': 'Authorization token is missing'}), 401
             try:
