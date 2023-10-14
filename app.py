@@ -14,7 +14,7 @@ from flask_wtf import Form
 from forms import *
 from flask_migrate import Migrate
 import sys
-from models import Movie, Show, Actor, db
+from models import Movie, Actor, db
 from datetime import datetime,timedelta
 from auth import AuthError, requires_auth
 from flask_cors import CORS
@@ -55,7 +55,18 @@ def callback():
 @requires_auth(permission='get:movies')
 def movies(decoded_payload):
   dataDb=Movie.query.all()
-  return render_template('pages/movies.html', areas=dataDb)
+  try:
+    drinks = Movie.query.order_by(Movie.id).all()
+    if len(drinks)==0:
+        abort(404)
+    return jsonify(
+        {"success": True
+          # "drinks": formated_drink
+        })
+  except:
+    print(sys.exc_info())
+    abort(422)
+  # return render_template('pages/movies.html', areas=dataDb)
 
 # Anita-GET movie code for create movie end
 
