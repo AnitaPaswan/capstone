@@ -80,7 +80,7 @@ def actors(decoded_payload):
         abort(404)
     return jsonify(
         {"success": True,
-          "drinks": formated_actor
+          "actors": formated_actor
         })
    except:
     print(sys.exc_info())
