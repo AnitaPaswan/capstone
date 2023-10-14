@@ -63,7 +63,14 @@ def callback():
     state = session.pop('state', '')  # Retrieve and remove the state parameter from the session
     token = oauth.auth0.authorize_access_token()
 
-    if state != request.args.get('state'):
+    stored_state = session.get("state")
+    print(stored_state)
+
+    # Retrieve the state received in the callback
+    received_state = request.args.get("state")
+    print(received_state,"+++++++++++++++received_state+++++++++++++")
+
+    if stored_state != received_state:
         # Handle a mismatching state error
         return "Mismatching state error"
 
