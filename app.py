@@ -132,6 +132,35 @@ def create_actors(decoded_payload):
     except: 
         abort(422)
 
+@app.route('/actor', methods = ['PATCH'])
+@requires_auth(permission='patch:actor')
+def create_actors(decoded_payload):
+    body=request.get_json()
+    new_name = body.get('name')
+    new_age = body.get('age')
+    new_gender = body.get('gender')
+    new_movie_id = body.get('movie_id')
+    try:
+        actor = Actor(name=new_name, age=new_age, gender=new_gender, movie_id=new_movie_id)
+        movies_id_validation = Movie.query.order_by(Movie.id).all()
+        if not movies_id_validation:
+            abort(400, description="No movies found, Validate the movie id")
+        if new_name is None:
+            return jsonify({"error": "New title not provided"}), 400
+        if new_age is None:
+            return jsonify({"error": "New recipe not provided"}), 400
+        if new_gender is None:
+            return jsonify({"error": "New gender not provided"}), 400
+        if new_age is None:
+            return jsonify({"error": "New recipe not provided"}), 400
+        actor.insert()
+        return jsonify({
+            "success": True,
+            "drinks":Actor.query.order_by(Actor.id).all()
+        })
+    except: 
+        abort(422)
+
 @app.errorhandler(404)
 def not_found_error(error):
     return jsonify({"error": "Not Found", "message": "The requested resource was not found."}), 404
@@ -140,17 +169,15 @@ def not_found_error(error):
 def bad_request(error):
     return jsonify({"error": "Bad Request", "message": "Provided request body is not correct"}), 404
 
-@app.errorhandler(401)
-def unauthorized(error):
-    return jsonify({"error": "unauthorized", "message": "The user is not allowed to perform this action."}), 401
-
 @app.errorhandler(500)
 def server_error(error):
     return jsonify({"error": "INTERNAL SERVER ERROR", "message": "Internal server error."}), 500
 
-@app.errorhandler(403)
-def forbidden(error):
-    return jsonify({"error": "Permission denied"}), 403
+@app.errorhandler(AuthError)
+def handled_auth_error(ex):
+    response = jsonify(ex.error)
+    response.status_code = ex.status_code
+    return response
 
 
 
