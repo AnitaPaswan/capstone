@@ -39,15 +39,17 @@ class Actor(db.Model):
 
     # Define the relationship
     movie = db.relationship('Movie')
-    def __init__(self, name, age, gender):
+    def __init__(self, name, age, gender, movie_id):
         self.name = name
         self.age = age
-        self.gender = gender
+        self.gender = gender,
+        self.movie_id = movie_id
     def short(self):
         return {
             'name': self.name,
             'age': self.age,
-            'gender': self.gender
+            'gender': self.gender,
+            'movie_id': self.movie_id
         }
     
 class Movie(db.Model):
@@ -55,5 +57,13 @@ class Movie(db.Model):
     id = db.Column(db.Integer().with_variant(db.Integer, "sqlite"), primary_key=True)
     title = db.Column(db.String)
     release_date = db.Column(db.DateTime)
-    def __repr__(self):
-        return f'<movie ID: {self.id}, title: {self.title}, release_date: {self.release_date}>'
+
+    def __init__(self, title, release_date):
+        self.title = title
+        self.release_date = release_date
+
+    def short(self):
+        return {
+            'title': self.title,
+            'release_date': self.release_date
+        }

@@ -61,8 +61,12 @@ def callback():
 @app.route('/movies')
 @requires_auth(permission='get:movies')
 def movies(decoded_payload):
-  dataDb=Movie.query.all()
-  return render_template('pages/movies.html', areas=dataDb)
+  movies=Movie.query.order_by(Actor.id).all()
+  formatted_actors = [movie.short() for movie in movies]
+  return jsonify(
+    {"success": True,
+     "actors" : formatted_actors
+    })
 
 
 @app.route('/actors')
