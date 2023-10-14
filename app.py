@@ -36,152 +36,25 @@ migrate = Migrate(app, db)
 setup_db(app)
 CORS(app)
 
-oauth = OAuth(app)
-oauth.register(
-    name="auth0",
-    client_id=CLIENT_ID,
-    client_secret=CLIENT_SECRET,
-    client_kwargs={"scope": "openid profile email"},
-    authorize_url=f'https://{AUTH0_DOMAIN}/authorize',
-    authorize_params=None,
-    authorize_params_callback=None,
-    authorize_prompt_callback=None,
-    authorize_response=None,
-    fetch_token=f'https://{AUTH0_DOMAIN}/oauth/token',
-    client_cls=None,
-    server_metadata_url=f'https://{AUTH0_DOMAIN}/.well-known/openid-configuration',
-)
-
-# Controllers API
-@app.route("/")
-def index():
-    return render_template(
-        "welcome.html",
-        session=session.get("user"),
-        pretty=json.dumps(session.get("user"), indent=4),
-    )
-
-
-@app.route("/callback", methods=["GET", "POST"])
-def callback():
-    token = oauth.auth0.authorize_access_token()
-    session["user"] = token
-    return redirect("/")
-
-
-@app.route("/login")
-def login():
-    return oauth.auth0.authorize_redirect(
-        redirect_uri=url_for("callback", _external=True)
-    )
-
-
-@app.route("/logout")
-def logout():
-    session.clear()
-    return redirect(
-        "https://" + AUTH0_DOMAIN
-        + "/v2/logout?"
-        + urlencode(
-            {
-                "returnTo": url_for("home", _external=True),
-                "client_id": CLIENT_ID,
-            },
-            quote_via=quote_plus,
-        )
-    )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-###############################
-# @app.route("/callback", methods=["GET", "POST"])
-# def callback():
-#       token = oauth.auth0.authorize_access_token()
-#       session["user"] = token
-#       return render_template("pages/home.html")
-
-# @app.route("/callback", methods=["GET", "POST"])
-# def callback():
-#     state = session.pop('state', '')  # Retrieve and remove the state parameter from the session
-#     token = oauth.auth0.authorize_access_token()
-
-#     stored_state = session.get("state")
-#     print(stored_state)
-
-#     # Retrieve the state received in the callback
-#     received_state = request.args.get("state")
-#     print(received_state,"+++++++++++++++received_state+++++++++++++")
-
-#     if stored_state != received_state:
-#         # Handle a mismatching state error
-#         return "Mismatching state error"
-
-#     if token is None:
-#         # Handle the case where access token retrieval failed
-#         return "Access token retrieval failed"
-
-#     session["user"] = token
-#     return redirect("/")
-
-
-# @app.route("/logout")
-# def logout():
-#     session.clear()
-#     return redirect(
-#         "https://" + AUTH0_DOMAIN
-#         + "/v2/logout?"
-#         + urlencode(
-#             {
-#                 "returnTo": url_for("home", _external=True),
-#                 "client_id": CLIENT_ID,
-#             },
-#             quote_via=quote_plus,
-#         )
-#     )
-
-# @app.route("/")
-# def login():
-#     return render_template("pages/login.html", session=session.get('user'), pretty=json.dumps(session.get('user'), indent=4))
-
-# @app.route("/login")
-# def login():
-#     return oauth.auth0.authorize_redirect(
-#         redirect_uri=url_for("homelogin", _external=True)
-#     )
-###################################
-
 # @app.route('/homelogin')
 # def homelogin():
 #   return render_template('pages/login.html')
 
 
-# @app.route('/login')
-# @cross_origin(headers = ["Content-Type", "Authorization"])
-# def login():
-#   return oauth.auth0.authorize_redirect(redirect_uri=url_for("start_login", _external=True))
+@app.route('/login')
+@cross_origin(headers = ["Content-Type", "Authorization"])
+def login():
+  return render_template('pages/login.html')
 
-# @app.route('/home')
-# @cross_origin(headers = ["Content-Type", "Authorization"])
-# def index():
-#   return render_template('pages/home.html')
+@app.route('/home')
+@cross_origin(headers = ["Content-Type", "Authorization"])
+def index():
+  return render_template('pages/home.html')
 
-# @app.route('/callback')
-# @cross_origin(headers = ["Content-Type", "Authorization"])
-# def callback():
-#   token = oauth.auth0.authorize_access_token()
-#   session["user"] = token
-#   return redirect(url_for('index'))
+@app.route('/callback')
+@cross_origin(headers = ["Content-Type", "Authorization"])
+def callback():
+  return redirect(url_for('index'))
 
 # @app.route("/callback", methods=["GET", "POST"])
 # def callback():
