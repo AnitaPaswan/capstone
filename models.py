@@ -36,6 +36,7 @@ class Actor(db.Model):
     age = db.Column(db.String(120))
     gender = db.Column(db.String(120))
     movie_id = Column(db.Integer, db.ForeignKey('movie.id'))
+    movie_detail = recipe = Column(String(180), nullable=False)
 
     # Define the relationship
     movie = db.relationship('Movie')
@@ -43,7 +44,7 @@ class Actor(db.Model):
         return json.dumps(self.short())
     
     def short(self):
-        movie_data = json.loads(self.movie_id)
+        movie_data = json.loads(self.movie_detail)
         # Extract specific information from each movie and store as a list of dictionaries
         short_name = [{'title': movie['title'], 'release_date': movie['release_date']} for movie in movie_data]
         return {
@@ -51,7 +52,7 @@ class Actor(db.Model):
             'name': self.name,
             'age': self.age,
             'gender': self.gender,
-            'recipe': short_name  # Include the list of movie details
+            'movie_detail': short_name  # Include the list of movie details
         }
     
 class Movie(db.Model):
