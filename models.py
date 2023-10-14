@@ -43,14 +43,15 @@ class Actor(db.Model):
         return f'<actor ID: {self.id}, name: {self.name}, age: {self.age}, gender: {self.gender}>'
     
     def short(self):
-        print(json.loads(self.movie_id))
-        short_name = [{'title': r['title'], 'release_date': r['release_date']} for r in json.loads(self.movie_id)]
+        movie_data = json.loads(self.movie_id)
+        # Extract specific information from each movie and store as a list of dictionaries
+        short_name = [{'title': movie['title'], 'release_date': movie['release_date']} for movie in movie_data]
         return {
             'id': self.id,
             'name': self.name,
             'age': self.age,
             'gender': self.gender,
-            'recipe': short_name
+            'recipe': short_name  # Include the list of movie details
         }
     
 class Movie(db.Model):
