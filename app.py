@@ -59,13 +59,13 @@ def callback():
 def actors(decoded_payload):
    try:
     actors = Actor.query.order_by(Actor.id).all()
-    formated_actor = {actor.short() for actor in actors}
-    list_of_tuples = [tuple(d.items()) for d in formated_actor]
-    if len(formated_actor)==0:
+    #formated_actor = {actor.short() for actor in actors}
+   # list_of_tuples = [tuple(d.items()) for d in formated_actor]
+    if len(actors)==0:
         abort(404)
     return jsonify(
         {"success": True,
-          "drinks": list_of_tuples
+          "drinks": actors
         })
    except:
     print(sys.exc_info())
