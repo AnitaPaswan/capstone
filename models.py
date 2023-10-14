@@ -40,12 +40,14 @@ class Actor(db.Model):
     # Define the relationship
     movie = db.relationship('Movie')
     def __init__(self, name, age, gender, movie_id):
+        self.id = id
         self.name = name
         self.age = age
         self.gender = gender,
         self.movie_id = movie_id
     def short(self):
         return {
+            'id' : self.id,
             'name': self.name,
             'age': self.age,
             'gender': self.gender,
@@ -54,7 +56,7 @@ class Actor(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
-        
+
     def insert(self):
         db.session.add(self)
         db.session.commit()
@@ -66,11 +68,13 @@ class Movie(db.Model):
     release_date = db.Column(db.DateTime)
 
     def __init__(self, title, release_date):
+        self.id= id
         self.title = title
         self.release_date = release_date
 
     def short(self):
         return {
+            'id':self.id,
             'title': self.title,
             'release_date': self.release_date
         }
