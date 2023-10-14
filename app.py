@@ -98,7 +98,7 @@ def logout():
     )
 
 @app.route("/")
-def welcome():
+def index():
     return render_template("pages/login.html", session=session.get('user'), pretty=json.dumps(session.get('user'), indent=4))
 
 # @app.route("/login")
