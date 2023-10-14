@@ -70,17 +70,17 @@ def actors(decoded_payload):
     print(sys.exc_info())
     abort(422)
 
-@app.route('/actors')
-@requires_auth(permission='get:actors')
-def actors(decoded_payload):
+@app.route('/movies')
+@requires_auth(permission='get:movies')
+def movies(decoded_payload):
    try:
-    actors = Actor.query.order_by(Actor.id).all()
-    formated_actor = {actor.short() for actor in actors}
-    if len(formated_actor)==0:
+    movies = Movie.query.order_by(Movie.id).all()
+    formated_movie = {actor.short() for actor in movies}
+    if len(formated_movie)==0:
         abort(404)
     return jsonify(
         {"success": True,
-          "actors": formated_actor
+          "movies": formated_movie
         })
    except:
     print(sys.exc_info())
