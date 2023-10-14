@@ -107,12 +107,12 @@ def movies(decoded_payload):
    try:
       movies = Movie.query.order_by(Movie.id).all()
       #list_of_tuples = [tuple(d.items()) for d in list_of_dicts]
-      formated_movie = {movie.short() for movie in movies}
-      if len(formated_movie)==0:
+      #formated_movie = {movie.short() for movie in movies}
+      if len(movies)==0:
          abort(404)
       return jsonify(
         {"success": True,
-          "movies": formated_movie
+          "movies": movies
         })
    except Exception as e:
     print(e)  # Print the exception for debugging purposes
