@@ -92,11 +92,14 @@ Navigate to project homepage https://render-capstone-example-5cq7.onrender.com w
 Logig to below provided cretential
 
 7. User Details
-   ##  Casting Director
+
+   ##  Casting Director //can have all the permission
 ------------------------------------------------------------
 Email : castingDirector@gmail.com 
 password : Test1234
-   ##  Casting Assistant
+
+
+   ##  Casting Assistant //can only view actors and movies 
 ------------------------------------------------------------
 Email : castingassistant@gmail.com 
 password : Test1234
@@ -104,7 +107,7 @@ password : Test1234
 
 # Sample jwt for Casting Director who has all the access:
 # Copy the access token from url or from below and paste it in Authorization header of postman
-eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1BWW5fdF80X0NXOXkzM09sWFlpOSJ9.eyJpc3MiOiJodHRwczovL2ZzZG4xMjMuYXUuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDY1MjQzY2ZhZTUwMTY0NDM1NGMyN2UyMyIsImF1ZCI6WyJjYXAyIiwiaHR0cHM6Ly9mc2RuMTIzLmF1LmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2OTcyNjgwMDUsImV4cCI6MTY5NzM1NDQwNCwiYXpwIjoidzlXY1ptVkx4OHZuQTZDblc5cHRRNmxhUGk5NW01MVUiLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9yIiwiZ2V0OmFjdG9ycyIsImdldDpob21lIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9yIiwicG9zdDphY3RvciJdfQ.JKByxwZ0kr_fdv4fsJEZvdnernlsX0WJCHUXn8Ssb9fKO5YV1kIUtkMbihU4yYun-rWgyp56rOTZHsrNYr9nVueL2aJrNjG6VYyApTWjZY3TbbvtuiG-B8UMMW68LMDE8ParPuTczz_4Zp5e-o0aIonUWmh6pijJbxWKqoCe5n9AggCoLPfTt48E84nD3wao461wyI6TwL_AJh7vzX9-zcamnr4OmyUbwVbH11Jyd3OKbtk7xXqEArd4alzmmVdnXU5s0Dhep7mcJSEdrlqGrg4m_fX2z7hVDOViasIGGqeQWc5ElVp0WFP7IDuRw9n1DKnhHqyyxD2ja-IkWRjgqQ
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1BWW5fdF80X0NXOXkzM09sWFlpOSJ9.eyJpc3MiOiJodHRwczovL2ZzZG4xMjMuYXUuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDY1MjQzY2ZhZTUwMTY0NDM1NGMyN2UyMyIsImF1ZCI6WyJjYXAyIiwiaHR0cHM6Ly9mc2RuMTIzLmF1LmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2OTcyODU1MDEsImV4cCI6MTY5NzM3MTkwMCwiYXpwIjoidzlXY1ptVkx4OHZuQTZDblc5cHRRNmxhUGk5NW01MVUiLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9yIiwiZ2V0OmFjdG9ycyIsImdldDpob21lIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9yIiwicG9zdDphY3RvciIsInBvc3Q6bW92aWUiXX0.HB1KVhiVnWaNwiHzfPH4Rypbho0IFZGs3DZBfFNqddntsuhUh_nXngyYTrL4M4UzLTF4gsaeXujHcjIfJ-ojRfpyrWeF2Iy5XNhI5XjypmKNWuMKDGLAqqF4Rz_t51ZsIGOCM1DDcl6QIB6Or0Bc4wzEcgVMFnrxeX2tG48mwnOmXoUkT4bz9jqlNbmCo0tT0KOip82RXe5WZ_syn_ENTwn951oy4gzypQIUt_kdDvIZcfq7og0PzMPBMoWTSHKa_4YvMDWd-11M9fN9Q5pWDFddJUcxI28KocSKGmCQGVUVAuFi8gyecvge08N-T6bSZ5_s0ZoKYYQpApHokevBpw
 
 # Endpoints:
 GET /actors and /movies
