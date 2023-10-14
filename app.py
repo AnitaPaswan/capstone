@@ -83,9 +83,11 @@ def create_movies(decoded_payload):
         if new_release_date is None:
             return jsonify({"error": "New release_date not provided"}), 400
         movie.insert()
+        movies=Movie.query.order_by(Movie.id).all()
+        formatted_movies = [movie.short() for movie in movies]
         return jsonify({
             "success": True,
-            "movies":Movie.query.order_by(Movie.id).all()
+            "movies":formatted_movies
         })
     except: 
         abort(422)
@@ -125,9 +127,10 @@ def create_actors(decoded_payload):
         if new_age is None:
             return jsonify({"error": "New recipe not provided"}), 400
         actor.insert()
+        formatted_actors = [actor.short() for actor in actors]
         return jsonify({
             "success": True,
-            "drinks":Actor.query.order_by(Actor.id).all()
+            "drinks":formatted_actors
         })
     except: 
         abort(422)
