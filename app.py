@@ -56,43 +56,21 @@ def index():
 def callback():
   return redirect(url_for('index'))
 
-# @app.route("/callback", methods=["GET", "POST"])
-# def callback():
-#     token = oauth.auth0.authorize_access_token()
-#     session["user"] = token
-#     return redirect("/")
-
-
-# @app.route('/actors/<actor_id>/delete', methods=['POST'])
-# @requires_auth(permission='delete:actor')
-# def delete_actor(decoded_payload, actor_id):
-#   error = False
-#   try:
-#     record_to_change = Actor.query.get(actor_id)
-#     if record_to_change:
-#       db.session.delete(record_to_change)
-#       db.session.commit()
-#       remaining_item = Actor.query.filter(Actor.id > actor_id).all()
-#       for item in remaining_item:
-#         item.id -= 1
-#       db.session.commit()
-#   except:
-#      db.session.rollback()
-#      error = True
-#   finally:
-#       db.session.close()
-#   if error:
-#       abort(500)
-#   else:
-#      actor = Actor.query.all()
-#      return render_template('pages/actors.html.html', actor=actor)
-
 @app.route('/actors')
 @requires_auth(permission='get:actors')
 def actors(decoded_payload):
-  data = []
-  actor = Actor.query.all()
-  return render_template('pages/actors.html', actors=actor)
+   try:
+    actors = Actor.query.order_by(Actor.id).all()
+    formated_actor = {actor.short() for actor in actors}
+    if len(formated_actor)==0:
+        abort(404)
+    return jsonify(
+        {"success": True,
+          "drinks": formated_actor
+        })
+   except:
+    print(sys.exc_info())
+    abort(422)
 
 @app.route('/actors/search', methods=['POST'])
 def search_actors():
