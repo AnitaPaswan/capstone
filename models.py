@@ -28,7 +28,8 @@ def db_drop_and_create_all():
     db.create_all()
     # add one demo row which is helping in POSTMAN test
     movie = Movie(
-        title='water',
+        id='1',
+        title='Capstone',
         release_date='22/20/2020'
     )
     movie.insert()
