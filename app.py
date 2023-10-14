@@ -170,17 +170,14 @@ def edit_actor(decoded_payload):
 @app.route('/actor/<int:id>', methods = ['DELETE'])
 @requires_auth(permission='delete:actor')
 def delete_actor_id(decoded_payload, id):
-    try:
-        actor = Actor.query.filter(Actor.id==id).one_or_none()
-        if actor is None:
-            abort(404)
-        actor.delete()
-        return jsonify({
-            "success": True,
-            "deleted_id":id
-        })
-    except:
-        abort(422)
+  actor = Actor.query.filter(Actor.id==id).one_or_none()
+  if actor is None:
+      abort(404)
+      actor.delete()
+      return jsonify({
+          "success": True,
+          "deleted_id":id
+          })
 
 @app.errorhandler(404)
 def not_found_error(error):
