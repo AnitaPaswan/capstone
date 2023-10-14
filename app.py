@@ -70,6 +70,36 @@ def actors(decoded_payload):
     print(sys.exc_info())
     abort(422)
 
+# @app.route('/actor', methods = ['POST'])
+# @requires_auth(permission='post:actor')
+# def create_drinks(decoded_payload):
+#     body=request.get_json()
+#     new_title = body.get('name')
+#     new_recipe = body.get('age')
+#      new_recipe = body.get('age')
+#      new_recipe = body.get('movie_id')
+
+#     movie_id = form.movie_id.data
+#   isMovieValid = Movie.query.filter_by(id=movie_id).count()
+#   if(isMovieValid <=0):
+#     flash('An error occurred.Please check movie id') 
+#     abort(401)
+#   else: 
+#     if form.validate():
+    # try:
+    #     drink = Drink(title=new_title, recipe=new_recipe)
+    #     if new_title is None:
+    #         return jsonify({"error": "New title not provided"}), 404
+    #     if new_recipe is None:
+    #         return jsonify({"error": "New recipe not provided"}), 404
+    #     drink.insert()
+    #     return jsonify({
+    #         "success": True,
+    #         "drinks":Drink.query.order_by(Drink.id).all()
+    #     })
+    # except: 
+    #     abort(422)
+
 @app.route('/movies')
 @requires_auth(permission='get:movies')
 def movies(decoded_payload):

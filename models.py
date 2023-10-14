@@ -42,6 +42,17 @@ class Actor(db.Model):
     def __repr__(self):
         return f'<actor ID: {self.id}, name: {self.name}, age: {self.age}, gender: {self.gender}>'
     
+    def short(self):
+        print(json.loads(self.movie_id))
+        short_name = [{'title': r['title'], 'release_date': r['release_date']} for r in json.loads(self.movie_id)]
+        return {
+            'id': self.id,
+            'name': self.name,
+            'age': self.age,
+            'gender': self.gender,
+            'recipe': short_name
+        }
+    
 class Movie(db.Model):
     __tablename__ = 'movie'
     id = db.Column(db.Integer().with_variant(db.Integer, "sqlite"), primary_key=True)
@@ -49,3 +60,5 @@ class Movie(db.Model):
     release_date = db.Column(db.DateTime)
     def __repr__(self):
         return f'<movie ID: {self.id}, title: {self.title}, release_date: {self.release_date}>'
+    
+    
