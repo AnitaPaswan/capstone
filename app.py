@@ -41,7 +41,7 @@ CORS(app)
 #   return render_template('pages/login.html')
 
 
-@app.route('/login')
+@app.route('/')
 @cross_origin(headers = ["Content-Type", "Authorization"])
 def login():
   return render_template('pages/login.html')
