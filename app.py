@@ -54,9 +54,9 @@ oauth.register(
 
 # Controllers API
 @app.route("/")
-def home():
+def index():
     return render_template(
-        "wilcome.html",
+        "welcome.html",
         session=session.get("user"),
         pretty=json.dumps(session.get("user"), indent=4),
     )
