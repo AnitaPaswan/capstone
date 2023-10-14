@@ -24,7 +24,7 @@ class TestActorAPI(unittest.TestCase):
     def test_edit_actor(self):
         actor_data = {
             "name": "Updated Name",
-            "age": 40,
+            "age": "40",
             "gender": "Male",
             "movie_id": 1
         }
@@ -34,6 +34,28 @@ class TestActorAPI(unittest.TestCase):
     def test_delete_actor(self):
         response = requests.delete(f'{self.base_url}/1') 
         self.assertEqual(response.status_code, 204)  
+
+    def test_bad_request_missing_data(self):
+       
+        incomplete_data = {
+            "name": "John Doe",
+            "age": "35"
+            # Missing the "gender" field, which is required
+        }
+        response = requests.post(self.base_url, json=incomplete_data)
+        self.assertEqual(response.status_code, 400)  
+
+    def test_bad_request_invalid_data(self):
+        invalid_data = {
+            "name": "John Doe",
+            "age": "33",  
+            "gender": "Male",
+            "movie_id": "Thirty-Five", 
+        }
+        response = requests.post(self.base_url, json=invalid_data)
+        self.assertEqual(response.status_code, 400)  
+
+
 
 if __name__ == '__main__':
     unittest.main()
