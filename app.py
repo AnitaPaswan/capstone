@@ -60,6 +60,7 @@ oauth.register(
 
 @app.route("/callback", methods=["GET", "POST"])
 def callback():
+    request.form, meta={'csrf':False}
     state = session.pop('state', '')  # Retrieve and remove the state parameter from the session
     token = oauth.auth0.authorize_access_token()
 
