@@ -96,7 +96,7 @@ def welcome():
 
 @app.route('/home')
 @cross_origin(headers = ["Content-Type", "Authorization"])
-def home():
+def index():
   return render_template('pages/home.html')
 
 # @app.route('/callback')
