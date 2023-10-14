@@ -72,162 +72,178 @@ def actors(decoded_payload):
     print(sys.exc_info())
     abort(422)
 
-@app.route('/actors/search', methods=['POST'])
-def search_actors():
-  search = request.form.get("search_term")
-  actors = db.session.query(Actor).filter(Actor.name.ilike(f'%{search}%')).all()
-  for i in actors:
-    response={
-      "count": len(actors),
-      "data": [{
-        "id": i.id,
-        "name": i.name,
-        "age": i.age,
-         "gender": i.gender
-      }]
-    }
-    print(response)
-  return render_template('pages/search_actors.html', results=response, search_term=request.form.get('search_term', ''))
-
-@app.route('/actors/<int:actor_id>')
+@app.route('/actors')
 @requires_auth(permission='get:actors')
-def show_actor(decoded_payload, actor_id):
-  actor = Actor.query.get_or_404(actor_id)
-  upcoming_show = []
-  past_show= []
-  data = vars(actor)
-  return render_template('pages/show_actor.html', actor=data)
+def actors(decoded_payload):
+   try:
+    actors = Actor.query.order_by(Actor.id).all()
+    formated_actor = {actor.short() for actor in actors}
+    if len(formated_actor)==0:
+        abort(404)
+    return jsonify(
+        {"success": True,
+          "drinks": formated_actor
+        })
+   except:
+    print(sys.exc_info())
+    abort(422)
 
-@app.route('/actors/<int:actor_id>/edit', methods=['GET'])
-def edit_actor(actor_id):
-  form = ActorForm()
-  edit_actor = Actor.query.get_or_404(actor_id)
-  actor = Actor.query.filter_by(id=actor_id).all()
-  for s in actor:
-     form.name.data = s.name
-     form.age.data = s.age
-     form.gender.data = s.gender
-  return render_template('forms/edit_actor.html', form=form, actor=edit_actor)
+# @app.route('/actors/search', methods=['POST'])
+# def search_actors():
+#   search = request.form.get("search_term")
+#   actors = db.session.query(Actor).filter(Actor.name.ilike(f'%{search}%')).all()
+#   for i in actors:
+#     response={
+#       "count": len(actors),
+#       "data": [{
+#         "id": i.id,
+#         "name": i.name,
+#         "age": i.age,
+#          "gender": i.gender
+#       }]
+#     }
+#     print(response)
+#   return render_template('pages/search_actors.html', results=response, search_term=request.form.get('search_term', ''))
 
-@app.route('/actors/<int:actor_id>/edit', methods=['POST'])
-@requires_auth(permission='patch:actor')
-def edit_actor_submission(decoded_payload, actor_id):
-  pre_actor = Actor.query.filter_by(id=actor_id).first()
-  form = ActorForm(request.form, meta={'csrf':False})
-  if form.validate(): 
-    try:
-      actor = Actor(id= actor_id, name=form.name.data, age=form.age.data, gender=form.gender.data)
-      db.session.delete(pre_actor)
-      db.session.commit()
-      db.session.add(actor)
-      db.session.commit()
-    except ValueError as e:
-      flash('An error occurred while updating actor ' + request.form['name'])
-      db.session.rollback()
-    finally:
-      flash('Actor ' + request.form['name'] + '  updated successfully.')
-      db.session.close()
-      return redirect(url_for('show_actor', actor_id=actor_id))
-  else:
-    validationMessage= []
-    for field, errors in form.errors.items():
-      for error in errors:
-        validationMessage.append(f"{field}:{error}")
-  flash('Please fix the errors: '+','.join(validationMessage))
-  form=ActorForm()
-  return redirect(url_for('edit_actor', actor_id=actor_id))
+# @app.route('/actors/<int:actor_id>')
+# @requires_auth(permission='get:actors')
+# def show_actor(decoded_payload, actor_id):
+#   actor = Actor.query.get_or_404(actor_id)
+#   upcoming_show = []
+#   past_show= []
+#   data = vars(actor)
+#   return render_template('pages/show_actor.html', actor=data)
 
-@app.route('/actors/<int:actor_id>/delete', methods=['POST'])
-@requires_auth(permission='delete:actor')
-def delete_actor_submission(decoded_payload, actor_id):
-  pre_actor = Actor.query.filter_by(id=actor_id).first()
-  form = ActorForm(request.form, meta={'csrf':False})
-  try:
-    db.session.delete(pre_actor)
-    db.session.commit()
-  except ValueError as e:
-    flash('An error occurred while deleting actor ' + request.form['name'])
-    db.session.rollback()
-  finally:
-    flash('Actor ' + request.form['name'] + '  deleted successfully.')
-    db.session.close()
-    return redirect(url_for('show_actor', actor_id=actor_id))
+# @app.route('/actors/<int:actor_id>/edit', methods=['GET'])
+# def edit_actor(actor_id):
+#   form = ActorForm()
+#   edit_actor = Actor.query.get_or_404(actor_id)
+#   actor = Actor.query.filter_by(id=actor_id).all()
+#   for s in actor:
+#      form.name.data = s.name
+#      form.age.data = s.age
+#      form.gender.data = s.gender
+#   return render_template('forms/edit_actor.html', form=form, actor=edit_actor)
 
-@app.route('/actors/create', methods=['GET'])
-def create_actor_form():
-  form = ActorForm()
-  print(form.name.data)
-  return render_template('forms/new_actor.html', form=form)
+# @app.route('/actors/<int:actor_id>/edit', methods=['POST'])
+# @requires_auth(permission='patch:actor')
+# def edit_actor_submission(decoded_payload, actor_id):
+#   pre_actor = Actor.query.filter_by(id=actor_id).first()
+#   form = ActorForm(request.form, meta={'csrf':False})
+#   if form.validate(): 
+#     try:
+#       actor = Actor(id= actor_id, name=form.name.data, age=form.age.data, gender=form.gender.data)
+#       db.session.delete(pre_actor)
+#       db.session.commit()
+#       db.session.add(actor)
+#       db.session.commit()
+#     except ValueError as e:
+#       flash('An error occurred while updating actor ' + request.form['name'])
+#       db.session.rollback()
+#     finally:
+#       flash('Actor ' + request.form['name'] + '  updated successfully.')
+#       db.session.close()
+#       return redirect(url_for('show_actor', actor_id=actor_id))
+#   else:
+#     validationMessage= []
+#     for field, errors in form.errors.items():
+#       for error in errors:
+#         validationMessage.append(f"{field}:{error}")
+#   flash('Please fix the errors: '+','.join(validationMessage))
+#   form=ActorForm()
+#   return redirect(url_for('edit_actor', actor_id=actor_id))
 
-@app.route('/actors/create', methods=['POST'])
-@requires_auth(permission='post:actor')
-def create_actor_submission(decoded_payload):
-  form = ActorForm(request.form, meta={'csrf':False})
-  movie_id = form.movie_id.data
-  isMovieValid = Movie.query.filter_by(id=movie_id).count()
-  if(isMovieValid <=0):
-    flash('An error occurred.Please check movie id') 
-    abort(401)
-  else: 
-    if form.validate():
-      try:
-          actor = Actor(name=form.name.data, age=form.age.data, gender=form.gender.data, movie_id = form.movie_id.data)
-          db.session.add(actor)
-          db.session.commit()
-      except ValueError as e:
-        print(e)
-        db.session.rollback()
-      finally:
-        db.session.close()
-      flash('actor ' + request.form['name'] + ' was successfully listed!')
-      return render_template('pages/home.html')
-    else:
-      validationMessage= []
-      for field, errors in form.errors.items():
-          for error in errors:
-            validationMessage.append(f"{field}:{error}")
-      flash('Please fix the errors: '+','.join(validationMessage))
-      form=ActorForm()
-      return render_template('forms/new_actor.html', form=form)
+# @app.route('/actors/<int:actor_id>/delete', methods=['POST'])
+# @requires_auth(permission='delete:actor')
+# def delete_actor_submission(decoded_payload, actor_id):
+#   pre_actor = Actor.query.filter_by(id=actor_id).first()
+#   form = ActorForm(request.form, meta={'csrf':False})
+#   try:
+#     db.session.delete(pre_actor)
+#     db.session.commit()
+#   except ValueError as e:
+#     flash('An error occurred while deleting actor ' + request.form['name'])
+#     db.session.rollback()
+#   finally:
+#     flash('Actor ' + request.form['name'] + '  deleted successfully.')
+#     db.session.close()
+#     return redirect(url_for('show_actor', actor_id=actor_id))
+
+# @app.route('/actors/create', methods=['GET'])
+# def create_actor_form():
+#   form = ActorForm()
+#   print(form.name.data)
+#   return render_template('forms/new_actor.html', form=form)
+
+# @app.route('/actors/create', methods=['POST'])
+# @requires_auth(permission='post:actor')
+# def create_actor_submission(decoded_payload):
+#   form = ActorForm(request.form, meta={'csrf':False})
+#   movie_id = form.movie_id.data
+#   isMovieValid = Movie.query.filter_by(id=movie_id).count()
+#   if(isMovieValid <=0):
+#     flash('An error occurred.Please check movie id') 
+#     abort(401)
+#   else: 
+#     if form.validate():
+#       try:
+#           actor = Actor(name=form.name.data, age=form.age.data, gender=form.gender.data, movie_id = form.movie_id.data)
+#           db.session.add(actor)
+#           db.session.commit()
+#       except ValueError as e:
+#         print(e)
+#         db.session.rollback()
+#       finally:
+#         db.session.close()
+#       flash('actor ' + request.form['name'] + ' was successfully listed!')
+#       return render_template('pages/home.html')
+#     else:
+#       validationMessage= []
+#       for field, errors in form.errors.items():
+#           for error in errors:
+#             validationMessage.append(f"{field}:{error}")
+#       flash('Please fix the errors: '+','.join(validationMessage))
+#       form=ActorForm()
+#       return render_template('forms/new_actor.html', form=form)
   
-@app.route('/movies', methods=['GET'])
-def get_movie_form():
-  data = Movie.query.all()
-  return render_template('pages/movie.html', results=data)
+# @app.route('/movies', methods=['GET'])
+# def get_movie_form():
+#   data = Movie.query.all()
+#   return render_template('pages/movie.html', results=data)
   
-@app.route('/movies/create', methods=['GET'])
-def create_movie_form():
-  form = MovieForm()
-  return render_template('forms/new_movie.html', form=form)
+# @app.route('/movies/create', methods=['GET'])
+# def create_movie_form():
+#   form = MovieForm()
+#   return render_template('forms/new_movie.html', form=form)
 
-@app.route('/movies/create', methods=['POST'])
-@requires_auth(permission='post:movie')
-def create_movie_submission(decoded_payload):
-  error = False
-  formmovie = MovieForm(request.form, meta={'csrf':False})
-  if formmovie.validate():
-     try:
-        movies = Movie(title=formmovie.title.data,  release_date=formmovie.release_date.data)
-        db.session.add(movies)
-        db.session.commit()
-     except ValueError as e:
-        print(e)
-        flash('An error occurred. movie ' + request.form['title'] + ' could not be listed.')
-        db.session.rollback()
-        error = True
-        print(sys.exc_info())
-     finally:
-        db.session.close()
-     flash('movie ' + request.form['title'] + ' was successfully listed.')
-     return render_template('pages/movie.html')
-  else:
-     validationMessage= []
-     for field, errors in formmovie.errors.items():
-        for error in errors:
-           validationMessage.append(f"{field}:{error}")
-     flash('Please fix the errors: '+','.join(validationMessage))
-     form=MovieForm()
-     return render_template('forms/new_movie.html', form=form)
+# @app.route('/movies/create', methods=['POST'])
+# @requires_auth(permission='post:movie')
+# def create_movie_submission(decoded_payload):
+#   error = False
+#   formmovie = MovieForm(request.form, meta={'csrf':False})
+#   if formmovie.validate():
+#      try:
+#         movies = Movie(title=formmovie.title.data,  release_date=formmovie.release_date.data)
+#         db.session.add(movies)
+#         db.session.commit()
+#      except ValueError as e:
+#         print(e)
+#         flash('An error occurred. movie ' + request.form['title'] + ' could not be listed.')
+#         db.session.rollback()
+#         error = True
+#         print(sys.exc_info())
+#      finally:
+#         db.session.close()
+#      flash('movie ' + request.form['title'] + ' was successfully listed.')
+#      return render_template('pages/movie.html')
+#   else:
+#      validationMessage= []
+#      for field, errors in formmovie.errors.items():
+#         for error in errors:
+#            validationMessage.append(f"{field}:{error}")
+#      flash('Please fix the errors: '+','.join(validationMessage))
+#      form=MovieForm()
+#      return render_template('forms/new_movie.html', form=form)
           
 
 @app.errorhandler(404)
