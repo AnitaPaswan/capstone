@@ -36,25 +36,28 @@ class Actor(db.Model):
     age = db.Column(db.String(120))
     gender = db.Column(db.String(120))
     movie_id = Column(db.Integer, db.ForeignKey('movie.id'))
-    movie_detail =  Column(String(180), nullable=False)
 
     # Define the relationship
     movie = db.relationship('Movie')
     def __repr__(self):
         return json.dumps(self.short())
     
+    def __init__(self, name, age, gender):
+        self.name = name
+        self.age = age
+        self.gender = gender
+        self.movies = []
+
+    def add_movie(self, movie):
+        self.movies.append(movie)
+
     def short(self):
-        movie_data = json.loads(self.movie_detail)
-        # Extract specific information from each movie and store as a list of dictionaries
-        short_name = [{'title': movie['title'], 'release_date': movie['release_date']} for movie in movie_data]
+        movie_list = [movie.title for movie in self.movies]
         return {
-            'id': self.id,
-            'name': self.name,
-            'age': self.age,
-            'gender': self.gender,
-            'movie_detail': short_name  # Include the list of movie details
+            "name": self.name,
+            "age": self.age,
+            "movies": movie_list
         }
-    
 class Movie(db.Model):
     __tablename__ = 'movie'
     id = db.Column(db.Integer().with_variant(db.Integer, "sqlite"), primary_key=True)
@@ -69,5 +72,3 @@ class Movie(db.Model):
         }
     def __repr__(self):
         return json.dumps(self.short())
-    
-    

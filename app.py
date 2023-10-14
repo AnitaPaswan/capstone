@@ -105,7 +105,7 @@ def actors(decoded_payload):
 def movies(decoded_payload):
    try:
     movies = Movie.query.order_by(Movie.id).all()
-    formated_movie = {actor.short() for actor in movies}
+    formated_movie = {movie.short() for movie in movies}
     if len(formated_movie)==0:
         abort(404)
     return jsonify(
