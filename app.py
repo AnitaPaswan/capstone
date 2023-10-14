@@ -52,11 +52,28 @@ oauth.register(
     server_metadata_url=f'https://{AUTH0_DOMAIN}/.well-known/openid-configuration',
 )
 ###############################
+# @app.route("/callback", methods=["GET", "POST"])
+# def callback():
+#       token = oauth.auth0.authorize_access_token()
+#       session["user"] = token
+#       return render_template("pages/home.html")
+
 @app.route("/callback", methods=["GET", "POST"])
-def callback1():
-      token = oauth.auth0.authorize_access_token()
-      session["user"] = token
-      return render_template("pages/home.html")
+def callback():
+    state = session.pop('state', '')  # Retrieve and remove the state parameter from the session
+    token = oauth.auth0.authorize_access_token()
+
+    if state != request.args.get('state'):
+        # Handle a mismatching state error
+        return "Mismatching state error"
+
+    if token is None:
+        # Handle the case where access token retrieval failed
+        return "Access token retrieval failed"
+
+    session["user"] = token
+    return redirect("/")
+
 
 @app.route("/logout")
 def logout():
