@@ -72,3 +72,8 @@ class Movie(db.Model):
         }
     def __repr__(self):
         return json.dumps(self.short())
+    
+    def __init__(self, id, title, release_date):
+        self.id = id
+        self.title = title
+        self.release_date = release_date
