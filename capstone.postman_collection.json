@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "Get /actors",
+			"name": "Get actor",
 			"event": [
 				{
 					"listen": "test",
@@ -64,7 +64,7 @@
 			"response": []
 		},
 		{
-			"name": "Post /actor",
+			"name": "Post actor",
 			"event": [
 				{
 					"listen": "test",
@@ -107,7 +107,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"John Doe\",\r\n    \"age\": 35,\r\n    \"gender\": \"Male\",\r\n    \"movie_id\": \"2\"\r\n}\r\n"
+					"raw": "{\r\n    \"name\": \"John Doe\",\r\n    \"age\": \"35\",\r\n    \"gender\": \"Male\",\r\n    \"movie_id\": 2\r\n}\r\n"
 				},
 				"url": {
 					"raw": "https://render-capstone-example-5cq7.onrender.com/actor",
