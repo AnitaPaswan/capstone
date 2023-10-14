@@ -76,7 +76,7 @@ def create_movies(decoded_payload):
     body=request.get_json()
     new_title = body.get('title')
     new_release_date = body.get('release_date')
-    movie = Movie(title=new_title, recipe=new_release_date)
+    movie = Movie(title=new_title, release_date=new_release_date)
     if new_title is None:
         return jsonify({"error": "New title not provided"}), 400
     if new_release_date is None:
